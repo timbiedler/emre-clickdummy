@@ -5,9 +5,12 @@ import { Check, MapPin, CreditCard, Wrench, Truck, Sparkles, GitCompare } from "
 import { StatusBadge } from "./status-badge";
 import { ProductImagePlaceholder } from "./product-image-placeholder";
 import { useApp } from "@/context/app-context";
-import { t } from "@/lib/i18n";
+import { t as localizedText } from "@/lib/i18n";
+import { useUi } from "@/lib/ui-i18n";
 import { formatCurrency } from "@/lib/format";
 import { getProductFinance, financeStatusLabel, financeStatusVariant } from "@/lib/product-finance";
+import { getIndustryRelevanceScore, getRelevanceBadge } from "@/lib/industry-relevance";
+import { RelevanceBadge } from "./relevance-badge";
 import type { Product } from "@/data/types";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -24,15 +27,20 @@ export function ProductCard({
   onClick,
   selected,
   showActions = true,
+  showRelevance = false,
 }: {
   product: Product;
   onClick: () => void;
   selected?: boolean;
   showActions?: boolean;
+  showRelevance?: boolean;
 }) {
-  const { language, compareList, toggleCompare, openConsultation } = useApp();
+  const { language, compareList, toggleCompare, openConsultation, industry } = useApp();
+  const { t } = useUi();
   const inCompare = compareList.includes(product.id);
   const finance = getProductFinance(product);
+  const score = getIndustryRelevanceScore(product, industry);
+  const badge = showRelevance ? getRelevanceBadge(product, industry, score) : null;
 
   const stop = (e: React.MouseEvent) => e.stopPropagation();
 
@@ -60,18 +68,22 @@ export function ProductCard({
           </StatusBadge>
         </div>
         <h3 className="font-medium text-sm leading-snug line-clamp-2 text-slate-900 group-hover:text-blue-700 transition-colors">
-          {t(product.name, language)}
+          {localizedText(product.name, language)}
         </h3>
+
+        {badge && (
+          <RelevanceBadge label={badge.label} type={badge.type} />
+        )}
 
         <div className="grid grid-cols-2 gap-3 pt-1">
           <div>
-            <p className="text-[10px] text-slate-500 uppercase tracking-wide">Purchase</p>
+            <p className="text-[10px] text-slate-500 uppercase tracking-wide">{t("common.purchase")}</p>
             <p className="text-base font-semibold text-slate-900">
               {formatCurrency(finance.purchasePrice)}
             </p>
           </div>
           <div>
-            <p className="text-[10px] text-slate-500 uppercase tracking-wide">Leasing / mo</p>
+            <p className="text-[10px] text-slate-500 uppercase tracking-wide">{t("common.leasingMo")}</p>
             <p className="text-base font-semibold text-accent-green">
               {formatCurrency(finance.leasingRateMonthly)}
             </p>
@@ -89,7 +101,7 @@ export function ProductCard({
           </StatusBadge>
           {product.serviceCoverage && (
             <StatusBadge variant="info">
-              <Wrench className="size-3 mr-1" /> Service
+              <Wrench className="size-3 mr-1" /> {t("common.service")}
             </StatusBadge>
           )}
         </div>
@@ -103,12 +115,12 @@ export function ProductCard({
           <div className="grid grid-cols-2 gap-2 pt-3 mt-auto border-t border-slate-100">
             <Link href="/rfq" onClick={stop}>
               <Button size="sm" variant="outline" className="w-full h-8 text-xs">
-                Request Offer
+                {t("common.requestOffer")}
               </Button>
             </Link>
             <Link href="/finance" onClick={stop}>
               <Button size="sm" variant="outline" className="w-full h-8 text-xs">
-                Leasing Options
+                {t("common.leasingOptions")}
               </Button>
             </Link>
             <Button
@@ -120,7 +132,7 @@ export function ProductCard({
                 openConsultation(product.id);
               }}
             >
-              <Sparkles className="size-3" /> AI Sales Advice
+              <Sparkles className="size-3" /> {t("common.aiSalesAdvice")}
             </Button>
             <Button
               size="sm"
@@ -131,7 +143,7 @@ export function ProductCard({
                 toggleCompare(product.id);
               }}
             >
-              <GitCompare className="size-3" /> Compare
+              <GitCompare className="size-3" /> {t("common.compare")}
             </Button>
           </div>
         )}

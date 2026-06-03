@@ -10,44 +10,50 @@ import { rfqs } from "@/data";
 import type { RFQ } from "@/data/types";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useUi } from "@/lib/ui-i18n";
 
 export default function RFQPage() {
   const { vertical } = useApp();
+  const { t } = useUi();
   const [selected, setSelected] = useState<RFQ | null>(null);
   const verticalRfqs = rfqs.filter((r) => r.vertical === vertical);
 
   const tabs = [
-    { id: "all", label: "All RFQs", filter: () => true },
-    { id: "active", label: "Active", filter: (r: RFQ) => r.status === "active" },
-    { id: "matching", label: "Matching", filter: (r: RFQ) => r.status === "matching" },
-    { id: "offers", label: "Offers Received", filter: (r: RFQ) => r.status === "offers_received" },
-    { id: "draft", label: "Drafts", filter: (r: RFQ) => r.status === "draft" },
+    { id: "all", labelKey: "rfq.allRfqs", filter: () => true },
+    { id: "active", labelKey: "rfq.active", filter: (r: RFQ) => r.status === "active" },
+    { id: "matching", labelKey: "rfq.matching", filter: (r: RFQ) => r.status === "matching" },
+    {
+      id: "offers",
+      labelKey: "rfq.offersReceived",
+      filter: (r: RFQ) => r.status === "offers_received",
+    },
+    { id: "draft", labelKey: "rfq.drafts", filter: (r: RFQ) => r.status === "draft" },
   ];
 
   return (
     <div className="space-y-6">
       <PageHeader
-        title="RFQ Center"
-        description="Manage requests for quotation, supplier matching, offer comparison, and multilingual communication."
+        titleKey="rfq.title"
+        descriptionKey="rfq.subtitle"
         action={
           <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
-            <Plus className="size-4" /> Create RFQ
+            <Plus className="size-4" /> {t("rfq.createRfq")}
           </Button>
         }
       />
 
       <Tabs defaultValue="all">
         <TabsList className="surface-card border-slate-200">
-          {tabs.map((t) => (
-            <TabsTrigger key={t.id} value={t.id}>
-              {t.label} ({verticalRfqs.filter(t.filter).length})
+          {tabs.map((tab) => (
+            <TabsTrigger key={tab.id} value={tab.id}>
+              {t(tab.labelKey)} ({verticalRfqs.filter(tab.filter).length})
             </TabsTrigger>
           ))}
         </TabsList>
-        {tabs.map((t) => (
-          <TabsContent key={t.id} value={t.id} className="mt-4">
+        {tabs.map((tab) => (
+          <TabsContent key={tab.id} value={tab.id} className="mt-4">
             <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-              {verticalRfqs.filter(t.filter).map((rfq) => (
+              {verticalRfqs.filter(tab.filter).map((rfq) => (
                 <RFQCard key={rfq.id} rfq={rfq} onClick={() => setSelected(rfq)} />
               ))}
             </div>

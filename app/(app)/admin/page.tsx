@@ -43,8 +43,8 @@ export default function AdminPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Admin / Operations"
-        description="Platform command center — KPIs, pipelines, alerts, and performance analytics for both verticals."
+        titleKey="admin.title"
+        descriptionKey="admin.subtitle"
       />
 
       <div className="flex flex-wrap items-center gap-4">

@@ -1,0 +1,43 @@
+import type { Industry } from "./types";
+
+export const INDUSTRIES: Industry[] = [
+  "Hospital / Clinic",
+  "Care Home / Care Group",
+  "Laboratory",
+  "Public Sector",
+  "Municipality",
+  "Distributor / Wholesaler",
+  "Doctor Practice",
+  "Hospitality",
+  "Cleaning Company",
+  "Facility Management",
+  "Car Dealership",
+  "Agriculture",
+  "Security Company",
+  "Retail",
+  "Logistics",
+  "Industrial Site",
+  "Education / Campus",
+  "Real Estate / Property Management",
+];
+
+export const INDUSTRY_SHORT: Record<Industry, string> = {
+  "Hospital / Clinic": "Hospital",
+  "Care Home / Care Group": "Care",
+  Laboratory: "Lab",
+  "Public Sector": "Public",
+  Municipality: "Municipality",
+  "Distributor / Wholesaler": "Distributor",
+  "Doctor Practice": "Practice",
+  Hospitality: "Hospitality",
+  "Cleaning Company": "Cleaning",
+  "Facility Management": "Facility",
+  "Car Dealership": "Dealership",
+  Agriculture: "Agriculture",
+  "Security Company": "Security",
+  Retail: "Retail",
+  Logistics: "Logistics",
+  "Industrial Site": "Industrial",
+  "Education / Campus": "Education",
+  "Real Estate / Property Management": "Property",
+};

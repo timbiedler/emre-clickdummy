@@ -5,6 +5,8 @@ import type {
   NetworkRoute,
   Vertical,
 } from "./types";
+import type { EuRegionKey } from "./eu-regions";
+import { countryMatchesRegion } from "./eu-regions";
 import { COUNTRIES } from "./constants";
 
 const cities: { city: string; region: string; country: Country; lat: number; lng: number }[] = [
@@ -26,6 +28,16 @@ const cities: { city: string; region: string; country: Country; lat: number; lng
   { city: "Brussels", region: "Brussels", country: "Belgium", lat: 50.85, lng: 4.351 },
   { city: "Copenhagen", region: "Capital Region", country: "Denmark", lat: 55.676, lng: 12.568 },
   { city: "Stockholm", region: "Stockholm", country: "Sweden", lat: 59.329, lng: 18.068 },
+  { city: "Oslo", region: "Oslo", country: "Norway", lat: 59.913, lng: 10.752 },
+  { city: "Helsinki", region: "Uusimaa", country: "Finland", lat: 60.169, lng: 24.938 },
+  { city: "Tallinn", region: "Harju", country: "Estonia", lat: 59.437, lng: 24.753 },
+  { city: "Riga", region: "Riga", country: "Latvia", lat: 56.949, lng: 24.105 },
+  { city: "Vilnius", region: "Vilnius", country: "Lithuania", lat: 54.687, lng: 25.279 },
+  { city: "Prague", region: "Prague", country: "Czech Republic", lat: 50.075, lng: 14.437 },
+  { city: "Bratislava", region: "Bratislava", country: "Slovakia", lat: 48.148, lng: 17.107 },
+  { city: "Budapest", region: "Central Hungary", country: "Hungary", lat: 47.497, lng: 19.04 },
+  { city: "Bucharest", region: "Bucharest", country: "Romania", lat: 44.426, lng: 26.102 },
+  { city: "Sofia", region: "Sofia", country: "Bulgaria", lat: 42.698, lng: 23.322 },
 ];
 
 const supplierNames = [
@@ -314,6 +326,7 @@ export function filterNetworkEntities(
   filters: {
     role?: string;
     country?: string;
+    region?: EuRegionKey | "all";
     vertical?: Vertical | "both" | "all";
     activeOnly?: boolean;
     category?: string;
@@ -322,6 +335,8 @@ export function filterNetworkEntities(
   return entities.filter((e) => {
     if (filters.role && filters.role !== "all" && e.role !== filters.role) return false;
     if (filters.country && filters.country !== "all" && e.country !== filters.country)
+      return false;
+    if (filters.region && filters.region !== "all" && !countryMatchesRegion(e.country, filters.region))
       return false;
     if (
       filters.vertical &&

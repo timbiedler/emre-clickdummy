@@ -61,8 +61,8 @@ export default function FinancePage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Leasing & Finance"
-        description="Enterprise finance hub — leasing, financing, finetrading, document readiness, and pre-approval pipeline."
+        titleKey="finance.title"
+        descriptionKey="finance.subtitle"
         action={
           <Link href="/data-room">
             <Button className="gap-2 bg-emerald-600 hover:bg-emerald-500">

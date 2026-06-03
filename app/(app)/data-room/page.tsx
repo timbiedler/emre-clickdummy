@@ -7,6 +7,7 @@ import {
   DataRoomUploadCard,
   FinanceReadinessScore,
 } from "@/components/emre/data-room-upload-card";
+import { TranslationExamplesPanel } from "@/components/emre/translation-examples-panel";
 import { StatusBadge } from "@/components/emre/status-badge";
 import { useApp } from "@/context/app-context";
 import { dataRoomDocuments } from "@/data/data-room";
@@ -29,8 +30,8 @@ export default function DataRoomPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Data Room"
-        description="Secure document management for financing, leasing, compliance, and procurement approvals."
+        titleKey="nav.dataRoom"
+        descriptionKey="finance.dataRoomReadiness"
         action={
           <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
             <Upload className="size-4" /> Upload Document
@@ -63,6 +64,8 @@ export default function DataRoomPage() {
           <DataRoomUploadCard key={doc.id} doc={doc} onClick={() => setSelected(doc)} />
         ))}
       </div>
+
+      <TranslationExamplesPanel />
 
       <Sheet open={!!selected} onOpenChange={() => setSelected(null)}>
         <SheetContent className="surface-card-elevated border-slate-200">

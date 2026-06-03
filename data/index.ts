@@ -12,6 +12,21 @@ export { financeApplications } from "./finance";
 export { dataRoomDocuments } from "./data-room";
 export { deals } from "./deals";
 export { adminMetrics, adminAlerts, adminActivities } from "./admin-metrics";
+export { platformUsers, companies } from "./users";
+export {
+  salesPartners,
+  salesPartnerApplications,
+  commissionModels,
+  salesTerritories,
+} from "./sales-partners";
+export {
+  industryRfqTemplates,
+  getRfqTemplatesForIndustry,
+  getAiPromptsForIndustry,
+  crossIndustryRecommendations,
+} from "./industry-content";
+export { INDUSTRIES } from "./industries";
+export { getNavForRole, getHomeForRole } from "./roles";
 
 import { medicalProducts } from "./medical-products";
 import { roboticsProducts } from "./robotics-products";

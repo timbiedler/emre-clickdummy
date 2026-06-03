@@ -31,9 +31,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { COUNTRIES } from "@/data/constants";
+import type { Country } from "@/data/types";
 import { formatCurrency } from "@/lib/format";
 import { getProductFinance } from "@/lib/product-finance";
 import { getConsultationUseCases } from "@/lib/product-ai";
+import { getAiPromptsForIndustry } from "@/data/industry-content";
+import { IndustrySelector } from "@/components/emre/industry-selector";
+import { TranslationExamplesPanel } from "@/components/emre/translation-examples-panel";
+import { useUi } from "@/lib/ui-i18n";
 
 const modes = [
   { id: "recommendation", label: "Product Recommendation", icon: Package },
@@ -42,18 +47,16 @@ const modes = [
   { id: "consultation", label: "Sales Consultation", icon: MessageSquare },
   { id: "compare", label: "Compare Products", icon: GitCompare },
   { id: "service", label: "Service / Spare Parts", icon: Wrench },
+  { id: "multisite", label: "Multi-location Plan", icon: Package },
 ] as const;
 
-const medicalPrompt =
-  "Wir benötigen 500.000 Nitrilhandschuhe für eine Pflegegruppe in Deutschland mit Lieferung innerhalb von 10 Tagen.";
-const roboticsPrompt =
-  "We need 12 autonomous cleaning robots for a hotel group in Germany, Austria and Switzerland.";
-
 export default function AssistantPage() {
-  const { vertical, openConsultation } = useApp();
+  const { vertical, openConsultation, role, industry, workspaceCountry, companyType } = useApp();
+  const { t } = useUi();
+  const industryPrompts = getAiPromptsForIndustry(industry);
   const [mode, setMode] = useState<(typeof modes)[number]["id"]>("recommendation");
-  const [prompt, setPrompt] = useState(vertical === "medical" ? medicalPrompt : roboticsPrompt);
-  const [country, setCountry] = useState("Germany");
+  const [prompt, setPrompt] = useState(industryPrompts[0] ?? "");
+  const [country, setCountry] = useState<Country>(workspaceCountry);
   const [result, setResult] = useState<ReturnType<typeof analyzeNeed> | null>(null);
 
   function analyzeNeed(text: string) {
@@ -65,6 +68,9 @@ export default function AssistantPage() {
 
     return {
       interpreted: text,
+      interpretedRole: t(`roles.${role}`),
+      interpretedIndustry: industry,
+      companyType,
       category: vertical === "medical" ? "PPE / Consumables" : "Cleaning Robots",
       products,
       suppliers: matchedSuppliers,
@@ -92,8 +98,8 @@ export default function AssistantPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="AI Procurement & Sales Consultation"
-        description="Procurement guidance, product recommendations, offer comparisons, and sales consultation."
+        titleKey="nav.aiAssistant"
+        descriptionKey="translation.title"
         action={
           <Button
             className="gap-2 bg-blue-600 hover:bg-blue-700"
@@ -107,9 +113,25 @@ export default function AssistantPage() {
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-4">
           <div className="surface-card rounded-xl p-5 space-y-4 border-blue-200">
-            <div className="flex items-center gap-2">
-              <Sparkles className="size-5 text-violet-600" />
-              <h2 className="font-semibold">Describe Your Need</h2>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Sparkles className="size-5 text-violet-600" />
+                <h2 className="font-semibold">Describe Your Need</h2>
+              </div>
+              <IndustrySelector />
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {industryPrompts.map((p) => (
+                <button
+                  key={p}
+                  type="button"
+                  onClick={() => setPrompt(p)}
+                  className="text-xs rounded-md border border-slate-200 bg-slate-50 px-2 py-1 hover:bg-blue-50 hover:border-blue-200 text-left"
+                >
+                  {p.slice(0, 60)}…
+                </button>
+              ))}
             </div>
 
             <div className="grid sm:grid-cols-3 gap-2">
@@ -140,7 +162,7 @@ export default function AssistantPage() {
             <div className="grid sm:grid-cols-2 gap-3">
               <div className="space-y-2">
                 <Label className="text-xs">Target Country</Label>
-                <Select value={country} onValueChange={setCountry}>
+                <Select value={country} onValueChange={(v) => setCountry(v as Country)}>
                   <SelectTrigger className="surface-card border-slate-200">
                     <SelectValue />
                   </SelectTrigger>
@@ -176,6 +198,9 @@ export default function AssistantPage() {
                 <TranslationBadge status="verified" showPanel sourceText={result.translatedMessage} />
 
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  <Info label="Role" value={result.interpretedRole} />
+                  <Info label="Industry" value={result.interpretedIndustry} />
+                  <Info label="Company type" value={result.companyType} />
                   <Info label="Category" value={result.category} />
                   <Info label="Est. Budget" value={formatCurrency(result.budget)} />
                   <Info label="Leasing Option" value={result.leasingOption} />
@@ -285,6 +310,8 @@ export default function AssistantPage() {
           </div>
         </div>
       </div>
+
+      <TranslationExamplesPanel />
     </div>
   );
 }

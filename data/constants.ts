@@ -4,29 +4,45 @@ export const PRODUCT_NAME_LINE1 = "DISTRIBUTION";
 export const PRODUCT_NAME_LINE2 = "ENGINE";
 export const PRODUCT_NAME = "DISTRIBUTION ENGINE";
 
-export const LANGUAGES: { code: Language; label: string; flag: string }[] = [
-  { code: "en", label: "English", flag: "🇬🇧" },
-  { code: "de", label: "Deutsch", flag: "🇩🇪" },
-  { code: "fr", label: "Français", flag: "🇫🇷" },
-  { code: "es", label: "Español", flag: "🇪🇸" },
-  { code: "it", label: "Italiano", flag: "🇮🇹" },
-  { code: "pl", label: "Polski", flag: "🇵🇱" },
-  { code: "nl", label: "Nederlands", flag: "🇳🇱" },
-  { code: "zh", label: "中文", flag: "🇨🇳" },
+export const LANGUAGES: { code: Language; label: string; flag: string; nativeLabel: string }[] = [
+  { code: "en", label: "English", nativeLabel: "English", flag: "🇬🇧" },
+  { code: "de", label: "German", nativeLabel: "Deutsch", flag: "🇩🇪" },
+  { code: "fr", label: "French", nativeLabel: "Français", flag: "🇫🇷" },
+  { code: "es", label: "Spanish", nativeLabel: "Español", flag: "🇪🇸" },
+  { code: "it", label: "Italian", nativeLabel: "Italiano", flag: "🇮🇹" },
+  { code: "pl", label: "Polish", nativeLabel: "Polski", flag: "🇵🇱" },
+  { code: "nl", label: "Dutch", nativeLabel: "Nederlands", flag: "🇳🇱" },
+  { code: "sv", label: "Swedish", nativeLabel: "Svenska", flag: "🇸🇪" },
+  { code: "fi", label: "Finnish", nativeLabel: "Suomi", flag: "🇫🇮" },
+  { code: "no", label: "Norwegian", nativeLabel: "Norsk", flag: "🇳🇴" },
+  { code: "et", label: "Estonian", nativeLabel: "Eesti", flag: "🇪🇪" },
+  { code: "lv", label: "Latvian", nativeLabel: "Latviešu", flag: "🇱🇻" },
+  { code: "lt", label: "Lithuanian", nativeLabel: "Lietuvių", flag: "🇱🇹" },
+  { code: "zh", label: "Chinese", nativeLabel: "中文", flag: "🇨🇳" },
 ];
 
 export const COUNTRIES: Country[] = [
   "Germany",
   "Austria",
   "Switzerland",
+  "Netherlands",
+  "Belgium",
   "France",
   "Spain",
   "Italy",
   "Poland",
-  "Netherlands",
-  "Belgium",
-  "Denmark",
+  "Czech Republic",
+  "Slovakia",
+  "Hungary",
+  "Romania",
+  "Bulgaria",
+  "Norway",
+  "Finland",
   "Sweden",
+  "Denmark",
+  "Estonia",
+  "Latvia",
+  "Lithuania",
 ];
 
 export const MEDICAL_CATEGORIES = [
@@ -113,20 +129,3 @@ export const CARD_GRADIENTS = [
   "from-slate-100 to-blue-50",
   "from-slate-50 to-emerald-50",
 ];
-
-export const NAV_ITEMS = [
-  { href: "/", label: "Command Center", icon: "LayoutDashboard" },
-  { href: "/marketplace", label: "Marketplace", icon: "Store" },
-  { href: "/assistant", label: "AI Need Assistant", icon: "Sparkles" },
-  { href: "/rfq", label: "RFQ Center", icon: "FileText" },
-  { href: "/deals", label: "Deals", icon: "Tag" },
-  { href: "/magazine", label: "Magazine", icon: "Newspaper" },
-  { href: "/finance", label: "Leasing & Finance", icon: "CreditCard" },
-  { href: "/orders", label: "Orders & Tracking", icon: "Package" },
-  { href: "/service-network", label: "Service Network", icon: "Wrench" },
-  { href: "/network-map", label: "Network Map", icon: "Globe" },
-  { href: "/account", label: "Customer Account", icon: "User" },
-  { href: "/data-room", label: "Data Room", icon: "FolderLock" },
-  { href: "/supplier", label: "Supplier Portal", icon: "Truck" },
-  { href: "/admin", label: "Admin / Operations", icon: "Shield" },
-] as const;

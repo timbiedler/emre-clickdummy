@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Building2, Users, Heart, FileText, MessageSquare } from "lucide-react";
 import { PageHeader } from "@/components/emre/app-shell";
+import { IndustryProfileCard } from "@/components/emre/industry-profile-card";
+import { IndustrySelector } from "@/components/emre/industry-selector";
 import { InvoiceTable } from "@/components/emre/invoice-table";
 import { StatusBadge } from "@/components/emre/status-badge";
 import { useApp } from "@/context/app-context";
@@ -19,7 +21,7 @@ import {
 } from "@/components/ui/sheet";
 
 export default function AccountPage() {
-  const { vertical } = useApp();
+  const { vertical, industry, companyType, workspaceCountry } = useApp();
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
   const buyer = buyers.find((b) => b.vertical === vertical);
   const verticalInvoices = invoices.filter((i) => i.vertical === vertical);
@@ -30,15 +32,25 @@ export default function AccountPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Customer Account"
-        description="Company profile, saved items, offers, invoices, financing applications, and support tickets."
+        titleKey="account.title"
+        descriptionKey="account.subtitle"
       />
 
-      <div className="grid md:grid-cols-4 gap-4">
-        <Stat icon={Building2} label="Company" value={buyer?.name ?? "—"} />
-        <Stat icon={Users} label="Active Users" value="12" />
-        <Stat icon={FileText} label="Open RFQs" value={String(buyer?.activeRfqs ?? 0)} />
-        <Stat icon={Heart} label="Saved Products" value="8" />
+      <div className="grid lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 grid md:grid-cols-4 gap-4">
+          <Stat icon={Building2} label="Company" value={buyer?.name ?? "—"} />
+          <Stat icon={Users} label="Active Users" value="12" />
+          <Stat icon={FileText} label="Open RFQs" value={String(buyer?.activeRfqs ?? 0)} />
+          <Stat icon={Heart} label="Saved Products" value="8" />
+        </div>
+        <IndustryProfileCard />
+      </div>
+
+      <div className="surface-card p-4 flex flex-wrap items-center gap-4">
+        <IndustrySelector />
+        <p className="text-xs text-slate-500">
+          {industry} · {workspaceCountry} · {companyType}
+        </p>
       </div>
 
       <Tabs defaultValue="invoices">

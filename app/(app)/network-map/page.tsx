@@ -10,6 +10,7 @@ import {
 } from "@/components/emre/network-map/network-map-filters";
 import { NetworkEntityDrawer } from "@/components/emre/network-map/network-entity-drawer";
 import { NetworkIntelligencePanel } from "@/components/emre/network-map/network-intelligence-panel";
+import { CountryPerformancePanel } from "@/components/emre/network-map/country-performance-panel";
 import { MetricCard } from "@/components/emre/metric-card";
 import { useApp } from "@/context/app-context";
 import {
@@ -19,11 +20,13 @@ import {
   networkRoutes,
 } from "@/data/network-map";
 import { ZOOM_PRESETS } from "@/lib/geo";
+import { useUi } from "@/lib/ui-i18n";
 import type { NetworkEntity } from "@/data/types";
 import { Building2, Users, Wrench, CreditCard } from "lucide-react";
 
 export default function NetworkMapPage() {
   const { vertical } = useApp();
+  const { t } = useUi();
   const [filters, setFilters] = useState<NetworkMapFiltersState>(defaultNetworkFilters);
   const [selected, setSelected] = useState<NetworkEntity | null>(null);
 
@@ -33,6 +36,7 @@ export default function NetworkMapPage() {
     return filterNetworkEntities(networkEntities, {
       role: filters.role,
       country: filters.country,
+      region: filters.region,
       vertical: verticalFilter,
       activeOnly: filters.activeOnly,
       category: filters.category,
@@ -52,34 +56,70 @@ export default function NetworkMapPage() {
     };
   }, [filtered]);
 
+  const sidePanel =
+    filters.intelligenceMode ? (
+      <NetworkIntelligencePanel regions={networkIntelligence} />
+    ) : filters.coverageView !== "none" ? (
+      <CountryPerformancePanel
+        coverageMode={
+          filters.coverageView === "performance"
+            ? "all"
+            : filters.coverageView
+        }
+      />
+    ) : (
+      <div className="surface-card p-5 space-y-4 h-fit">
+        <p className="text-sm font-semibold text-slate-900">{t("networkMap.partnerOverview")}</p>
+        <div className="space-y-2 max-h-[480px] overflow-y-auto">
+          {filtered.slice(0, 12).map((e) => (
+            <button
+              key={e.id}
+              type="button"
+              onClick={() => setSelected(e)}
+              className="w-full text-left rounded-lg border border-slate-200 px-3 py-2.5 hover:bg-slate-50 transition-colors"
+            >
+              <p className="text-sm font-medium text-slate-900">{e.name}</p>
+              <p className="text-xs text-slate-500">
+                {e.role} · {e.city}, {e.country}
+              </p>
+            </button>
+          ))}
+        </div>
+        <div className="pt-3 border-t border-slate-100 flex items-center gap-2 text-xs text-slate-500">
+          <CreditCard className="size-3.5" />
+          {t("networkMap.financePartners")}: {filtered.filter((e) => e.role === "finance").length}
+        </div>
+      </div>
+    );
+
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Network Map"
-        description="Live view of suppliers, dealers, customers, service partners, finance partners, and showrooms across Europe."
+        titleKey="networkMap.title"
+        descriptionKey="networkMap.subtitle"
       />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
-          label="Suppliers"
+          label={t("networkMap.suppliers")}
           value={counts.suppliers}
           icon={Building2}
           accent="blue"
         />
         <MetricCard
-          label="Dealers"
+          label={t("networkMap.dealers")}
           value={counts.dealers}
           icon={Users}
           accent="green"
         />
         <MetricCard
-          label="Customers"
+          label={t("networkMap.customers")}
           value={counts.customers}
           icon={Users}
           accent="slate"
         />
         <MetricCard
-          label="Service partners"
+          label={t("networkMap.servicePartners")}
           value={counts.service}
           icon={Wrench}
           accent="violet"
@@ -96,43 +136,20 @@ export default function NetworkMapPage() {
             selectedId={selected?.id}
             onSelect={setSelected}
             showClusters={filters.showClusters}
-            showHeatmap={filters.showHeatmap}
-            showTerritories={filters.showTerritories}
+            showHeatmap={filters.showHeatmap || filters.coverageView !== "none"}
+            showTerritories={filters.showTerritories || filters.showPartnerTerritories}
             showRoutes={filters.showRoutes}
             zoom={zoom}
           />
           <p className="text-xs text-slate-500">
-            {filtered.length} network entities · {networkRoutes.length} active routes ·{" "}
-            {vertical === "medical" ? "Medical" : "Robotics"} vertical
+            {filtered.length} {t("networkMap.entities")} · {networkRoutes.length}{" "}
+            {t("networkMap.routes")} ·{" "}
+            {vertical === "medical" ? t("vertical.medical") : t("vertical.robotics")}
+            {filters.region !== "all" && ` · ${t(`regions.${filters.region}`)}`}
           </p>
         </div>
 
-        {filters.intelligenceMode ? (
-          <NetworkIntelligencePanel regions={networkIntelligence} />
-        ) : (
-          <div className="surface-card p-5 space-y-4 h-fit">
-            <p className="text-sm font-semibold text-slate-900">Partner overview</p>
-            <div className="space-y-2 max-h-[480px] overflow-y-auto">
-              {filtered.slice(0, 12).map((e) => (
-                <button
-                  key={e.id}
-                  type="button"
-                  onClick={() => setSelected(e)}
-                  className="w-full text-left rounded-lg border border-slate-200 px-3 py-2.5 hover:bg-slate-50 transition-colors"
-                >
-                  <p className="text-sm font-medium text-slate-900">{e.name}</p>
-                  <p className="text-xs text-slate-500">
-                    {e.role} · {e.city}, {e.country}
-                  </p>
-                </button>
-              ))}
-            </div>
-            <div className="pt-3 border-t border-slate-100 flex items-center gap-2 text-xs text-slate-500">
-              <CreditCard className="size-3.5" />
-              Finance partners: {filtered.filter((e) => e.role === "finance").length}
-            </div>
-          </div>
-        )}
+        {sidePanel}
       </div>
 
       <NetworkEntityDrawer

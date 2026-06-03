@@ -9,6 +9,9 @@ import { StatusBadge } from "@/components/emre/status-badge";
 import { useApp } from "@/context/app-context";
 import { servicepoints } from "@/data/servicepoints";
 import { COUNTRIES } from "@/data/constants";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { useUi } from "@/lib/ui-i18n";
 import type { Servicepoint } from "@/data/types";
 import {
   Sheet,
@@ -17,11 +20,10 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 
 export default function ServiceNetworkPage() {
   const { vertical } = useApp();
+  const { t, countryName } = useUi();
   const [selected, setSelected] = useState<Servicepoint | null>(null);
   const [countryFilter, setCountryFilter] = useState<string>("all");
   const points = servicepoints.filter(
@@ -33,32 +35,28 @@ export default function ServiceNetworkPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Service Network"
-        description={
-          vertical === "medical"
-            ? "Service partners, compliance contacts, and emergency supply coverage across Europe."
-            : "Installation partners, spare parts hubs, and fleet service centers for robotics deployments."
-        }
+        titleKey="service.title"
+        descriptionKey="service.subtitle"
         action={
           <Link href="/network-map">
-            <Button variant="outline">Open Network Map</Button>
+            <Button variant="outline">{t("nav.networkMap")}</Button>
           </Link>
         }
       />
 
       <div className="grid lg:grid-cols-4 gap-6">
         <div className="surface-card rounded-xl p-5 space-y-4 h-fit">
-          <p className="text-sm font-semibold text-slate-900">Filters</p>
-          <div className="space-y-2">
-            <Label className="text-xs text-slate-500">Country</Label>
-            {["all", ...COUNTRIES.slice(0, 6)].map((c) => (
+          <p className="text-sm font-semibold text-slate-900">{t("common.filters")}</p>
+          <div className="space-y-2 max-h-80 overflow-y-auto">
+            <Label className="text-xs text-slate-500">{t("marketplace.country")}</Label>
+            {["all", ...COUNTRIES].map((c) => (
               <div key={c} className="flex items-center gap-2">
                 <Checkbox
                   checked={countryFilter === c}
                   onCheckedChange={() => setCountryFilter(c)}
                 />
                 <Label className="text-xs cursor-pointer text-slate-700">
-                  {c === "all" ? "All Countries" : c}
+                  {c === "all" ? t("networkMap.allCountries") : countryName(c as typeof COUNTRIES[number])}
                 </Label>
               </div>
             ))}

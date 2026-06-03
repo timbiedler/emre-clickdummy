@@ -27,6 +27,8 @@ import { t, label } from "@/lib/i18n";
 import type { Product } from "@/data/types";
 import { suppliers } from "@/data/suppliers";
 import Link from "next/link";
+import { getProductIndustries, getIndustryUseCases } from "@/lib/industry-relevance";
+import { RelevanceBadge } from "./relevance-badge";
 
 export function ProductDetailDrawer({
   product,
@@ -39,10 +41,12 @@ export function ProductDetailDrawer({
   onClose: () => void;
   onViewSupplier?: (id: string) => void;
 }) {
-  const { language, toggleCompare, compareList, openConsultation } = useApp();
+  const { language, toggleCompare, compareList, openConsultation, industry } = useApp();
   if (!product) return null;
 
   const supplier = suppliers.find((s) => s.id === product.supplierId);
+  const { primary, secondary } = getProductIndustries(product);
+  const useCases = getIndustryUseCases(product);
 
   return (
     <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
@@ -81,6 +85,35 @@ export function ProductDetailDrawer({
             />
 
             <ProductFinanceSection product={product} />
+
+            <div>
+              <p className="text-xs font-medium text-muted-foreground uppercase mb-2">
+                Recommended industries & channels
+              </p>
+              <div className="flex flex-wrap gap-1 mb-2">
+                {primary.map((ind) => (
+                  <RelevanceBadge
+                    key={ind}
+                    label={ind === industry ? `Recommended for ${ind}` : ind}
+                    type={ind === industry ? "recommended" : "facility"}
+                  />
+                ))}
+                {secondary.slice(0, 2).map((ind) => (
+                  <StatusBadge key={ind}>{ind}</StatusBadge>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-1">
+                {product.salesChannels.map((c) => (
+                  <StatusBadge key={c} variant="info">{c}</StatusBadge>
+                ))}
+              </div>
+              <ul className="mt-2 text-xs text-slate-500 list-disc pl-4 space-y-0.5">
+                {useCases.map((u) => (
+                  <li key={u}>{u}</li>
+                ))}
+              </ul>
+            </div>
+
             <ProductAiAdvisorSection product={product} />
 
             <div>
@@ -146,7 +179,7 @@ export function ProductDetailDrawer({
               </div>
             )}
 
-            <Separator className="bg-white/10" />
+            <Separator className="bg-slate-200" />
 
             <div className="grid grid-cols-2 gap-2">
               <Link href="/rfq">

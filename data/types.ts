@@ -1,5 +1,137 @@
 export type Vertical = "medical" | "robotics";
 
+export type UserRole =
+  | "admin"
+  | "customer"
+  | "supplier"
+  | "dealer"
+  | "sales_partner"
+  | "service_partner"
+  | "finance_partner"
+  | "agency"
+  | "logistics";
+
+export type Industry =
+  | "Hospital / Clinic"
+  | "Care Home / Care Group"
+  | "Laboratory"
+  | "Public Sector"
+  | "Municipality"
+  | "Distributor / Wholesaler"
+  | "Doctor Practice"
+  | "Hospitality"
+  | "Cleaning Company"
+  | "Facility Management"
+  | "Car Dealership"
+  | "Agriculture"
+  | "Security Company"
+  | "Retail"
+  | "Logistics"
+  | "Industrial Site"
+  | "Education / Campus"
+  | "Real Estate / Property Management";
+
+export type PermissionAction = "view" | "create" | "edit" | "approve" | "export" | "admin";
+
+export interface PlatformUser {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  industry: Industry;
+  secondaryIndustries: Industry[];
+  companyId: string;
+  companyName: string;
+  country: Country;
+  region: string;
+  status: "active" | "invited" | "suspended";
+  lastLogin: string;
+}
+
+export interface Company {
+  id: string;
+  name: string;
+  role: UserRole;
+  primaryIndustry: Industry;
+  secondaryIndustries: Industry[];
+  country: Country;
+  region: string;
+  companySize: "1-50" | "51-200" | "201-1000" | "1000+";
+  preferredCategories: string[];
+  financeStatus: "pre_approved" | "under_review" | "documents_missing" | "not_started";
+  serviceCoverageNeeds: string[];
+  buyingBehavior: string;
+  activeRfqs: number;
+  openOrders: number;
+}
+
+export interface SalesPartner {
+  id: string;
+  name: string;
+  type: string;
+  countries: Country[];
+  regions: string[];
+  industries: Industry[];
+  categories: string[];
+  salesChannels: string[];
+  showroomAvailable: boolean;
+  serviceCapabilities: string[];
+  financeReadiness: "ready" | "in_progress" | "not_started";
+  contractStatus: "active" | "pending" | "draft";
+  approvalStatus: "approved" | "review" | "rejected" | "pending";
+  assignedLeads: number;
+  pipelineValue: number;
+  commissionModel: string;
+  performanceScore: number;
+}
+
+export interface SalesPartnerApplication {
+  id: string;
+  companyName: string;
+  contactName: string;
+  email: string;
+  countries: Country[];
+  industries: Industry[];
+  categories: string[];
+  salesChannels: string[];
+  showroomAvailable: boolean;
+  serviceCapabilities: string[];
+  financeReadiness: string;
+  documentStatus: "complete" | "partial" | "missing";
+  contractStatus: "unsigned" | "sent" | "signed";
+  approvalStatus: "pending" | "review" | "approved" | "rejected";
+  submittedAt: string;
+  step: number;
+}
+
+export interface IndustryRfqTemplate {
+  id: string;
+  industry: Industry;
+  title: string;
+  description: string;
+  categories: string[];
+  vertical: Vertical | "both";
+}
+
+export interface CommissionModel {
+  id: string;
+  name: string;
+  type: string;
+  rate: string;
+  categories: string[];
+  regions: string[];
+}
+
+export interface SalesTerritory {
+  id: string;
+  partnerId: string;
+  partnerName: string;
+  country: Country;
+  region: string;
+  industries: Industry[];
+  categories: string[];
+}
+
 export type Language =
   | "en"
   | "de"
@@ -8,20 +140,36 @@ export type Language =
   | "it"
   | "pl"
   | "nl"
+  | "sv"
+  | "fi"
+  | "no"
+  | "et"
+  | "lv"
+  | "lt"
   | "zh";
 
 export type Country =
   | "Germany"
   | "Austria"
   | "Switzerland"
+  | "Netherlands"
+  | "Belgium"
   | "France"
   | "Spain"
   | "Italy"
   | "Poland"
-  | "Netherlands"
-  | "Belgium"
+  | "Czech Republic"
+  | "Slovakia"
+  | "Hungary"
+  | "Romania"
+  | "Bulgaria"
+  | "Norway"
+  | "Finland"
+  | "Sweden"
   | "Denmark"
-  | "Sweden";
+  | "Estonia"
+  | "Latvia"
+  | "Lithuania";
 
 export type TranslationStatus = "verified" | "pending" | "auto" | "missing";
 
@@ -34,6 +182,12 @@ export interface LocalizedText {
   pl: string;
   nl: string;
   zh: string;
+  sv?: string;
+  fi?: string;
+  no?: string;
+  et?: string;
+  lv?: string;
+  lt?: string;
 }
 
 export interface Product {

@@ -4,18 +4,20 @@ import { Stethoscope, Bot } from "lucide-react";
 import { useApp } from "@/context/app-context";
 import { cn } from "@/lib/utils";
 import type { Vertical } from "@/data/types";
+import { useUi } from "@/lib/ui-i18n";
 
 export function VerticalSwitcher({ className }: { className?: string }) {
   const { vertical, setVertical } = useApp();
+  const { t } = useUi();
 
-  const options: { id: Vertical; label: string; icon: typeof Stethoscope }[] = [
-    { id: "medical", label: "Medical", icon: Stethoscope },
-    { id: "robotics", label: "Robotics", icon: Bot },
+  const options: { id: Vertical; labelKey: string; icon: typeof Stethoscope }[] = [
+    { id: "medical", labelKey: "vertical.medical", icon: Stethoscope },
+    { id: "robotics", labelKey: "vertical.robotics", icon: Bot },
   ];
 
   return (
     <div className={cn("inline-flex rounded-lg border border-slate-200 bg-white p-1 gap-1", className)}>
-      {options.map(({ id, label, icon: Icon }) => (
+      {options.map(({ id, labelKey, icon: Icon }) => (
         <button
           key={id}
           type="button"
@@ -28,7 +30,7 @@ export function VerticalSwitcher({ className }: { className?: string }) {
           )}
         >
           <Icon className="size-4" />
-          {label}
+          {t(labelKey)}
         </button>
       ))}
     </div>
