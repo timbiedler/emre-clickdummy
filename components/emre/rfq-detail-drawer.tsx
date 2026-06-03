@@ -20,6 +20,7 @@ import { t as localizedText } from "@/lib/i18n";
 import { formatCurrency, formatDate } from "@/lib/format";
 import type { RFQ } from "@/data/types";
 import { offers } from "@/data/offers";
+import { TrustStrip } from "@/components/emre/trust-strip";
 import { buyers } from "@/data/buyers";
 import { suppliers } from "@/data/suppliers";
 
@@ -32,7 +33,7 @@ export function RFQDetailDrawer({
   open: boolean;
   onClose: () => void;
 }) {
-  const { language, openConsultation } = useApp();
+  const { language, openConsultation, showToast } = useApp();
   const { t } = useUi();
   const { openCreateGapDrawer } = useSourcing();
   if (!rfq) return null;
@@ -74,7 +75,12 @@ export function RFQDetailDrawer({
               templates, and flagged financing options for this request.
             </p>
             <div className="flex flex-wrap gap-2 pt-1">
-              <Button size="sm" variant="outline" className="gap-1">
+              <Button
+                size="sm"
+                variant="outline"
+                className="gap-1"
+                onClick={() => showToast("AI match report generated (demo)")}
+              >
                 <Sparkles className="size-3" /> AI Match Report
               </Button>
               <Button
@@ -212,16 +218,28 @@ export function RFQDetailDrawer({
             </div>
           )}
 
+          <TrustStrip compact />
+
           <div className="surface-card rounded-lg p-4 space-y-2">
             <p className="text-xs font-medium text-blue-600 uppercase">{t("rfq.detail.nextActions")}</p>
             <div className="flex flex-wrap gap-2">
-              <Button className="bg-blue-600 hover:bg-blue-700">Accept Best Offer</Button>
-              <Button variant="outline">Send Message</Button>
-              <Button variant="outline">{t("rfq.detail.resendRfq")}</Button>
+              <Button className="bg-blue-600 hover:bg-blue-700" onClick={() => showToast("Best offer accepted (demo)")}>
+                Accept Best Offer
+              </Button>
+              <Button variant="outline" onClick={() => showToast("Message sent to suppliers (demo)")}>
+                Send Message
+              </Button>
+              <Button variant="outline" onClick={() => showToast("RFQ resent to matched suppliers")}>
+                {t("rfq.detail.resendRfq")}
+              </Button>
               {rfq.status === "draft" && (
-                <Button variant="outline">{t("rfq.detail.editDraft")}</Button>
+                <Button variant="outline" onClick={() => showToast("Draft opened for editing")}>
+                  {t("rfq.detail.editDraft")}
+                </Button>
               )}
-              <Button variant="outline">Generate Multilingual Offer</Button>
+              <Button variant="outline" onClick={() => showToast("Multilingual offer pack generated")}>
+                Generate Multilingual Offer
+              </Button>
               <Link href="/finance">
                 <Button variant="outline" className="gap-1">
                   <CreditCard className="size-3" /> Compare Leasing

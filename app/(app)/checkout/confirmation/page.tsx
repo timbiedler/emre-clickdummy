@@ -7,6 +7,8 @@ import { CheckCircle2, FileText, Upload } from "lucide-react";
 import { PageHeader } from "@/components/emre/app-shell";
 import { StatusBadge } from "@/components/emre/status-badge";
 import { useCommerce } from "@/context/commerce-context";
+import { useApp } from "@/context/app-context";
+import { TrustStrip } from "@/components/emre/trust-strip";
 import { useCheckoutT } from "@/lib/checkout-labels";
 import { formatCurrency } from "@/lib/format";
 import { Button } from "@/components/ui/button";
@@ -18,6 +20,7 @@ function ConfirmationContent() {
   const ref = searchParams.get("ref");
   const orderId = searchParams.get("order");
   const { placedOrders, dataRoomUploadProgress, simulateDataRoomUpload, resetCheckoutDraft } = useCommerce();
+  const { showToast } = useApp();
 
   const meta = placedOrders.find(
     (m) => m.confirmationNumber === ref || m.order.id === orderId
@@ -74,10 +77,19 @@ function ConfirmationContent() {
         </div>
       )}
 
+      <TrustStrip compact />
+
       <div className="flex flex-wrap gap-2">
         <Button asChild className="bg-blue-600"><Link href={`/orders?orderId=${order.id}`}>{ct("checkout.viewOrder")}</Link></Button>
-        <Button variant="outline">{ct("checkout.downloadConfirmation")}</Button>
-        <Button variant="outline">{ct("checkout.openTracking")}</Button>
+        <Button variant="outline" onClick={() => showToast("Confirmation PDF downloaded (demo)")}>
+          {ct("checkout.downloadConfirmation")}
+        </Button>
+        <Button
+          variant="outline"
+          onClick={() => showToast(`Tracking opened: ${order.trackingNumber}`)}
+        >
+          {ct("checkout.openTracking")}
+        </Button>
         <Button variant="outline" asChild><Link href="/data-room">{ct("checkout.uploadDocuments")}</Link></Button>
         <Button variant="outline" asChild onClick={() => resetCheckoutDraft()}><Link href="/marketplace">{ct("checkout.backToMarketplace")}</Link></Button>
       </div>

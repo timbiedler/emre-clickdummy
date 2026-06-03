@@ -29,7 +29,7 @@ export default function MagazinePage() {
 
 function MagazineContent() {
   const searchParams = useSearchParams();
-  const { vertical, language } = useApp();
+  const { vertical, language, followTopic, followedTopics } = useApp();
   const { openCreateRfq } = useRfq();
   const [selected, setSelected] = useState<MagazineItem | null>(null);
   const [videoOpen, setVideoOpen] = useState(false);
@@ -75,7 +75,14 @@ function MagazineContent() {
               <p className="text-xs text-muted-foreground mt-2">
                 {activeArticle.author} · {activeArticle.publishedAt} · {activeArticle.readTime}
               </p>
-              <div className="flex gap-2 mt-4">
+              <div className="flex flex-wrap gap-2 mt-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => followTopic(activeArticle.type)}
+                >
+                  {followedTopics.includes(activeArticle.type) ? "Following" : "Follow Topic"}
+                </Button>
                 <Link href="/marketplace">
                   <Button variant="outline" className="gap-2">
                     Browse Marketplace <ArrowRight className="size-3" />

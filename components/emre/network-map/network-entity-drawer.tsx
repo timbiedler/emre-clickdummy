@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Sheet,
   SheetContent,
@@ -38,7 +40,15 @@ export function NetworkEntityDrawer({
   open: boolean;
   onClose: () => void;
 }) {
+  const router = useRouter();
   if (!entity) return null;
+
+  const profileHref =
+    entity.role === "supplier"
+      ? `/marketplace?supplierId=${entity.id}`
+      : entity.role === "service"
+        ? "/service-network"
+        : `/network-map`;
 
   return (
     <Sheet open={open} onOpenChange={onClose}>
@@ -109,8 +119,19 @@ export function NetworkEntityDrawer({
             <p className="text-sm text-slate-900">{entity.products} SKUs</p>
           </div>
 
-          <Button className="w-full bg-blue-600 hover:bg-blue-700">
-            Open partner profile
+          <Button
+            className="w-full bg-blue-600 hover:bg-blue-700"
+            onClick={() => {
+              router.push(profileHref);
+              onClose();
+            }}
+          >
+            Open network detail
+          </Button>
+          <Button variant="outline" className="w-full" asChild>
+            <Link href="/rfq" onClick={onClose}>
+              Create RFQ
+            </Link>
           </Button>
 
           <div

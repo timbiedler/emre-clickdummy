@@ -25,6 +25,7 @@ import { StatusBadge } from "@/components/emre/status-badge";
 import { TranslationBadge } from "@/components/emre/translation-badge";
 import { ProductImagePlaceholder } from "@/components/emre/product-image-placeholder";
 import { ProductCard } from "@/components/emre/product-card";
+import { TrustStrip } from "@/components/emre/trust-strip";
 import { RelevanceBadge } from "@/components/emre/relevance-badge";
 import { useApp } from "@/context/app-context";
 import { useCommerce } from "@/context/commerce-context";
@@ -51,7 +52,7 @@ export function ProductDetailView({
   const router = useRouter();
   const ct = useCheckoutT();
   const { t: uiT } = useUi();
-  const { language, toggleCompare, compareList, openConsultation, industry } = useApp();
+  const { language, toggleCompare, compareList, openConsultation, industry, showToast, setProductAlert, alertProductIds } = useApp();
   const { addToCart, setCheckoutDraft, setCheckoutStep, openProductDetail } = useCommerce();
   const { openCreateRfq } = useRfq();
   const [qty, setQty] = useState(1);
@@ -91,7 +92,7 @@ export function ProductDetailView({
     <div className="space-y-5">
       <div className="relative">
         <ProductImagePlaceholder product={product} className="h-48 sm:h-56" size="lg" />
-        <Button size="sm" variant="secondary" className="absolute bottom-3 right-3 gap-2 surface-card">
+        <Button size="sm" variant="secondary" className="absolute bottom-3 right-3 gap-2 surface-card" onClick={() => showToast("Video preview opened (mock)")}>
           <Play className="size-4" /> Video Preview
         </Button>
       </div>
@@ -127,6 +128,8 @@ export function ProductDetailView({
           </p>
         )}
       </div>
+
+      <TrustStrip />
 
       <div className="surface-card rounded-xl p-4 grid sm:grid-cols-2 gap-4 border border-slate-200">
         <div className="space-y-3">
@@ -298,6 +301,8 @@ export function ProductDetailView({
         </TabsContent>
       </Tabs>
 
+      <TrustStrip compact />
+
       <Separator />
 
       <div className="grid grid-cols-2 gap-2">
@@ -324,8 +329,13 @@ export function ProductDetailView({
         <Button variant="outline" className="gap-2" onClick={() => openConsultation(product.id)}>
           <Sparkles className="size-4" />{ct("checkout.askAi")}
         </Button>
-        <Button variant="outline" className="gap-2 col-span-2">
-          <Bell className="size-4" />{ct("checkout.setAlert")}
+        <Button
+          variant="outline"
+          className="gap-2 col-span-2"
+          onClick={() => setProductAlert(product.id)}
+        >
+          <Bell className="size-4" />
+          {alertProductIds.includes(product.id) ? "Alert active" : ct("checkout.setAlert")}
         </Button>
       </div>
     </div>

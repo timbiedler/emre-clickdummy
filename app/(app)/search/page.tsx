@@ -9,6 +9,7 @@ import { platformConnectors } from "@/data/connectors";
 import { INDUSTRIES } from "@/data/industries";
 import { COUNTRIES } from "@/data/constants";
 import { useApp } from "@/context/app-context";
+import { useDemo } from "@/context/demo-context";
 import { useGlobalSearch } from "@/context/global-search-context";
 import {
   groupSearchResults,
@@ -52,6 +53,7 @@ function SearchPageContent() {
   const searchParams = useSearchParams();
   const { t, countryName } = useUi();
   const { role, language, vertical, industry, includeAllProducts } = useApp();
+  const { generateApiKey } = useDemo();
   const { navigateToResult, openSearch } = useGlobalSearch();
   const pathname = "/search";
 
@@ -285,7 +287,11 @@ function SearchPageContent() {
                   </div>
                 )}
               </dl>
-              <Button className="mt-6 w-full bg-blue-600 hover:bg-blue-700" type="button">
+              <Button
+                className="mt-6 w-full bg-blue-600 hover:bg-blue-700"
+                type="button"
+                onClick={() => generateApiKey()}
+              >
                 {t("globalSearch.action.configure")}
               </Button>
             </>

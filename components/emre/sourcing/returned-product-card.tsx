@@ -1,11 +1,14 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/emre/status-badge";
 import type { ReturnedProduct } from "@/data/sourcing-types";
 import { useUi } from "@/lib/ui-i18n";
+import { useApp } from "@/context/app-context";
 import { useRfq } from "@/context/rfq-context";
-import { Rocket } from "lucide-react";
+import { useSourcing } from "@/context/sourcing-context";
 
 export function ReturnedProductCard({
   product,
@@ -16,6 +19,9 @@ export function ReturnedProductCard({
 }) {
   const { t } = useUi();
   const { openCreateRfq } = useRfq();
+  const { showToast } = useApp();
+  const { notifyInterestedBuyers } = useSourcing();
+  const router = useRouter();
 
   return (
     <div className="surface-card rounded-xl p-4 space-y-3">
@@ -48,10 +54,26 @@ export function ReturnedProductCard({
         <Button size="sm" className="gap-1 bg-blue-600 hover:bg-blue-700 h-8" onClick={onPublish}>
           <Rocket className="size-3" /> {t("sourcing.publishMarketplace")}
         </Button>
-        <Button size="sm" variant="outline" className="h-8">
+        <Button
+          size="sm"
+          variant="outline"
+          className="h-8"
+          onClick={() => {
+            notifyInterestedBuyers(product.id);
+            showToast(t("sourcing.notifyBuyers"));
+          }}
+        >
           {t("sourcing.notifyBuyers")}
         </Button>
-        <Button size="sm" variant="outline" className="h-8">
+        <Button
+          size="sm"
+          variant="outline"
+          className="h-8"
+          onClick={() => {
+            showToast("Campaign draft created");
+            router.push("/admin/growth");
+          }}
+        >
           {t("sourcing.createCampaign")}
         </Button>
         <Button

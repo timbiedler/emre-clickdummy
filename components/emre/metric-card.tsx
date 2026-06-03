@@ -36,7 +36,7 @@ export function MetricCard({
     <div
       onClick={onClick}
       className={cn(
-        "surface-card rounded-xl p-5",
+        "surface-card rounded-xl p-5 min-h-[120px] flex flex-col",
         accentColors[accent],
         onClick && "cursor-pointer hover:border-blue-200 transition-colors"
       )}
@@ -45,7 +45,7 @@ export function MetricCard({
         <p className="text-xs font-medium text-slate-500">{label}</p>
         {Icon && <Icon className={cn("size-4", iconColors[accent])} />}
       </div>
-      <p className="mt-2 text-2xl font-semibold text-slate-900 tracking-tight">{value}</p>
+      <p className="mt-auto pt-2 text-2xl font-semibold text-slate-900 tracking-tight">{value}</p>
       {change !== undefined && (
         <div
           className={cn(

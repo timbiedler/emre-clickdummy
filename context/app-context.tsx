@@ -47,6 +47,20 @@ interface AppContextValue {
   includeAllProducts: boolean;
   setIncludeAllProducts: (v: boolean) => void;
   currentUserName: string;
+  toast: string | null;
+  showToast: (message: string) => void;
+  savedProductIds: string[];
+  toggleSaveProduct: (productId: string) => void;
+  alertProductIds: string[];
+  setProductAlert: (productId: string) => void;
+  followedTopics: string[];
+  followTopic: (topic: string) => void;
+  applyDemoSetup: (opts: {
+    role?: UserRole;
+    industry?: Industry;
+    vertical?: Vertical;
+    country?: Country;
+  }) => void;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -67,7 +81,50 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [workspaceReady, setWorkspaceReady] = useState(false);
   const [showRelevantFirst, setShowRelevantFirst] = useState(true);
   const [includeAllProducts, setIncludeAllProducts] = useState(true);
+  const [toast, setToast] = useState<string | null>(null);
+  const [savedProductIds, setSavedProductIds] = useState<string[]>([]);
+  const [alertProductIds, setAlertProductIds] = useState<string[]>([]);
+  const [followedTopics, setFollowedTopics] = useState<string[]>([]);
   const currentUserName = "Anna Weber";
+
+  const showToast = useCallback((message: string) => {
+    setToast(message);
+    window.setTimeout(() => setToast(null), 3500);
+  }, []);
+
+  const toggleSaveProduct = useCallback((productId: string) => {
+    setSavedProductIds((prev) => {
+      const saved = prev.includes(productId);
+      window.setTimeout(
+        () => showToast(saved ? "Product removed from saved list" : "Product saved to your list"),
+        0
+      );
+      return saved ? prev.filter((id) => id !== productId) : [...prev, productId];
+    });
+  }, [showToast]);
+
+  const setProductAlert = useCallback((productId: string) => {
+    setAlertProductIds((prev) =>
+      prev.includes(productId) ? prev : [...prev, productId]
+    );
+    showToast("Price alert set — you will be notified of changes");
+  }, [showToast]);
+
+  const followTopic = useCallback((topic: string) => {
+    setFollowedTopics((prev) => (prev.includes(topic) ? prev : [...prev, topic]));
+    showToast(`Following topic: ${topic}`);
+  }, [showToast]);
+
+  const applyDemoSetup = useCallback(
+    (opts: { role?: UserRole; industry?: Industry; vertical?: Vertical; country?: Country }) => {
+      if (opts.role) setRole(opts.role);
+      if (opts.industry) setIndustry(opts.industry);
+      if (opts.vertical) setVertical(opts.vertical);
+      if (opts.country) setWorkspaceCountry(opts.country);
+      setWorkspaceReady(true);
+    },
+    []
+  );
 
   const openConsultation = useCallback((productId?: string) => {
     setConsultationProductId(productId ?? null);
@@ -136,6 +193,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
         includeAllProducts,
         setIncludeAllProducts,
         currentUserName,
+        toast,
+        showToast,
+        savedProductIds,
+        toggleSaveProduct,
+        alertProductIds,
+        setProductAlert,
+        followedTopics,
+        followTopic,
+        applyDemoSetup,
       }}
     >
       {children}

@@ -8,6 +8,7 @@ import {
   FinanceReadinessScore,
 } from "@/components/emre/data-room-upload-card";
 import { TranslationExamplesPanel } from "@/components/emre/translation-examples-panel";
+import { TrustStrip } from "@/components/emre/trust-strip";
 import { StatusBadge } from "@/components/emre/status-badge";
 import { useApp } from "@/context/app-context";
 import { dataRoomDocuments } from "@/data/data-room";
@@ -21,7 +22,7 @@ import {
 } from "@/components/ui/sheet";
 
 export default function DataRoomPage() {
-  const { vertical } = useApp();
+  const { vertical, showToast } = useApp();
   const [selected, setSelected] = useState<DataRoomDocument | null>(null);
   const docs = dataRoomDocuments.filter((d) => d.vertical === vertical);
   const verified = docs.filter((d) => d.status === "verified").length;
@@ -33,11 +34,16 @@ export default function DataRoomPage() {
         titleKey="nav.dataRoom"
         descriptionKey="finance.dataRoomReadiness"
         action={
-          <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
+          <Button
+            className="gap-2 bg-blue-600 hover:bg-blue-700"
+            onClick={() => showToast("Document uploaded securely — verification queued (mock)")}
+          >
             <Upload className="size-4" /> Upload Document
           </Button>
         }
       />
+
+      <TrustStrip />
 
       <div className="grid lg:grid-cols-3 gap-6">
         <FinanceReadinessScore score={score} />
@@ -61,7 +67,12 @@ export default function DataRoomPage() {
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {docs.map((doc) => (
-          <DataRoomUploadCard key={doc.id} doc={doc} onClick={() => setSelected(doc)} />
+          <DataRoomUploadCard
+            key={doc.id}
+            doc={doc}
+            onClick={() => setSelected(doc)}
+            onUpload={() => showToast("Document uploaded securely — verification queued (mock)")}
+          />
         ))}
       </div>
 

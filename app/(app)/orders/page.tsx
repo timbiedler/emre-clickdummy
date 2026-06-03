@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { RotateCcw, Wrench } from "lucide-react";
 import { PageHeader } from "@/components/emre/app-shell";
 import { OrderTrackingTimeline } from "@/components/emre/order-tracking-timeline";
+import { TrustStrip } from "@/components/emre/trust-strip";
 import { StatusBadge } from "@/components/emre/status-badge";
 import { useApp } from "@/context/app-context";
 import { useCommerce } from "@/context/commerce-context";
@@ -38,7 +39,7 @@ export default function OrdersPage() {
 
 function OrdersPageContent() {
   const searchParams = useSearchParams();
-  const { vertical } = useApp();
+  const { vertical, showToast } = useApp();
   const { placedOrders } = useCommerce();
   const [selected, setSelected] = useState<Order | null>(null);
   const allOrders = useMemo(
@@ -59,6 +60,8 @@ function OrdersPageContent() {
         title="Orders & Tracking"
         description="Order management, carrier tracking, delivery status, and reorder workflows."
       />
+
+      <TrustStrip />
 
       <div className="surface-card rounded-xl overflow-hidden">
         <table className="w-full text-sm">
@@ -124,11 +127,25 @@ function OrdersPageContent() {
                   <Link href="/finance">
                     <Button size="sm" variant="outline">View Invoice</Button>
                   </Link>
-                  <Button size="sm" variant="outline" className="gap-1">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="gap-1"
+                    onClick={() => showToast("Reorder added to cart (demo)")}
+                  >
                     <RotateCcw className="size-3" /> Reorder
                   </Button>
-                  <Button size="sm" variant="outline" className="gap-1">
-                    <Wrench className="size-3" /> Return / Service
+                  <Link href="/service-network">
+                    <Button size="sm" variant="outline" className="gap-1">
+                      <Wrench className="size-3" /> Return / Service
+                    </Button>
+                  </Link>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => showToast(`Tracking: ${activeOrder.trackingNumber}`)}
+                  >
+                    Open Tracking
                   </Button>
                 </div>
               </div>

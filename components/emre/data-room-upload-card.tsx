@@ -16,9 +16,11 @@ const statusConfig = {
 export function DataRoomUploadCard({
   doc,
   onClick,
+  onUpload,
 }: {
   doc: DataRoomDocument;
   onClick: () => void;
+  onUpload?: () => void;
 }) {
   const config = statusConfig[doc.status];
   const Icon = config.icon;
@@ -41,7 +43,15 @@ export function DataRoomUploadCard({
         <StatusBadge variant={config.variant}>{config.label}</StatusBadge>
       </div>
       {doc.status === "missing" && doc.required && (
-        <Button size="sm" variant="outline" className="w-full gap-2">
+        <Button
+          size="sm"
+          variant="outline"
+          className="w-full gap-2"
+          onClick={(e) => {
+            e.stopPropagation();
+            onUpload?.();
+          }}
+        >
           <Upload className="size-4" /> Upload Document
         </Button>
       )}

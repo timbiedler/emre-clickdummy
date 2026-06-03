@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/emre/app-shell";
 import { StatusBadge } from "@/components/emre/status-badge";
+import { TrustStrip } from "@/components/emre/trust-strip";
 import { useApp } from "@/context/app-context";
 import { useCommerce } from "@/context/commerce-context";
 import { useRfq } from "@/context/rfq-context";
@@ -101,6 +102,8 @@ export default function CheckoutPage() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <PageHeader title={ct("checkout.title")} description={billing.company} />
+
+      <TrustStrip />
 
       <div className="flex gap-2 flex-wrap">
         {stepLabels.map((label, i) => (

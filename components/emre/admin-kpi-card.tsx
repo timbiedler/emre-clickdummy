@@ -12,7 +12,7 @@ export function AdminKpiCard({
   onKpiClick?: (label: string) => void;
 }) {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 [&_.surface-card]:min-h-[120px]">
       {metrics.kpis.map((kpi, i) => (
         <MetricCard
           key={kpi.label}
@@ -40,7 +40,7 @@ export function AdminMetricGrid({ metrics }: { metrics: AdminMetrics }) {
   ];
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 [&_.surface-card]:min-h-[120px]">
       {items.map((item, i) => (
         <motion.div
           key={item.label}

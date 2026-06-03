@@ -34,6 +34,7 @@ export interface RoleNavItem {
 export const ROLE_NAVIGATION: Record<UserRole, RoleNavItem[]> = {
   admin: [
     { href: "/", labelKey: "nav.commandCenter", icon: "LayoutDashboard" },
+    { href: "/demo", labelKey: "nav.demo", icon: "Sparkles" },
     { href: "/marketplace", labelKey: "nav.marketplace", icon: "Store" },
     { href: "/rfq", labelKey: "nav.rfqCenter", icon: "FileText" },
     { href: "/offers", labelKey: "nav.offers", icon: "ClipboardList" },
@@ -46,9 +47,8 @@ export const ROLE_NAVIGATION: Record<UserRole, RoleNavItem[]> = {
     { href: "/network-map", labelKey: "nav.networkMap", icon: "Globe" },
     { href: "/admin", labelKey: "nav.adminKpis", icon: "Shield" },
     { href: "/admin/sourcing-desk", labelKey: "nav.sourcingDesk", icon: "ClipboardList" },
-    { href: "/admin/growth", labelKey: "nav.growthTerritory", icon: "Globe" },
-    { href: "/admin/users", labelKey: "nav.usersRoles", icon: "UserCog" },
     { href: "/admin/growth", labelKey: "nav.growthTerritory", icon: "TrendingUp" },
+    { href: "/admin/users", labelKey: "nav.usersRoles", icon: "UserCog" },
   ],
   customer: [
     { href: "/", labelKey: "nav.dashboard", icon: "LayoutDashboard" },

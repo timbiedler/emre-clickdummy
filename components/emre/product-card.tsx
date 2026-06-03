@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Check, MapPin, CreditCard, Wrench, Truck, Sparkles, GitCompare } from "lucide-react";
+import { Check, MapPin, CreditCard, Wrench, Truck, Sparkles, GitCompare, Bookmark } from "lucide-react";
 import { StatusBadge } from "./status-badge";
 import { ProductImagePlaceholder } from "./product-image-placeholder";
 import { useApp } from "@/context/app-context";
@@ -36,10 +36,11 @@ export function ProductCard({
   showActions?: boolean;
   showRelevance?: boolean;
 }) {
-  const { language, compareList, toggleCompare, openConsultation, industry } = useApp();
+  const { language, compareList, toggleCompare, openConsultation, industry, toggleSaveProduct, savedProductIds } = useApp();
   const { t } = useUi();
   const { openCreateRfq } = useRfq();
   const inCompare = compareList.includes(product.id);
+  const isSaved = savedProductIds.includes(product.id);
   const finance = getProductFinance(product);
   const score = getIndustryRelevanceScore(product, industry);
   const badge = showRelevance ? getRelevanceBadge(product, industry, score) : null;
@@ -157,6 +158,18 @@ export function ProductCard({
               }}
             >
               <GitCompare className="size-3" /> {t("common.compare")}
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-8 text-xs gap-1 col-span-2"
+              onClick={(e) => {
+                stop(e);
+                toggleSaveProduct(product.id);
+              }}
+            >
+              <Bookmark className={cn("size-3", isSaved && "fill-current text-blue-600")} />
+              {isSaved ? "Saved" : "Save Product"}
             </Button>
           </div>
         )}

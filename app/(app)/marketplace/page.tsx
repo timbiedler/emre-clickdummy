@@ -33,11 +33,12 @@ import {
   sortProductsByRelevance,
 } from "@/lib/industry-relevance";
 import { useUi } from "@/lib/ui-i18n";
+import { useCheckoutT } from "@/lib/checkout-labels";
 import { useSourcing } from "@/context/sourcing-context";
 import { useCommerce } from "@/context/commerce-context";
 import { getProductFinance } from "@/lib/product-finance";
 import { ResultsToolbar } from "@/components/emre/commerce/results-toolbar";
-import { useCheckoutT } from "@/lib/checkout-labels";
+import { EmptyResultsPanel } from "@/components/emre/empty-results-panel";
 
 export default function MarketplacePage() {
   return (
@@ -264,7 +265,9 @@ function MarketplaceContent() {
             pageSizeLabel={ct("checkout.pageSize")}
           />
           {filtered.length === 0 && !filtersWithUrl.search && (
-            <div className="surface-card p-8 text-center text-sm text-slate-500">{ct("checkout.noResults")}</div>
+            <EmptyResultsPanel
+              onClearFilters={() => setFilters(defaultFilters(maxPrice))}
+            />
           )}
           <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {paginated.map((product) => (

@@ -19,7 +19,7 @@ import {
 import type { TrainingCourse } from "@/data/training";
 
 function TrainingContent() {
-  const { vertical, language, includeAllProducts } = useApp();
+  const { vertical, language, includeAllProducts, showToast } = useApp();
   const { t } = useUi();
   const searchParams = useSearchParams();
   const [selected, setSelected] = useState<TrainingCourse | null>(null);
@@ -76,7 +76,11 @@ function TrainingContent() {
                 <SheetTitle>{localizedText(activeCourse.title, language)}</SheetTitle>
               </SheetHeader>
               <p className="text-sm text-slate-600 mt-4">{localizedText(activeCourse.description, language)}</p>
-              <Button className="mt-6 gap-2 bg-blue-600 hover:bg-blue-700 w-full" type="button">
+              <Button
+                className="mt-6 gap-2 bg-blue-600 hover:bg-blue-700 w-full"
+                type="button"
+                onClick={() => showToast(`Opening course: ${localizedText(activeCourse.title, language)}`)}
+              >
                 <Play className="size-4" />
                 Start module
               </Button>

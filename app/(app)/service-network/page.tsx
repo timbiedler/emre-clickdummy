@@ -22,7 +22,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 export default function ServiceNetworkPage() {
-  const { vertical } = useApp();
+  const { vertical, showToast } = useApp();
   const { t, countryName } = useUi();
   const [selected, setSelected] = useState<Servicepoint | null>(null);
   const [countryFilter, setCountryFilter] = useState<string>("all");
@@ -104,8 +104,17 @@ export default function ServiceNetworkPage() {
                     <Star className="size-4 text-amber-500" /> {selected.rating.toFixed(1)}
                   </span>
                 </div>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                  {vertical === "robotics" ? "Book Technician" : "Contact Partner"}
+                <Button
+                  className="w-full bg-blue-600 hover:bg-blue-700"
+                  onClick={() =>
+                    showToast(
+                      vertical === "robotics"
+                        ? "Technician visit requested (demo)"
+                        : "Service partner contacted (demo)"
+                    )
+                  }
+                >
+                  {vertical === "robotics" ? "Book Technician" : "Open Service Partner"}
                 </Button>
               </div>
             </>
