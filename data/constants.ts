@@ -3,6 +3,7 @@ import type { Country, Language } from "./types";
 export const PRODUCT_NAME_LINE1 = "DISTRIBUTION";
 export const PRODUCT_NAME_LINE2 = "ENGINE";
 export const PRODUCT_NAME = "DISTRIBUTION ENGINE";
+export const DEMO_BASE_URL = "https://distribution-engine-demo.vercel.app";
 
 export const LANGUAGES: { code: Language; label: string; flag: string; nativeLabel: string }[] = [
   { code: "en", label: "English", nativeLabel: "English", flag: "🇬🇧" },

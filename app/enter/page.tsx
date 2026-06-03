@@ -15,7 +15,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useApp } from "@/context/app-context";
-import { PRODUCT_NAME_LINE1, PRODUCT_NAME_LINE2 } from "@/data/constants";
+import { PRODUCT_NAME_LINE1, PRODUCT_NAME_LINE2, DEMO_BASE_URL } from "@/data/constants";
 import { EU_REGIONS, type EuRegionKey } from "@/data/eu-regions";
 import { INDUSTRIES } from "@/data/industries";
 import { getHomeForRole } from "@/data/roles";
@@ -195,19 +195,12 @@ export default function EnterPage() {
           </Button>
 
           <p className="text-xs text-slate-400">
-            Demo hosted at{" "}
+            Demo:{" "}
             <a
-              href="https://emre-clickdummy.vercel.app/enter"
+              href={`${DEMO_BASE_URL}/enter`}
               className="underline hover:text-slate-600"
             >
-              emre-clickdummy.vercel.app
-            </a>
-            {" · "}
-            <a
-              href="https://distribution-engine-vlcp.vercel.app/enter"
-              className="underline hover:text-slate-600"
-            >
-              distribution-engine-vlcp.vercel.app
+              distribution-engine-demo.vercel.app
             </a>
           </p>
         </div>
