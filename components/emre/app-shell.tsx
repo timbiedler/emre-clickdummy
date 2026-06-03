@@ -27,6 +27,7 @@ import {
   Receipt,
   ClipboardList,
   UserCog,
+  TrendingUp,
 } from "lucide-react";
 import { PRODUCT_NAME_LINE1, PRODUCT_NAME_LINE2 } from "@/data/constants";
 import { getNavForRole } from "@/data/roles";
@@ -35,7 +36,9 @@ import { LanguageSwitcher } from "./language-switcher";
 import { RoleSwitcher } from "./role-switcher";
 import { IndustrySelector } from "./industry-selector";
 import { ConsultationDrawer } from "./consultation-drawer";
+import { CreateGapRequestDrawer } from "./sourcing/create-gap-request-drawer";
 import { useApp } from "@/context/app-context";
+import { useGlobalSearch } from "@/context/global-search-context";
 import { useUi } from "@/lib/ui-i18n";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -65,6 +68,7 @@ const iconMap: Record<NavIconName, React.ComponentType<{ className?: string }>> 
   Receipt,
   ClipboardList,
   UserCog,
+  TrendingUp,
 };
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -72,6 +76,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { role, currentUserName, resetWorkspace } = useApp();
   const { t } = useUi();
+  const { openSearch, submitSearch, query, setQuery } = useGlobalSearch();
   const navItems = getNavForRole(role);
 
   return (
@@ -133,13 +138,40 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </p>
               <p className="text-sm font-semibold text-slate-900">{PRODUCT_NAME_LINE2}</p>
             </div>
-            <div className="hidden md:block flex-1 max-w-sm relative min-w-[180px]">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
-              <Input
-                placeholder={t("common.search")}
-                className="pl-9 h-9 bg-slate-50 border-slate-200"
-              />
+            <div className="hidden md:flex flex-1 max-w-md items-center gap-2 min-w-[180px]">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                <Input
+                  placeholder={t("globalSearch.placeholder")}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") submitSearch();
+                    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+                      e.preventDefault();
+                      openSearch();
+                    }
+                  }}
+                  className="pl-9 pr-16 h-9 bg-slate-50 border-slate-200"
+                />
+                <button
+                  type="button"
+                  onClick={() => openSearch({ query })}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 hidden lg:inline text-[10px] text-slate-400 border border-slate-200 rounded px-1.5 py-0.5 font-mono bg-white hover:bg-slate-100"
+                  aria-label={t("globalSearch.openCommand")}
+                >
+                  ⌘K
+                </button>
+              </div>
             </div>
+            <button
+              type="button"
+              className="md:hidden rounded-lg border border-slate-200 p-2 hover:bg-slate-50"
+              onClick={() => openSearch()}
+              aria-label={t("globalSearch.openCommand")}
+            >
+              <Search className="size-4 text-slate-600" />
+            </button>
             <div className="flex items-center gap-2 ml-auto flex-wrap justify-end">
               <RoleSwitcher compact />
               <IndustrySelector compact />
@@ -173,6 +205,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </main>
       </div>
       <ConsultationDrawer />
+      <CreateGapRequestDrawer />
     </div>
   );
 }

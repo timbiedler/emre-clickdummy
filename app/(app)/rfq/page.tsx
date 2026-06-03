@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Plus } from "lucide-react";
 import { PageHeader } from "@/components/emre/app-shell";
 import { RFQCard } from "@/components/emre/rfq-card";
@@ -13,10 +14,25 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUi } from "@/lib/ui-i18n";
 
 export default function RFQPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-sm text-slate-500">Loading…</div>}>
+      <RFQPageContent />
+    </Suspense>
+  );
+}
+
+function RFQPageContent() {
+  const searchParams = useSearchParams();
   const { vertical } = useApp();
   const { t } = useUi();
   const [selected, setSelected] = useState<RFQ | null>(null);
   const verticalRfqs = rfqs.filter((r) => r.vertical === vertical);
+
+  const rfqFromUrl = useMemo(() => {
+    const rfqId = searchParams.get("rfqId");
+    return rfqId ? rfqs.find((r) => r.id === rfqId) ?? null : null;
+  }, [searchParams]);
+  const activeRfq = selected ?? rfqFromUrl;
 
   const tabs = [
     { id: "all", labelKey: "rfq.allRfqs", filter: () => true },
@@ -61,7 +77,7 @@ export default function RFQPage() {
         ))}
       </Tabs>
 
-      <RFQDetailDrawer rfq={selected} open={!!selected} onClose={() => setSelected(null)} />
+      <RFQDetailDrawer rfq={activeRfq} open={!!activeRfq} onClose={() => setSelected(null)} />
     </div>
   );
 }

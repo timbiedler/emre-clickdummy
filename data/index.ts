@@ -27,6 +27,8 @@ export {
 } from "./industry-content";
 export { INDUSTRIES } from "./industries";
 export { getNavForRole, getHomeForRole } from "./roles";
+export { trainingCourses } from "./training";
+export { platformConnectors } from "./connectors";
 
 import { medicalProducts } from "./medical-products";
 import { roboticsProducts } from "./robotics-products";

@@ -22,7 +22,8 @@ export type NavIconName =
   | "Megaphone"
   | "Receipt"
   | "ClipboardList"
-  | "UserCog";
+  | "UserCog"
+  | "TrendingUp";
 
 export interface RoleNavItem {
   href: string;
@@ -44,7 +45,10 @@ export const ROLE_NAVIGATION: Record<UserRole, RoleNavItem[]> = {
     { href: "/service-network", labelKey: "nav.serviceNetwork", icon: "Wrench" },
     { href: "/network-map", labelKey: "nav.networkMap", icon: "Globe" },
     { href: "/admin", labelKey: "nav.adminKpis", icon: "Shield" },
+    { href: "/admin/sourcing-desk", labelKey: "nav.sourcingDesk", icon: "ClipboardList" },
+    { href: "/admin/growth", labelKey: "nav.growthTerritory", icon: "Globe" },
     { href: "/admin/users", labelKey: "nav.usersRoles", icon: "UserCog" },
+    { href: "/admin/growth", labelKey: "nav.growthTerritory", icon: "TrendingUp" },
   ],
   customer: [
     { href: "/", labelKey: "nav.dashboard", icon: "LayoutDashboard" },

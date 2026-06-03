@@ -35,10 +35,11 @@ import type { Country } from "@/data/types";
 import { formatCurrency } from "@/lib/format";
 import { getProductFinance } from "@/lib/product-finance";
 import { getConsultationUseCases } from "@/lib/product-ai";
-import { getAiPromptsForIndustry } from "@/data/industry-content";
 import { IndustrySelector } from "@/components/emre/industry-selector";
 import { TranslationExamplesPanel } from "@/components/emre/translation-examples-panel";
+import { getAiPromptsForIndustry } from "@/data/industry-content";
 import { useUi } from "@/lib/ui-i18n";
+import { useSourcing } from "@/context/sourcing-context";
 
 const modes = [
   { id: "recommendation", label: "Product Recommendation", icon: Package },
@@ -53,6 +54,7 @@ const modes = [
 export default function AssistantPage() {
   const { vertical, openConsultation, role, industry, workspaceCountry, companyType } = useApp();
   const { t } = useUi();
+  const { openCreateGapDrawer } = useSourcing();
   const industryPrompts = getAiPromptsForIndustry(industry);
   const [mode, setMode] = useState<(typeof modes)[number]["id"]>("recommendation");
   const [prompt, setPrompt] = useState(industryPrompts[0] ?? "");
@@ -60,7 +62,11 @@ export default function AssistantPage() {
   const [result, setResult] = useState<ReturnType<typeof analyzeNeed> | null>(null);
 
   function analyzeNeed(text: string) {
-    const products = getProducts(vertical).slice(0, 4);
+    const products = getProducts(vertical).filter((p) =>
+      text.toLowerCase().split(/\s+/).some((w) => w.length > 4 && p.category.toLowerCase().includes(w))
+    );
+    const exactMatch = products.length >= 2;
+    const displayProducts = exactMatch ? products.slice(0, 4) : products.slice(0, 1);
     const matchedSuppliers = suppliers.filter((s) => s.vertical === vertical).slice(0, 2);
     const servicePartner = servicepoints.find((sp) => sp.vertical === vertical);
     const leadProduct = products[0];
@@ -72,7 +78,8 @@ export default function AssistantPage() {
       interpretedIndustry: industry,
       companyType,
       category: vertical === "medical" ? "PPE / Consumables" : "Cleaning Robots",
-      products,
+      products: displayProducts,
+      exactMatch,
       suppliers: matchedSuppliers,
       servicePartner,
       budget: vertical === "medical" ? 125000 : 348000,
@@ -221,6 +228,27 @@ export default function AssistantPage() {
 
               <div>
                 <p className="text-sm font-medium mb-3">Recommended Product Shortlist</p>
+                {!result.exactMatch && (
+                  <div className="surface-card rounded-xl p-4 mb-4 border border-amber-200 bg-amber-50">
+                    <p className="text-sm text-amber-900 mb-2">{t("sourcing.noExactMatch")}</p>
+                    <Button
+                      size="sm"
+                      className="bg-blue-600 hover:bg-blue-700"
+                      onClick={() =>
+                        openCreateGapDrawer({
+                          source: "ai_assistant",
+                          requestedProduct: result.interpreted.slice(0, 120),
+                          aiPrompt: prompt,
+                          country,
+                          expectedBudget: result.budget,
+                          urgency: "high",
+                        })
+                      }
+                    >
+                      {t("sourcing.createGapRequest")}
+                    </Button>
+                  </div>
+                )}
                 <div className="grid sm:grid-cols-2 gap-4">
                   {result.products.map((p) => (
                     <ProductCard key={p.id} product={p} onClick={() => {}} showActions={false} />

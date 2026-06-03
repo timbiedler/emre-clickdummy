@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { RotateCcw, Wrench } from "lucide-react";
 import { PageHeader } from "@/components/emre/app-shell";
 import { OrderTrackingTimeline } from "@/components/emre/order-tracking-timeline";
@@ -27,9 +28,24 @@ const statusVariant = {
 };
 
 export default function OrdersPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-sm text-slate-500">Loading…</div>}>
+      <OrdersPageContent />
+    </Suspense>
+  );
+}
+
+function OrdersPageContent() {
+  const searchParams = useSearchParams();
   const { vertical } = useApp();
   const [selected, setSelected] = useState<Order | null>(null);
   const verticalOrders = orders.filter((o) => o.vertical === vertical);
+
+  const orderFromUrl = useMemo(() => {
+    const orderId = searchParams.get("orderId");
+    return orderId ? orders.find((o) => o.id === orderId) ?? null : null;
+  }, [searchParams]);
+  const activeOrder = selected ?? orderFromUrl;
 
   return (
     <div className="space-y-6">
@@ -79,23 +95,23 @@ export default function OrdersPage() {
         </table>
       </div>
 
-      <Sheet open={!!selected} onOpenChange={() => setSelected(null)}>
+      <Sheet open={!!activeOrder} onOpenChange={() => setSelected(null)}>
         <SheetContent className="surface-card-elevated border-slate-200">
-          {selected && (
+          {activeOrder && (
             <>
               <SheetHeader>
-                <SheetTitle>{selected.id.toUpperCase()}</SheetTitle>
+                <SheetTitle>{activeOrder.id.toUpperCase()}</SheetTitle>
               </SheetHeader>
               <div className="mt-6 space-y-6">
-                <OrderTrackingTimeline order={selected} />
+                <OrderTrackingTimeline order={activeOrder} />
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div className="surface-card rounded-lg p-3">
                     <p className="text-xs text-muted-foreground">Items</p>
-                    <p className="font-medium">{selected.items}</p>
+                    <p className="font-medium">{activeOrder.items}</p>
                   </div>
                   <div className="surface-card rounded-lg p-3">
                     <p className="text-xs text-muted-foreground">Amount</p>
-                    <p className="font-medium">{formatCurrency(selected.amount)}</p>
+                    <p className="font-medium">{formatCurrency(activeOrder.amount)}</p>
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-2">

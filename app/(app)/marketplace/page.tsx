@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { GitCompare, Sparkles, X } from "lucide-react";
 import { PageHeader } from "@/components/emre/app-shell";
 import { ProductCard } from "@/components/emre/product-card";
@@ -32,9 +33,19 @@ import {
   sortProductsByRelevance,
 } from "@/lib/industry-relevance";
 import { useUi } from "@/lib/ui-i18n";
+import { useSourcing } from "@/context/sourcing-context";
 import { getProductFinance } from "@/lib/product-finance";
 
 export default function MarketplacePage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-sm text-slate-500">Loading…</div>}>
+      <MarketplaceContent />
+    </Suspense>
+  );
+}
+
+function MarketplaceContent() {
+  const searchParams = useSearchParams();
   const {
     vertical,
     language,
@@ -45,12 +56,27 @@ export default function MarketplacePage() {
     includeAllProducts,
   } = useApp();
   const { t } = useUi();
+  const { openCreateGapDrawer, recordFailedSearch } = useSourcing();
 
   const catalog = includeAllProducts ? getAllProducts() : getProducts(vertical);
   const maxPrice = Math.max(...catalog.map((p) => p.price), 1);
   const [filters, setFilters] = useState<FilterState>(() => defaultFilters(maxPrice));
   const [selected, setSelected] = useState<Product | null>(null);
   const [supplierId, setSupplierId] = useState<string | null>(null);
+
+  const productFromUrl = useMemo(() => {
+    const productId = searchParams.get("productId");
+    return productId ? catalog.find((p) => p.id === productId) ?? null : null;
+  }, [searchParams, catalog]);
+
+  const supplierFromUrl = searchParams.get("supplierId");
+  const searchFromUrl = searchParams.get("search");
+  const activeProduct = selected ?? productFromUrl;
+  const activeSupplierId = supplierId ?? supplierFromUrl;
+  const filtersWithUrl = useMemo(
+    () => (searchFromUrl ? { ...filters, search: searchFromUrl } : filters),
+    [filters, searchFromUrl]
+  );
 
   const brands = includeAllProducts
     ? [...MEDICAL_BRANDS, ...ROBOTICS_BRANDS]
@@ -70,8 +96,8 @@ export default function MarketplacePage() {
 
   const filtered = useMemo(() => {
     let result = [...catalog];
-    if (filters.search) {
-      const q = filters.search.toLowerCase();
+    if (filtersWithUrl.search) {
+      const q = filtersWithUrl.search.toLowerCase();
       result = result.filter(
         (p) =>
           localizedText(p.name, language).toLowerCase().includes(q) ||
@@ -79,35 +105,36 @@ export default function MarketplacePage() {
           p.category.toLowerCase().includes(q)
       );
     }
-    if (filters.brands.length) result = result.filter((p) => filters.brands.includes(p.brand));
-    if (filters.categories.length) result = result.filter((p) => filters.categories.includes(p.category));
-    if (filters.channels.length) result = result.filter((p) => p.salesChannels.some((c) => filters.channels.includes(c)));
-    if (filters.countries.length) result = result.filter((p) => p.countries.some((c) => filters.countries.includes(c)));
-    if (filters.availability.length) result = result.filter((p) => filters.availability.includes(p.availability));
-    if (filters.financeOnly) result = result.filter((p) => p.financeAvailable);
-    if (filters.serviceCoverage) result = result.filter((p) => p.serviceCoverage);
-    if (filters.certifiedOnly) result = result.filter((p) => p.documents.some((d) => d.status === "verified"));
-    result = result.filter((p) => p.price >= filters.priceRange[0] && p.price <= filters.priceRange[1]);
+    if (filtersWithUrl.brands.length) result = result.filter((p) => filtersWithUrl.brands.includes(p.brand));
+    if (filtersWithUrl.categories.length) result = result.filter((p) => filtersWithUrl.categories.includes(p.category));
+    if (filtersWithUrl.channels.length) result = result.filter((p) => p.salesChannels.some((c) => filtersWithUrl.channels.includes(c)));
+    if (filtersWithUrl.countries.length) result = result.filter((p) => p.countries.some((c) => filtersWithUrl.countries.includes(c)));
+    if (filtersWithUrl.availability.length) result = result.filter((p) => filtersWithUrl.availability.includes(p.availability));
+    if (filtersWithUrl.financeOnly) result = result.filter((p) => p.financeAvailable);
+    if (filtersWithUrl.serviceCoverage) result = result.filter((p) => p.serviceCoverage);
+    if (filtersWithUrl.certifiedOnly) result = result.filter((p) => p.documents.some((d) => d.status === "verified"));
+    result = result.filter((p) => p.price >= filtersWithUrl.priceRange[0] && p.price <= filtersWithUrl.priceRange[1]);
 
-    const filterIndustry = filters.industry !== "all" ? filters.industry : industry;
+    const filterIndustry = filtersWithUrl.industry !== "all" ? filtersWithUrl.industry : industry;
 
-    if (filters.sort === "relevance" || showRelevantFirst) {
-      result = sortProductsByRelevance(result, filterIndustry as typeof industry, showRelevantFirst || filters.sort === "relevance");
+    if (filtersWithUrl.sort === "relevance" || showRelevantFirst) {
+      result = sortProductsByRelevance(result, filterIndustry as typeof industry, showRelevantFirst || filtersWithUrl.sort === "relevance");
     }
-    if (filters.sort === "price-asc") result.sort((a, b) => a.price - b.price);
-    if (filters.sort === "price-desc") result.sort((a, b) => b.price - a.price);
-    if (filters.sort === "delivery") result.sort((a, b) => a.deliveryDays - b.deliveryDays);
-    if (filters.sort === "leasing") {
+    if (filtersWithUrl.sort === "price-asc") result.sort((a, b) => a.price - b.price);
+    if (filtersWithUrl.sort === "price-desc") result.sort((a, b) => b.price - a.price);
+    if (filtersWithUrl.sort === "delivery") result.sort((a, b) => a.deliveryDays - b.deliveryDays);
+    if (filtersWithUrl.sort === "leasing") {
       result.sort(
         (a, b) =>
           getProductFinance(a).leasingRateMonthly - getProductFinance(b).leasingRateMonthly
       );
     }
-    if (filters.sort === "popularity") {
+    if (filtersWithUrl.sort === "popularity") {
       result.sort((a, b) => b.stock - a.stock);
     }
+    if (filtersWithUrl.search && result.length === 0) recordFailedSearch(filtersWithUrl.search);
     return result;
-  }, [catalog, filters, language, industry, showRelevantFirst]);
+  }, [catalog, filtersWithUrl, language, industry, showRelevantFirst, recordFailedSearch]);
 
   const aiRecommended = useMemo(
     () =>
@@ -128,7 +155,7 @@ export default function MarketplacePage() {
     [filtered, industry]
   );
 
-  const selectedSupplier = suppliers.find((s) => s.id === supplierId);
+  const selectedSupplier = suppliers.find((s) => s.id === activeSupplierId);
 
   return (
     <div className="space-y-6">
@@ -175,6 +202,23 @@ export default function MarketplacePage() {
           />
         </div>
         <div className="lg:col-span-3 space-y-6">
+          {filtersWithUrl.search && filtered.length === 0 && (
+            <div className="surface-card rounded-xl p-6 border border-amber-200 bg-amber-50 text-center space-y-3">
+              <p className="text-sm text-amber-900">{t("sourcing.noSearchResults")}</p>
+              <Button
+                className="bg-blue-600 hover:bg-blue-700"
+                onClick={() =>
+                  openCreateGapDrawer({
+                    source: "marketplace_search",
+                    requestedProduct: filtersWithUrl.search,
+                    urgency: "high",
+                  })
+                }
+              >
+                {t("sourcing.createGapRequest")}
+              </Button>
+            </div>
+          )}
           <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {filtered.map((product) => (
               <ProductCard
@@ -207,13 +251,13 @@ export default function MarketplacePage() {
       </div>
 
       <ProductDetailDrawer
-        product={selected}
-        open={!!selected}
+        product={activeProduct}
+        open={!!activeProduct}
         onClose={() => setSelected(null)}
         onViewSupplier={setSupplierId}
       />
 
-      <Sheet open={!!supplierId} onOpenChange={() => setSupplierId(null)}>
+      <Sheet open={!!activeSupplierId} onOpenChange={() => setSupplierId(null)}>
         <SheetContent className="surface-card-elevated border-slate-200">
           <SheetHeader>
             <SheetTitle>Supplier Profile</SheetTitle>

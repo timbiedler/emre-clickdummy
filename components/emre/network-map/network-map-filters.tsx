@@ -42,6 +42,7 @@ export interface NetworkMapFiltersState {
   zoomLevel: MapZoomLevel;
   intelligenceMode: boolean;
   coverageView: CoverageView;
+  showSourcingLayer: boolean;
 }
 
 export const defaultNetworkFilters: NetworkMapFiltersState = {
@@ -62,6 +63,7 @@ export const defaultNetworkFilters: NetworkMapFiltersState = {
   zoomLevel: "europe",
   intelligenceMode: false,
   coverageView: "none",
+  showSourcingLayer: false,
 };
 
 const regionKeys = Object.keys(EU_REGIONS) as EuRegionKey[];
@@ -89,6 +91,7 @@ export function NetworkMapFilters({
     ["showUnderserved", "networkMap.underservedRegions"],
     ["activeOnly", "networkMap.activePartnersOnly"],
     ["intelligenceMode", "networkMap.networkIntelligenceMode"],
+    ["showSourcingLayer", "sourcing.showSourcingLayer"],
   ];
 
   return (

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppProvider } from "@/context/app-context";
+import { SourcingProvider } from "@/context/sourcing-context";
 import { PRODUCT_NAME } from "@/data/constants";
 import "./globals.css";
 
@@ -30,7 +31,9 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${geistMono.variable} h-full`}>
       <body className="min-h-full flex flex-col bg-white text-slate-900 antialiased">
         <TooltipProvider>
-          <AppProvider>{children}</AppProvider>
+          <AppProvider>
+            <SourcingProvider>{children}</SourcingProvider>
+          </AppProvider>
         </TooltipProvider>
       </body>
     </html>

@@ -136,7 +136,7 @@ export default function NetworkMapPage() {
             selectedId={selected?.id}
             onSelect={setSelected}
             showClusters={filters.showClusters}
-            showHeatmap={filters.showHeatmap || filters.coverageView !== "none"}
+            showHeatmap={filters.showHeatmap || filters.coverageView !== "none" || filters.showSourcingLayer}
             showTerritories={filters.showTerritories || filters.showPartnerTerritories}
             showRoutes={filters.showRoutes}
             zoom={zoom}
@@ -146,6 +146,7 @@ export default function NetworkMapPage() {
             {t("networkMap.routes")} ·{" "}
             {vertical === "medical" ? t("vertical.medical") : t("vertical.robotics")}
             {filters.region !== "all" && ` · ${t(`regions.${filters.region}`)}`}
+            {filters.showSourcingLayer && ` · ${t("sourcing.showSourcingLayer")}`}
           </p>
         </div>
 

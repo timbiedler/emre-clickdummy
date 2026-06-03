@@ -14,7 +14,9 @@ import { StatusBadge } from "./status-badge";
 import { TranslationBadge } from "./translation-badge";
 import { OfferComparisonTable } from "./offer-comparison-table";
 import { useApp } from "@/context/app-context";
-import { t } from "@/lib/i18n";
+import { useSourcing } from "@/context/sourcing-context";
+import { useUi } from "@/lib/ui-i18n";
+import { t as localizedText } from "@/lib/i18n";
 import { formatCurrency, formatDate } from "@/lib/format";
 import type { RFQ } from "@/data/types";
 import { offers } from "@/data/offers";
@@ -30,6 +32,8 @@ export function RFQDetailDrawer({
   onClose: () => void;
 }) {
   const { language, openConsultation } = useApp();
+  const { t } = useUi();
+  const { openCreateGapDrawer } = useSourcing();
   if (!rfq) return null;
 
   const buyer = buyers.find((b) => b.id === rfq.buyerId);
@@ -41,7 +45,7 @@ export function RFQDetailDrawer({
         <ScrollArea className="h-full p-6 space-y-5">
           <SheetHeader className="text-left">
             <p className="text-xs font-mono text-muted-foreground">{rfq.id.toUpperCase()}</p>
-            <SheetTitle>{t(rfq.title, language)}</SheetTitle>
+            <SheetTitle>{localizedText(rfq.title, language)}</SheetTitle>
           </SheetHeader>
 
           <div className="flex flex-wrap gap-2">
@@ -101,7 +105,7 @@ export function RFQDetailDrawer({
 
           <div className="surface-card rounded-lg p-4 space-y-2">
             <p className="text-xs font-medium text-blue-600 uppercase">Buyer Message</p>
-            <p className="text-sm">{t(rfq.message, language)}</p>
+            <p className="text-sm">{localizedText(rfq.message, language)}</p>
           </div>
 
           {rfqOffers.length > 0 ? (
@@ -109,6 +113,28 @@ export function RFQDetailDrawer({
           ) : (
             <div className="surface-card rounded-lg p-6 text-center text-muted-foreground text-sm">
               Supplier matching in progress — {rfq.matchedSuppliers} suppliers notified
+            </div>
+          )}
+
+          {rfq.matchedSuppliers < 3 && (
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 space-y-2">
+              <p className="text-sm text-amber-900">{t("sourcing.weakSupplierCoverage")}</p>
+              <Button
+                size="sm"
+                className="bg-blue-600 hover:bg-blue-700"
+                onClick={() =>
+                  openCreateGapDrawer({
+                    source: "rfq",
+                    requestedProduct: localizedText(rfq.title, language),
+                    linkedRfqIds: [rfq.id],
+                    country: rfq.deliveryCountry,
+                    expectedBudget: rfq.budget,
+                    urgency: "high",
+                  })
+                }
+              >
+                {t("sourcing.sendToSourcingDesk")}
+              </Button>
             </div>
           )}
 

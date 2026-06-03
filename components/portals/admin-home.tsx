@@ -110,7 +110,12 @@ export default function AdminHomePage() {
         <ActivityFeed items={adminActivities.slice(0, 8)} />
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-3 gap-4">
+        <Link href="/admin/growth" className="surface-card p-5 hover:border-blue-200 transition-colors">
+          <p className="text-sm font-semibold text-slate-900">Growth & Territory Engine</p>
+          <p className="text-2xl font-bold text-slate-900 mt-2">100+ leads</p>
+          <p className="text-xs text-slate-500 mt-1">Territory intelligence, campaigns, and partner routing</p>
+        </Link>
         <Link href="/admin/sales-partners" className="surface-card p-5 hover:border-blue-200 transition-colors">
           <p className="text-sm font-semibold text-slate-900">Sales partner onboarding</p>
           <p className="text-2xl font-bold text-slate-900 mt-2">{pendingPartners} applications</p>

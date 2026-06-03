@@ -8,6 +8,9 @@ import { FlowDiagram } from "@/components/emre/flow-diagram";
 import { VerticalSwitcher } from "@/components/emre/vertical-switcher";
 import { useApp } from "@/context/app-context";
 import { adminMetrics, adminAlerts, adminActivities } from "@/data/admin-metrics";
+import { SourcingKpiSection } from "@/components/emre/sourcing/sourcing-kpi-section";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
   BarChart,
@@ -68,6 +71,14 @@ export default function AdminPage() {
       </div>
 
       <AdminMetricGrid metrics={metrics} />
+      <SourcingKpiSection />
+      <div className="flex justify-end">
+        <Link href="/admin/sourcing-desk">
+          <Button variant="outline" size="sm">
+            Open Sourcing Desk
+          </Button>
+        </Link>
+      </div>
       <AdminKpiCard metrics={metrics} onKpiClick={setFilterLabel} />
 
       {filterLabel && (
