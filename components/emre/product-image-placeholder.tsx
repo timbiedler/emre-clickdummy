@@ -1,0 +1,100 @@
+import {
+  Stethoscope,
+  Bot,
+  Microscope,
+  Shield,
+  Box,
+  FlaskConical,
+  HeartPulse,
+  Droplets,
+  Siren,
+  BedDouble,
+  Activity,
+  Wind,
+  Bandage,
+  Sparkles,
+  Warehouse,
+  ScanSearch,
+  Wrench,
+  Battery,
+  Radio,
+  Brush,
+  Headphones,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import type { Product } from "@/data/types";
+
+const medicalIcons: Record<string, typeof Stethoscope> = {
+  Diagnostics: Microscope,
+  PPE: Shield,
+  Consumables: Box,
+  Laboratory: FlaskConical,
+  "Medical Devices": HeartPulse,
+  Hygiene: Droplets,
+  "Emergency Supply": Siren,
+  "Care Equipment": BedDouble,
+  Monitoring: Activity,
+  Respiratory: Wind,
+  "Wound Care": Bandage,
+  Sterilization: Sparkles,
+};
+
+const roboticsIcons: Record<string, typeof Bot> = {
+  "Cleaning Robots": Bot,
+  "Security Robots": Shield,
+  "Hospitality Robots": Headphones,
+  "Garden Robots": Sparkles,
+  "Agricultural Robots": ScanSearch,
+  "Warehouse Robots": Warehouse,
+  "Inspection Robots": ScanSearch,
+  "Spare Parts": Wrench,
+  Batteries: Battery,
+  Sensors: Radio,
+  Brushes: Brush,
+  "Service Packages": Headphones,
+};
+
+export function ProductImagePlaceholder({
+  product,
+  className,
+  size = "md",
+}: {
+  product: Product;
+  className?: string;
+  size?: "sm" | "md" | "lg";
+}) {
+  const Icon =
+    product.vertical === "medical"
+      ? medicalIcons[product.category] ?? Stethoscope
+      : roboticsIcons[product.category] ?? Bot;
+
+  const sizes = {
+    sm: { icon: "size-8", label: "text-[10px]", brand: "text-xs" },
+    md: { icon: "size-12", label: "text-xs", brand: "text-sm" },
+    lg: { icon: "size-16", label: "text-sm", brand: "text-base" },
+  };
+
+  const s = sizes[size];
+
+  return (
+    <div
+      className={cn(
+        "relative flex flex-col items-center justify-center bg-gradient-to-br overflow-hidden",
+        product.imageGradient,
+        className
+      )}
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.12),transparent_50%)]" />
+      <div className="absolute top-2 left-2 rounded-md bg-black/30 backdrop-blur-sm px-2 py-0.5">
+        <span className={cn("font-medium text-white/90", s.label)}>
+          {product.imageLabel}
+        </span>
+      </div>
+      <Icon className={cn(s.icon, "text-white/35 mb-2")} />
+      <span className={cn("font-semibold text-white/50 tracking-wide", s.brand)}>
+        {product.brand}
+      </span>
+      <div className="absolute bottom-0 inset-x-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent" />
+    </div>
+  );
+}
