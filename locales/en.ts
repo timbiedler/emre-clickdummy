@@ -136,6 +136,7 @@ const en = {
   },
   marketplace: {
     title: "Marketplace",
+    subtitle: "Browse and compare products across verticals, industries, and EU markets.",
     aiRecommended: "AI recommended products",
     crossIndustry: "Cross-industry products",
     crossIndustryDesc: "Available beyond your primary industry — searchable and purchasable for adjacent use cases.",
@@ -258,6 +259,9 @@ const en = {
     industryPerformance: "Industry performance",
     countryReporting: "Country reporting",
   },
+  assistant: {
+    subtitle: "Describe procurement needs in natural language and get product recommendations.",
+  },
   account: {
     title: "Customer Account",
     subtitle: "Company profile, saved items, offers, invoices, financing applications, and support tickets.",
@@ -336,6 +340,7 @@ const en = {
   },
   sourcing: {
     deskTitle: "Sourcing Desk",
+    subtitle: "Detect demand gaps, source suppliers, enrich products, and return listings to the marketplace.",
     deskSubtitle: "Product Supply Layer — detect demand gaps, source suppliers, enrich products, and return listings to the marketplace.",
     loopTitle: "Closed-loop product sourcing",
     loopDescription: "The platform learns what the market wants and turns demand into supplier sourcing, catalog expansion, product enrichment, and new marketplace availability.",

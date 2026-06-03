@@ -136,6 +136,7 @@ const de = {
   },
   marketplace: {
     title: "Marktplatz",
+    subtitle: "Produkte über Branchen, Verticals und EU-Märkte hinweg durchsuchen und vergleichen.",
     aiRecommended: "KI-empfohlene Produkte",
     crossIndustry: "Branchenübergreifende Produkte",
     crossIndustryDesc: "Über Ihre Hauptbranche hinaus verfügbar — durchsuchbar für angrenzende Anwendungsfälle.",
@@ -258,6 +259,9 @@ const de = {
     industryPerformance: "Branchenperformance",
     countryReporting: "Länderberichte",
   },
+  assistant: {
+    subtitle: "Beschreiben Sie Beschaffungsbedarf in natürlicher Sprache und erhalten Sie Produktempfehlungen.",
+  },
   account: {
     title: "Kundenkonto",
     subtitle: "Unternehmensprofil, gespeicherte Artikel, Angebote, Rechnungen, Finanzierungen und Support.",
@@ -336,6 +340,7 @@ const de = {
   },
   sourcing: {
     deskTitle: "Sourcing Desk",
+    subtitle: "Nachfrage erkennen, Lieferanten sourcen, Produkte anreichern und zurück in den Marktplatz bringen.",
     deskSubtitle: "Product Supply Layer — Nachfrage erkennen, Lieferanten sourcen, Produkte anreichern und zurück in den Marktplatz bringen.",
     loopTitle: "Geschlossener Produkt-Sourcing-Kreislauf",
     loopDescription: "Die Plattform lernt, was der Markt will, und wandelt Nachfrage in Lieferanten-Sourcing, Sortimentserweiterung, Produktanreicherung und neue Marktplatz-Verfügbarkeit um.",

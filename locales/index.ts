@@ -16,20 +16,26 @@ export function getUiLocale(language: Language): UiStrings {
 }
 
 export function uiTranslate(language: Language, key: string): string {
-  const locale = getUiLocale(language);
-  const parts = key.split(".");
-  let current: unknown = locale;
-  for (const part of parts) {
-    if (current && typeof current === "object" && part in current) {
-      current = (current as Record<string, unknown>)[part];
-    } else {
-      current = undefined;
-      break;
+  const resolve = (lang: Language): string | undefined => {
+    const locale = getUiLocale(lang);
+    const parts = key.split(".");
+    let current: unknown = locale;
+    for (const part of parts) {
+      if (current && typeof current === "object" && part in current) {
+        current = (current as Record<string, unknown>)[part];
+      } else {
+        return undefined;
+      }
     }
+    return typeof current === "string" ? current : undefined;
+  };
+
+  const value = resolve(language);
+  if (value) return value;
+  if (language !== "en") {
+    const fallback = resolve("en");
+    if (fallback) return fallback;
   }
-  if (typeof current === "string") return current;
-  const fallback = uiTranslate("en", key);
-  if (fallback !== key) return fallback;
   return key;
 }
 
