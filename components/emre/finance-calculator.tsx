@@ -29,9 +29,9 @@ export function FinanceCalculator({
   const monthlyRate = Math.round((financed * 1.08) / term);
 
   return (
-    <div className="glass-panel rounded-xl p-6 space-y-6">
+    <div className="surface-card rounded-xl p-6 space-y-6">
       <div className="flex items-center gap-2">
-        <Calculator className="size-5 text-cyan-400" />
+        <Calculator className="size-5 text-blue-600" />
         <h3 className="font-semibold">Finance Calculator</h3>
       </div>
 
@@ -74,10 +74,10 @@ export function FinanceCalculator({
           />
         </div>
         <Select value={type} onValueChange={setType}>
-          <SelectTrigger className="glass-panel border-white/10">
+          <SelectTrigger className="surface-card border-slate-200">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="glass-panel-strong border-white/10">
+          <SelectContent className="surface-card-elevated border-slate-200">
             <SelectItem value="leasing">Leasing</SelectItem>
             <SelectItem value="financing">Financing</SelectItem>
             <SelectItem value="finetrading">Finetrading</SelectItem>
@@ -85,9 +85,9 @@ export function FinanceCalculator({
         </Select>
       </div>
 
-      <div className="glass-panel-strong rounded-lg p-4 text-center space-y-1">
+      <div className="surface-card-elevated rounded-lg p-4 text-center space-y-1">
         <p className="text-xs text-muted-foreground uppercase">Estimated Monthly Rate</p>
-        <p className="text-3xl font-bold neon-text-green">{formatCurrency(monthlyRate)}</p>
+        <p className="text-3xl font-bold text-accent-green">{formatCurrency(monthlyRate)}</p>
         <p className="text-xs text-muted-foreground">/ month · {term} months</p>
       </div>
 

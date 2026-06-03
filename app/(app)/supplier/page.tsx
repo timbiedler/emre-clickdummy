@@ -30,10 +30,10 @@ export default function SupplierPortalPage() {
       />
 
       <div className="grid lg:grid-cols-3 gap-6">
-        <div className="glass-panel rounded-xl p-5 space-y-4">
+        <div className="surface-card rounded-xl p-5 space-y-4">
           <h3 className="font-semibold">Onboarding Progress</h3>
           <div className="flex items-center gap-3">
-            <span className="text-3xl font-bold neon-text-green">
+            <span className="text-3xl font-bold text-accent-green">
               {Math.round((completedSteps / checklist.length) * 100)}%
             </span>
             <Progress value={(completedSteps / checklist.length) * 100} className="flex-1" />
@@ -42,7 +42,7 @@ export default function SupplierPortalPage() {
             {checklist.map((step, i) => (
               <div key={step} className="flex items-center gap-2 text-sm">
                 {i < completedSteps ? (
-                  <CheckCircle2 className="size-4 text-emerald-400" />
+                  <CheckCircle2 className="size-4 text-emerald-600" />
                 ) : (
                   <Circle className="size-4 text-muted-foreground" />
                 )}
@@ -60,26 +60,26 @@ export default function SupplierPortalPage() {
           </div>
 
           <Tabs defaultValue="products">
-            <TabsList className="glass-panel border-white/10">
+            <TabsList className="surface-card border-slate-200">
               <TabsTrigger value="products">Products</TabsTrigger>
               <TabsTrigger value="rfq">RFQ Inbox</TabsTrigger>
               <TabsTrigger value="channels">Sales Channels</TabsTrigger>
             </TabsList>
-            <TabsContent value="products" className="mt-4 glass-panel rounded-xl p-5 space-y-3">
+            <TabsContent value="products" className="mt-4 surface-card rounded-xl p-5 space-y-3">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium">Product Upload</p>
                 <Button size="sm" className="gap-2"><Upload className="size-4" /> Upload Products</Button>
               </div>
               <div className="grid grid-cols-3 gap-3 text-center text-sm">
-                <div className="glass-panel rounded-lg p-3">
+                <div className="surface-card rounded-lg p-3">
                   <p className="text-xl font-bold">24</p>
                   <p className="text-xs text-muted-foreground">Listed</p>
                 </div>
-                <div className="glass-panel rounded-lg p-3">
+                <div className="surface-card rounded-lg p-3">
                   <p className="text-xl font-bold">3</p>
                   <p className="text-xs text-muted-foreground">Pending Review</p>
                 </div>
-                <div className="glass-panel rounded-lg p-3">
+                <div className="surface-card rounded-lg p-3">
                   <p className="text-xl font-bold">Live</p>
                   <p className="text-xs text-muted-foreground">Stock Feed</p>
                 </div>
@@ -87,7 +87,7 @@ export default function SupplierPortalPage() {
             </TabsContent>
             <TabsContent value="rfq" className="mt-4 space-y-2">
               {["RFQ-001 — 500k nitrile gloves", "RFQ-003 — Lab consumables", "RFQ-007 — Patient monitors"].map((r) => (
-                <div key={r} className="glass-panel rounded-lg p-3 flex items-center justify-between text-sm">
+                <div key={r} className="surface-card rounded-lg p-3 flex items-center justify-between text-sm">
                   <span>{r}</span>
                   <StatusBadge variant="info">New</StatusBadge>
                 </div>
@@ -105,13 +105,13 @@ export default function SupplierPortalPage() {
         </div>
       </div>
 
-      <div className="glass-panel rounded-xl p-5 flex items-center gap-4">
-        <Globe className="size-8 text-cyan-400" />
+      <div className="surface-card rounded-xl p-5 flex items-center gap-4">
+        <Globe className="size-8 text-blue-600" />
         <div className="flex-1">
           <p className="font-medium">EU Market Expansion</p>
           <p className="text-sm text-muted-foreground">Your products are eligible for 8 EU markets and 6 languages.</p>
         </div>
-        <BarChart3 className="size-6 text-violet-400" />
+        <BarChart3 className="size-6 text-violet-600" />
       </div>
     </div>
   );
@@ -119,8 +119,8 @@ export default function SupplierPortalPage() {
 
 function ScoreCard({ label, value }: { label: string; value: number }) {
   return (
-    <div className="glass-panel rounded-xl p-4 text-center">
-      <p className="text-2xl font-bold neon-text-cyan">{value}%</p>
+    <div className="surface-card rounded-xl p-4 text-center">
+      <p className="text-2xl font-bold text-accent-blue">{value}%</p>
       <p className="text-xs text-muted-foreground mt-1">{label}</p>
     </div>
   );

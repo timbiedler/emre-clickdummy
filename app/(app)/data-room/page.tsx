@@ -32,7 +32,7 @@ export default function DataRoomPage() {
         title="Data Room"
         description="Secure document management for financing, leasing, compliance, and procurement approvals."
         action={
-          <Button className="gap-2 bg-cyan-600 hover:bg-cyan-500">
+          <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
             <Upload className="size-4" /> Upload Document
           </Button>
         }
@@ -40,14 +40,14 @@ export default function DataRoomPage() {
 
       <div className="grid lg:grid-cols-3 gap-6">
         <FinanceReadinessScore score={score} />
-        <div className="lg:col-span-2 glass-panel rounded-xl p-5 space-y-3">
+        <div className="lg:col-span-2 surface-card rounded-xl p-5 space-y-3">
           <div className="flex items-center gap-2">
-            <Shield className="size-5 text-emerald-400" />
+            <Shield className="size-5 text-emerald-600" />
             <h3 className="font-semibold">Document Status Overview</h3>
           </div>
           <div className="grid grid-cols-4 gap-3 text-center">
             {(["verified", "uploaded", "missing", "rejected"] as const).map((s) => (
-              <div key={s} className="glass-panel rounded-lg p-3">
+              <div key={s} className="surface-card rounded-lg p-3">
                 <p className="text-xl font-bold">{docs.filter((d) => d.status === s).length}</p>
                 <StatusBadge variant={s === "verified" ? "success" : s === "missing" ? "danger" : "warning"}>
                   {s}
@@ -65,7 +65,7 @@ export default function DataRoomPage() {
       </div>
 
       <Sheet open={!!selected} onOpenChange={() => setSelected(null)}>
-        <SheetContent className="glass-panel-strong border-white/10">
+        <SheetContent className="surface-card-elevated border-slate-200">
           {selected && (
             <>
               <SheetHeader>
@@ -92,7 +92,7 @@ export default function DataRoomPage() {
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex justify-between glass-panel rounded-lg p-3">
+    <div className="flex justify-between surface-card rounded-lg p-3">
       <span className="text-muted-foreground">{label}</span>
       <span className="font-medium capitalize">{value}</span>
     </div>

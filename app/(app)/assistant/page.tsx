@@ -93,10 +93,10 @@ export default function AssistantPage() {
     <div className="space-y-6">
       <PageHeader
         title="AI Procurement & Sales Consultation"
-        description="Full workspace for product discovery, quotes, leasing, comparisons, and expert sales guidance — powered by EMRE AI."
+        description="Procurement guidance, product recommendations, offer comparisons, and sales consultation."
         action={
           <Button
-            className="gap-2 bg-gradient-to-r from-violet-600 to-cyan-600"
+            className="gap-2 bg-blue-600 hover:bg-blue-700"
             onClick={() => openConsultation()}
           >
             <MessageSquare className="size-4" /> Book Consultation
@@ -106,9 +106,9 @@ export default function AssistantPage() {
 
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-4">
-          <div className="glass-panel rounded-xl p-5 space-y-4 neon-border">
+          <div className="surface-card rounded-xl p-5 space-y-4 border-blue-200">
             <div className="flex items-center gap-2">
-              <Sparkles className="size-5 text-violet-400" />
+              <Sparkles className="size-5 text-violet-600" />
               <h2 className="font-semibold">Describe Your Need</h2>
             </div>
 
@@ -117,13 +117,13 @@ export default function AssistantPage() {
                 <button
                   key={m.id}
                   onClick={() => setMode(m.id)}
-                  className={`glass-panel rounded-lg p-3 text-left text-xs transition-all ${
+                  className={`surface-card rounded-lg p-3 text-left text-xs transition-all border ${
                     mode === m.id
-                      ? "border-violet-500/50 bg-violet-500/10 text-violet-200"
-                      : "hover:border-white/20"
+                      ? "border-blue-200 bg-blue-50 text-blue-800"
+                      : "border-slate-200 hover:border-slate-300"
                   }`}
                 >
-                  <m.icon className="size-4 mb-1 text-cyan-400" />
+                  <m.icon className="size-4 mb-1 text-blue-600" />
                   {m.label}
                 </button>
               ))}
@@ -133,7 +133,7 @@ export default function AssistantPage() {
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               rows={5}
-              className="glass-panel border-white/10 resize-none text-sm min-h-[120px]"
+              className="surface-card border-slate-200 resize-none text-sm min-h-[120px]"
               placeholder="Describe products, volume, countries, budget, financing preference…"
             />
 
@@ -141,10 +141,10 @@ export default function AssistantPage() {
               <div className="space-y-2">
                 <Label className="text-xs">Target Country</Label>
                 <Select value={country} onValueChange={setCountry}>
-                  <SelectTrigger className="glass-panel border-white/10">
+                  <SelectTrigger className="surface-card border-slate-200">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="glass-panel-strong border-white/10">
+                  <SelectContent className="surface-card-elevated border-slate-200">
                     {COUNTRIES.map((c) => (
                       <SelectItem key={c} value={c}>
                         {c}
@@ -166,7 +166,7 @@ export default function AssistantPage() {
 
           {result && (
             <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="glass-panel rounded-xl p-5 space-y-4">
+              <div className="surface-card rounded-xl p-5 space-y-4">
                 <div className="flex items-center gap-2 flex-wrap">
                   <h3 className="font-semibold">AI Result</h3>
                   <StatusBadge variant="success">Confidence 94%</StatusBadge>
@@ -183,12 +183,12 @@ export default function AssistantPage() {
                 </div>
 
                 <div className="grid sm:grid-cols-2 gap-3 text-sm">
-                  <div className="glass-panel rounded-lg p-3">
-                    <span className="text-cyan-400 font-medium">Compliance: </span>
+                  <div className="surface-card rounded-lg p-3">
+                    <span className="text-blue-600 font-medium">Compliance: </span>
                     {result.compliance}
                   </div>
-                  <div className="glass-panel rounded-lg p-3">
-                    <span className="text-amber-400 font-medium">Risk Notes: </span>
+                  <div className="surface-card rounded-lg p-3">
+                    <span className="text-amber-600 font-medium">Risk Notes: </span>
                     {result.riskNotes}
                   </div>
                 </div>
@@ -204,12 +204,12 @@ export default function AssistantPage() {
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
-                <div className="glass-panel rounded-xl p-4 space-y-2">
+                <div className="surface-card rounded-xl p-4 space-y-2">
                   <p className="text-xs font-medium text-muted-foreground uppercase">
                     Suggested Suppliers
                   </p>
                   {result.suppliers.map((s) => (
-                    <div key={s.id} className="text-sm glass-panel rounded-lg p-2">
+                    <div key={s.id} className="text-sm surface-card rounded-lg p-2">
                       <p className="font-medium">{s.name}</p>
                       <p className="text-xs text-muted-foreground">
                         {s.country} · {s.responseTime}
@@ -218,7 +218,7 @@ export default function AssistantPage() {
                   ))}
                 </div>
                 {result.servicePartner && (
-                  <div className="glass-panel rounded-xl p-4 space-y-2">
+                  <div className="surface-card rounded-xl p-4 space-y-2">
                     <p className="text-xs font-medium text-muted-foreground uppercase">
                       Service Partner
                     </p>
@@ -232,7 +232,7 @@ export default function AssistantPage() {
 
               <div className="flex flex-wrap gap-2">
                 <Link href="/rfq">
-                  <Button className="gap-2 bg-cyan-600 hover:bg-cyan-500">
+                  <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
                     Create RFQ <ArrowRight className="size-3" />
                   </Button>
                 </Link>
@@ -259,22 +259,22 @@ export default function AssistantPage() {
         </div>
 
         <div className="space-y-4">
-          <div className="glass-panel rounded-xl p-4 space-y-3">
+          <div className="surface-card rounded-xl p-4 space-y-3">
             <p className="text-sm font-medium">Industry Use Cases</p>
             {useCases.map((uc) => (
               <button
                 key={uc}
                 type="button"
                 onClick={() => setPrompt(uc)}
-                className="w-full text-left text-xs glass-panel rounded-lg px-3 py-2 hover:border-violet-500/40 transition-colors"
+                className="w-full text-left text-xs surface-card rounded-lg px-3 py-2 hover:border-blue-300 transition-colors"
               >
                 {uc}
               </button>
             ))}
           </div>
-          <div className="glass-panel rounded-xl p-4 space-y-2 text-sm">
+          <div className="surface-card rounded-xl p-4 space-y-2 text-sm">
             <p className="font-medium flex items-center gap-2">
-              <CreditCard className="size-4 text-emerald-400" /> Finance Modes
+              <CreditCard className="size-4 text-emerald-600" /> Finance Modes
             </p>
             {["Buy now", "Lease", "Rent-to-own", "Finetrading", "Service bundle"].map((m) => (
               <div key={m} className="flex justify-between text-xs">
@@ -291,7 +291,7 @@ export default function AssistantPage() {
 
 function Info({ label, value }: { label: string; value: string }) {
   return (
-    <div className="glass-panel rounded-lg p-3">
+    <div className="surface-card rounded-lg p-3">
       <p className="text-xs text-muted-foreground">{label}</p>
       <p className="font-medium text-sm">{value}</p>
     </div>

@@ -60,10 +60,10 @@ export function ConsultationDrawer() {
 
   return (
     <Sheet open={consultationOpen} onOpenChange={(v) => !v && closeConsultation()}>
-      <SheetContent className="glass-panel-strong border-white/10 w-full sm:max-w-lg overflow-y-auto">
+      <SheetContent className="surface-card-elevated border-slate-200 w-full sm:max-w-lg overflow-y-auto">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
-            <Sparkles className="size-5 text-violet-400" />
+            <Sparkles className="size-5 text-violet-600" />
             Sales Consultation Request
           </SheetTitle>
         </SheetHeader>
@@ -72,13 +72,13 @@ export function ConsultationDrawer() {
           <div className="mt-8 space-y-4 text-center">
             <StatusBadge variant="success">Consultation queued</StatusBadge>
             <p className="text-sm text-muted-foreground">
-              An EMRE sales advisor will respond within 4 hours with product, leasing, and
+              A sales advisor will respond within 4 hours with product, leasing, and
               deployment recommendations.
             </p>
             {finance && (
-              <div className="glass-panel rounded-lg p-4 text-sm">
+              <div className="surface-card rounded-lg p-4 text-sm">
                 Preliminary leasing estimate:{" "}
-                <span className="font-semibold neon-text-green">
+                <span className="font-semibold text-accent-green">
                   {formatCurrency(finance.leasingRateMonthly)}/mo
                 </span>
               </div>
@@ -88,7 +88,7 @@ export function ConsultationDrawer() {
         ) : (
           <div className="mt-6 space-y-4">
             {product && (
-              <div className="glass-panel rounded-lg p-3 text-sm">
+              <div className="surface-card rounded-lg p-3 text-sm">
                 <p className="text-xs text-muted-foreground">Selected product</p>
                 <p className="font-medium">{product.name.en}</p>
               </div>
@@ -97,10 +97,10 @@ export function ConsultationDrawer() {
             <div className="space-y-2">
               <Label className="text-xs">Industry Use Case</Label>
               <Select value={useCase} onValueChange={setUseCase}>
-                <SelectTrigger className="glass-panel border-white/10">
+                <SelectTrigger className="surface-card border-slate-200">
                   <SelectValue placeholder="Select use case" />
                 </SelectTrigger>
-                <SelectContent className="glass-panel-strong border-white/10">
+                <SelectContent className="surface-card-elevated border-slate-200">
                   {useCases.map((uc) => (
                     <SelectItem key={uc} value={uc}>
                       {uc}
@@ -114,10 +114,10 @@ export function ConsultationDrawer() {
               <div className="space-y-2">
                 <Label className="text-xs">Budget Range</Label>
                 <Select value={budget} onValueChange={setBudget}>
-                  <SelectTrigger className="glass-panel border-white/10">
+                  <SelectTrigger className="surface-card border-slate-200">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="glass-panel-strong border-white/10">
+                  <SelectContent className="surface-card-elevated border-slate-200">
                     {budgets.map((b) => (
                       <SelectItem key={b} value={b}>
                         {b}
@@ -129,10 +129,10 @@ export function ConsultationDrawer() {
               <div className="space-y-2">
                 <Label className="text-xs">Country</Label>
                 <Select value={country} onValueChange={setCountry}>
-                  <SelectTrigger className="glass-panel border-white/10">
+                  <SelectTrigger className="surface-card border-slate-200">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="glass-panel-strong border-white/10">
+                  <SelectContent className="surface-card-elevated border-slate-200">
                     {COUNTRIES.map((c) => (
                       <SelectItem key={c} value={c}>
                         {c}
@@ -147,10 +147,10 @@ export function ConsultationDrawer() {
               <div className="space-y-2">
                 <Label className="text-xs">Buyer Type</Label>
                 <Select value={buyerType} onValueChange={setBuyerType}>
-                  <SelectTrigger className="glass-panel border-white/10">
+                  <SelectTrigger className="surface-card border-slate-200">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
-                  <SelectContent className="glass-panel-strong border-white/10">
+                  <SelectContent className="surface-card-elevated border-slate-200">
                     {buyerTypes.map((b) => (
                       <SelectItem key={b} value={b}>
                         {b}
@@ -162,10 +162,10 @@ export function ConsultationDrawer() {
               <div className="space-y-2">
                 <Label className="text-xs">Deployment Scenario</Label>
                 <Select>
-                  <SelectTrigger className="glass-panel border-white/10">
+                  <SelectTrigger className="surface-card border-slate-200">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
-                  <SelectContent className="glass-panel-strong border-white/10">
+                  <SelectContent className="surface-card-elevated border-slate-200">
                     {deploymentScenarios.map((s) => (
                       <SelectItem key={s} value={s}>
                         {s}
@@ -182,7 +182,7 @@ export function ConsultationDrawer() {
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={3}
-                className="glass-panel border-white/10 resize-none text-sm"
+                className="surface-card border-slate-200 resize-none text-sm"
                 placeholder="Describe volume, timeline, financing preference…"
               />
             </div>
@@ -193,7 +193,7 @@ export function ConsultationDrawer() {
                   key={uc}
                   type="button"
                   onClick={() => setUseCase(uc)}
-                  className="text-left text-xs glass-panel rounded-lg px-3 py-2 hover:border-violet-500/40 transition-colors"
+                  className="text-left text-xs surface-card rounded-lg px-3 py-2 hover:border-blue-300 transition-colors"
                 >
                   {uc}
                 </button>

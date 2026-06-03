@@ -244,3 +244,90 @@ export interface AdminMetrics {
   onboardingPipeline: number;
   kpis: { label: string; value: string | number; change?: number }[];
 }
+
+export type NetworkEntityRole =
+  | "supplier"
+  | "dealer"
+  | "customer"
+  | "service"
+  | "finance"
+  | "showroom";
+
+export type NetworkSupplierType =
+  | "manufacturer"
+  | "distributor"
+  | "importer"
+  | "wholesaler";
+
+export type NetworkDealerType = "reseller" | "distribution_partner" | "retail_partner";
+
+export type NetworkCustomerType =
+  | "hospital"
+  | "care_group"
+  | "laboratory"
+  | "municipality"
+  | "hospitality_group"
+  | "cleaning_company"
+  | "industrial_site";
+
+export type NetworkServiceType =
+  | "service_partner"
+  | "technician"
+  | "installation"
+  | "maintenance"
+  | "spare_parts_hub";
+
+export type NetworkFinanceType = "leasing_partner" | "financing_partner" | "finetrading_partner";
+
+export type NetworkShowroomType = "showroom" | "demo_center" | "experience_center";
+
+export interface NetworkEntity {
+  id: string;
+  name: string;
+  role: NetworkEntityRole;
+  subtype: string;
+  vertical: Vertical | "both";
+  country: Country;
+  region: string;
+  city: string;
+  lat: number;
+  lng: number;
+  active: boolean;
+  responseTime: string;
+  certifications: string[];
+  categories: string[];
+  serviceTypes: string[];
+  serviceLevel: string;
+  coverageArea: string;
+  contactEmail: string;
+  contactPhone: string;
+  products: number;
+  activeRfqs: number;
+  activeOrders: number;
+  serviceTickets: number;
+  financeAvailable: boolean;
+}
+
+export interface NetworkRoute {
+  id: string;
+  fromId: string;
+  toId: string;
+  type:
+    | "supplier_dealer"
+    | "dealer_customer"
+    | "warehouse_customer"
+    | "technician"
+    | "spare_parts";
+  vertical: Vertical | "both";
+}
+
+export interface NetworkIntelligenceRegion {
+  region: string;
+  country: Country;
+  demandScore: number;
+  rfqDensity: number;
+  orderVolume: number;
+  serviceDemand: number;
+  financeDemand: number;
+  status: "top" | "emerging" | "underserved" | "stable";
+}

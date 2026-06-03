@@ -1,9 +1,8 @@
 import type { Country, Language } from "./types";
 
-export const EMRE_NAME = "EMRE";
-export const EMRE_FULL = "European Medical & Robotics Engine";
-export const EMRE_SUBTITLE =
-  "AI-powered B2B Commerce Infrastructure for Medical Supply & Robotics Distribution";
+export const PRODUCT_NAME_LINE1 = "DISTRIBUTION";
+export const PRODUCT_NAME_LINE2 = "ENGINE";
+export const PRODUCT_NAME = "DISTRIBUTION ENGINE";
 
 export const LANGUAGES: { code: Language; label: string; flag: string }[] = [
   { code: "en", label: "English", flag: "🇬🇧" },
@@ -106,13 +105,13 @@ export const ROBOTICS_BRANDS = [
   "LogiMove Robotics",
 ];
 
-export const GRADIENTS = [
-  "from-cyan-500/40 via-blue-600/30 to-violet-600/40",
-  "from-emerald-500/40 via-cyan-600/30 to-blue-600/40",
-  "from-violet-500/40 via-fuchsia-600/30 to-cyan-600/40",
-  "from-blue-500/40 via-indigo-600/30 to-emerald-600/40",
-  "from-teal-500/40 via-cyan-600/30 to-violet-600/40",
-  "from-green-500/40 via-emerald-600/30 to-blue-600/40",
+export const CARD_GRADIENTS = [
+  "from-slate-100 to-slate-50",
+  "from-blue-50 to-slate-50",
+  "from-emerald-50 to-slate-50",
+  "from-slate-50 to-blue-50",
+  "from-slate-100 to-blue-50",
+  "from-slate-50 to-emerald-50",
 ];
 
 export const NAV_ITEMS = [
@@ -124,7 +123,8 @@ export const NAV_ITEMS = [
   { href: "/magazine", label: "Magazine", icon: "Newspaper" },
   { href: "/finance", label: "Leasing & Finance", icon: "CreditCard" },
   { href: "/orders", label: "Orders & Tracking", icon: "Package" },
-  { href: "/service-network", label: "Service Network", icon: "MapPin" },
+  { href: "/service-network", label: "Service Network", icon: "Wrench" },
+  { href: "/network-map", label: "Network Map", icon: "Globe" },
   { href: "/account", label: "Customer Account", icon: "User" },
   { href: "/data-room", label: "Data Room", icon: "FolderLock" },
   { href: "/supplier", label: "Supplier Portal", icon: "Truck" },

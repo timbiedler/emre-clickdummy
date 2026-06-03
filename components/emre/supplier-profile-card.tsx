@@ -19,7 +19,7 @@ export function SupplierProfileCard({
   return (
     <div
       onClick={onClick}
-      className="glass-panel rounded-xl p-5 cursor-pointer hover:border-cyan-500/30 transition-all space-y-4"
+      className="surface-card rounded-xl p-5 cursor-pointer hover:border-blue-300 transition-all space-y-4"
     >
       <div className="flex items-start justify-between">
         <div>
@@ -40,7 +40,7 @@ export function SupplierProfileCard({
       <div className="grid grid-cols-3 gap-3 text-center">
         <div>
           <p className="text-lg font-semibold flex items-center justify-center gap-1">
-            <Star className="size-4 text-amber-400" />
+            <Star className="size-4 text-amber-600" />
             {supplier.rating.toFixed(1)}
           </p>
           <p className="text-xs text-muted-foreground">Rating</p>
@@ -51,7 +51,7 @@ export function SupplierProfileCard({
         </div>
         <div>
           <p className="text-lg font-semibold flex items-center justify-center gap-1">
-            <Shield className="size-4 text-emerald-400" />
+            <Shield className="size-4 text-emerald-600" />
             {supplier.complianceScore}%
           </p>
           <p className="text-xs text-muted-foreground">Compliance</p>

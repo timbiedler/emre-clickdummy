@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { Check, MapPin, CreditCard, Wrench, Truck, Sparkles, GitCompare } from "lucide-react";
 import { StatusBadge } from "./status-badge";
@@ -38,46 +37,42 @@ export function ProductCard({
   const stop = (e: React.MouseEvent) => e.stopPropagation();
 
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -4 }}
+    <div
       onClick={onClick}
       className={cn(
-        "glass-panel rounded-xl overflow-hidden cursor-pointer group transition-all hover:border-cyan-500/30 hover:shadow-[0_0_25px_rgba(34,211,238,0.1)] flex flex-col",
-        selected && "ring-2 ring-cyan-500/50"
+        "surface-card rounded-xl overflow-hidden cursor-pointer group transition-shadow hover:shadow-md flex flex-col",
+        selected && "ring-2 ring-blue-400 border-blue-200"
       )}
     >
       <div className="relative">
         <ProductImagePlaceholder product={product} className="h-36" size="md" />
         {inCompare && (
-          <div className="absolute top-2 right-2 rounded-full bg-cyan-500 p-1 z-10">
-            <Check className="size-3 text-black" />
+          <div className="absolute top-2 right-2 rounded-full bg-blue-600 p-1 z-10">
+            <Check className="size-3 text-white" />
           </div>
         )}
       </div>
-      <div className="p-4 space-y-2 flex-1 flex flex-col">
+      <div className="p-4 space-y-2.5 flex-1 flex flex-col">
         <div className="flex items-start justify-between gap-2">
-          <p className="text-xs text-cyan-400 font-medium">{product.brand}</p>
+          <p className="text-xs text-slate-500 font-medium">{product.brand}</p>
           <StatusBadge variant={availabilityVariant[product.availability]}>
             {product.availability.replace("_", " ")}
           </StatusBadge>
         </div>
-        <h3 className="font-medium text-sm leading-snug line-clamp-2 group-hover:text-cyan-300 transition-colors">
+        <h3 className="font-medium text-sm leading-snug line-clamp-2 text-slate-900 group-hover:text-blue-700 transition-colors">
           {t(product.name, language)}
         </h3>
 
-        <div className="grid grid-cols-2 gap-2 pt-1">
+        <div className="grid grid-cols-2 gap-3 pt-1">
           <div>
-            <p className="text-[10px] text-muted-foreground uppercase">Purchase</p>
-            <p className="text-base font-semibold neon-text-cyan">
+            <p className="text-[10px] text-slate-500 uppercase tracking-wide">Purchase</p>
+            <p className="text-base font-semibold text-slate-900">
               {formatCurrency(finance.purchasePrice)}
             </p>
           </div>
           <div>
-            <p className="text-[10px] text-muted-foreground uppercase">Leasing / mo</p>
-            <p className="text-base font-semibold neon-text-green">
+            <p className="text-[10px] text-slate-500 uppercase tracking-wide">Leasing / mo</p>
+            <p className="text-base font-semibold text-accent-green">
               {formatCurrency(finance.leasingRateMonthly)}
             </p>
           </div>
@@ -99,27 +94,27 @@ export function ProductCard({
           )}
         </div>
 
-        <p className="text-[10px] text-muted-foreground flex items-center gap-1">
+        <p className="text-[11px] text-slate-500 flex items-center gap-1">
           <MapPin className="size-3" />
           {product.primaryCountry} · {product.supplierName}
         </p>
 
         {showActions && (
-          <div className="grid grid-cols-2 gap-1.5 pt-2 mt-auto border-t border-white/5">
+          <div className="grid grid-cols-2 gap-2 pt-3 mt-auto border-t border-slate-100">
             <Link href="/rfq" onClick={stop}>
-              <Button size="sm" variant="outline" className="w-full h-8 text-[10px] px-2">
+              <Button size="sm" variant="outline" className="w-full h-8 text-xs">
                 Request Offer
               </Button>
             </Link>
             <Link href="/finance" onClick={stop}>
-              <Button size="sm" variant="outline" className="w-full h-8 text-[10px] px-2">
+              <Button size="sm" variant="outline" className="w-full h-8 text-xs">
                 Leasing Options
               </Button>
             </Link>
             <Button
               size="sm"
               variant="outline"
-              className="h-8 text-[10px] px-2 gap-1"
+              className="h-8 text-xs gap-1"
               onClick={(e) => {
                 stop(e);
                 openConsultation(product.id);
@@ -130,7 +125,7 @@ export function ProductCard({
             <Button
               size="sm"
               variant="outline"
-              className="h-8 text-[10px] px-2 gap-1"
+              className="h-8 text-xs gap-1"
               onClick={(e) => {
                 stop(e);
                 toggleCompare(product.id);
@@ -141,6 +136,6 @@ export function ProductCard({
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }

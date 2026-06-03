@@ -54,9 +54,9 @@ export function FilterPanel({
   };
 
   return (
-    <div className="glass-panel rounded-xl p-4 space-y-5">
+    <div className="surface-card rounded-xl p-4 space-y-5">
       <div className="flex items-center gap-2 text-sm font-medium">
-        <SlidersHorizontal className="size-4 text-cyan-400" />
+        <SlidersHorizontal className="size-4 text-blue-600" />
         Filters
       </div>
 
@@ -66,7 +66,7 @@ export function FilterPanel({
           placeholder="Search products…"
           value={filters.search}
           onChange={(e) => onChange({ ...filters, search: e.target.value })}
-          className="pl-9 glass-panel border-white/10"
+          className="pl-9 surface-card border-slate-200"
         />
       </div>
 
@@ -74,10 +74,10 @@ export function FilterPanel({
         value={filters.sort}
         onValueChange={(v) => onChange({ ...filters, sort: v })}
       >
-        <SelectTrigger className="glass-panel border-white/10">
+        <SelectTrigger className="surface-card border-slate-200">
           <SelectValue placeholder="Sort by" />
         </SelectTrigger>
-        <SelectContent className="glass-panel-strong border-white/10">
+        <SelectContent className="surface-card-elevated border-slate-200">
           <SelectItem value="relevance">Relevance</SelectItem>
           <SelectItem value="price-asc">Price: Low to High</SelectItem>
           <SelectItem value="price-desc">Price: High to Low</SelectItem>

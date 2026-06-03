@@ -22,10 +22,10 @@ export function ProductFinanceSection({
   const finance = getProductFinance(product);
 
   return (
-    <div className="glass-panel rounded-xl p-4 space-y-4 neon-border">
+    <div className="surface-card rounded-xl p-4 space-y-4 border-blue-200">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold flex items-center gap-2">
-          <CreditCard className="size-4 text-emerald-400" />
+          <CreditCard className="size-4 text-emerald-600" />
           Finance & Leasing
         </h3>
         <StatusBadge variant={financeStatusVariant[finance.status]}>
@@ -84,9 +84,9 @@ function FinanceCell({
   highlight?: boolean;
 }) {
   return (
-    <div className="glass-panel rounded-lg p-2.5">
+    <div className="surface-card rounded-lg p-2.5">
       <p className="text-[10px] text-muted-foreground uppercase">{label}</p>
-      <p className={`text-sm font-semibold ${highlight ? "neon-text-green" : ""}`}>{value}</p>
+      <p className={`text-sm font-semibold ${highlight ? "text-accent-green" : ""}`}>{value}</p>
     </div>
   );
 }

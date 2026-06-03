@@ -1,5 +1,5 @@
 import type { Country, Product, TranslationStatus, Vertical } from "../types";
-import { GRADIENTS } from "../constants";
+import { CARD_GRADIENTS } from "../constants";
 import { localize, pick } from "../generators";
 
 export interface CatalogSeed {
@@ -97,7 +97,7 @@ function buildProducts(
       serviceCoverage: seed.serviceCoverage,
       supplierId,
       supplierName: supplierNames[seed.supplierIndex],
-      imageGradient: pick(GRADIENTS, i),
+      imageGradient: pick(CARD_GRADIENTS, i),
       imageLabel: seed.imageLabel,
       specs: seed.specs,
       aiSummary: localize(

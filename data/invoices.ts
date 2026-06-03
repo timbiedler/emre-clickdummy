@@ -3,7 +3,7 @@ import type { Invoice } from "./types";
 
 export const invoices: Invoice[] = Array.from({ length: 20 }, (_, i) => ({
   id: `inv-${String(i + 1).padStart(3, "0")}`,
-  invoiceNumber: `EMRE-2026-${String(1000 + i)}`,
+  invoiceNumber: `DE-2026-${String(1000 + i)}`,
   orderId: `ord-${String(i + 1).padStart(3, "0")}`,
   vertical: i < 10 ? "medical" : "robotics",
   amount: 3800 + i * 4200,

@@ -29,7 +29,7 @@ export function MagazineCard({
     <motion.div
       whileHover={{ y: -4 }}
       onClick={onClick}
-      className="glass-panel rounded-xl overflow-hidden cursor-pointer group hover:border-cyan-500/30 transition-all"
+      className="surface-card rounded-xl overflow-hidden cursor-pointer group hover:border-blue-300 transition-all"
     >
       <div
         className={`h-32 bg-gradient-to-br ${item.imageGradient} flex items-center justify-center`}
@@ -41,7 +41,7 @@ export function MagazineCard({
           <StatusBadge variant="info">{item.type.replace("_", " ")}</StatusBadge>
           <span className="text-xs text-muted-foreground">{item.readTime}</span>
         </div>
-        <h3 className="font-medium text-sm leading-snug line-clamp-2 group-hover:text-cyan-300 transition-colors">
+        <h3 className="font-medium text-sm leading-snug line-clamp-2 group-hover:text-blue-700 transition-colors">
           {t(item.title, language)}
         </h3>
         <p className="text-xs text-muted-foreground line-clamp-2">

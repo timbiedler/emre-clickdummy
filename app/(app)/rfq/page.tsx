@@ -30,14 +30,14 @@ export default function RFQPage() {
         title="RFQ Center"
         description="Manage requests for quotation, supplier matching, offer comparison, and multilingual communication."
         action={
-          <Button className="gap-2 bg-cyan-600 hover:bg-cyan-500">
+          <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
             <Plus className="size-4" /> Create RFQ
           </Button>
         }
       />
 
       <Tabs defaultValue="all">
-        <TabsList className="glass-panel border-white/10">
+        <TabsList className="surface-card border-slate-200">
           {tabs.map((t) => (
             <TabsTrigger key={t.id} value={t.id}>
               {t.label} ({verticalRfqs.filter(t.filter).length})

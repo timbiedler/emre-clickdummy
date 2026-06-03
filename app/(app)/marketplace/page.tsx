@@ -71,7 +71,7 @@ export default function MarketplacePage() {
     <div className="space-y-6">
       <PageHeader
         title="Marketplace"
-        description={`${vertical === "medical" ? "Medical Supply" : "Robotics Distribution"} — ${filtered.length} products available across EU markets`}
+        description={`${filtered.length} products available for procurement across EU markets.`}
         action={
           compareList.length > 0 && (
             <Button variant="outline" className="gap-2" onClick={clearCompare}>
@@ -115,7 +115,7 @@ export default function MarketplacePage() {
       />
 
       <Sheet open={!!supplierId} onOpenChange={() => setSupplierId(null)}>
-        <SheetContent className="glass-panel-strong border-white/10">
+        <SheetContent className="surface-card-elevated border-slate-200">
           <SheetHeader>
             <SheetTitle>Supplier Profile</SheetTitle>
           </SheetHeader>

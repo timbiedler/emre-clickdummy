@@ -16,7 +16,6 @@ import { StatusBadge } from "@/components/emre/status-badge";
 import { useApp } from "@/context/app-context";
 import { adminActivities } from "@/data/admin-metrics";
 import { rfqs, orders, financeApplications } from "@/data";
-import { EMRE_SUBTITLE } from "@/data/constants";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import {
@@ -52,10 +51,10 @@ export default function CommandCenterPage() {
     <div className="space-y-6">
       <PageHeader
         title="Command Center"
-        description={EMRE_SUBTITLE}
+        description="Operational overview of RFQs, orders, finance pipeline, and procurement activity."
         action={
           <Link href="/assistant">
-            <Button className="gap-2 bg-cyan-600 hover:bg-cyan-500">
+            <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
               <Sparkles className="size-4" /> AI Need Assistant
             </Button>
           </Link>
@@ -66,33 +65,40 @@ export default function CommandCenterPage() {
         <MetricCard label="AI Consultations" value={47} change={22.1} icon={Sparkles} accent="violet" />
         <MetricCard label="Leasing Pipeline" value={financeApps.length + 8} change={18.6} icon={CreditCard} accent="green" />
         <MetricCard label="Finance Readiness" value="72%" change={5.4} icon={CreditCard} accent="blue" />
-        <MetricCard label="AI-generated RFQs" value={34} change={15.2} icon={FileText} accent="cyan" />
+        <MetricCard label="AI-generated RFQs" value={34} change={15.2} icon={FileText} accent="blue" />
         <MetricCard label="Leasing Demand Top SKU" value={vertical === "medical" ? "PPE" : "Clean Bot"} icon={TrendingUp} accent="violet" />
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <MetricCard label="Active RFQs" value={verticalRfqs.length + 12} change={14.2} icon={FileText} accent="cyan" />
+        <MetricCard label="Active RFQs" value={verticalRfqs.length + 12} change={14.2} icon={FileText} accent="blue" />
         <MetricCard label="Open Offers" value={28} change={8.5} icon={TrendingUp} accent="violet" />
         <MetricCard label="Orders in Transit" value={inTransit} icon={Package} accent="green" />
         <MetricCard label="Finance Pipeline" value={financeApps.length} change={11.3} icon={CreditCard} accent="blue" />
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 glass-panel rounded-xl p-5">
-          <p className="text-sm font-medium mb-4">Platform Activity — {vertical === "medical" ? "Medical Supply" : "Robotics Distribution"}</p>
+        <div className="lg:col-span-2 surface-card rounded-xl p-5">
+          <p className="text-sm font-medium text-slate-900 mb-4">Platform activity</p>
           <ResponsiveContainer width="100%" height={240}>
             <AreaChart data={chartData}>
               <defs>
                 <linearGradient id="rfqGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#22d3ee" stopOpacity={0.3} />
-                  <stop offset="100%" stopColor="#22d3ee" stopOpacity={0} />
+                  <stop offset="0%" stopColor="#2563eb" stopOpacity={0.15} />
+                  <stop offset="100%" stopColor="#2563eb" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <XAxis dataKey="month" stroke="#64748b" fontSize={12} />
-              <YAxis stroke="#64748b" fontSize={12} />
-              <Tooltip contentStyle={{ background: "#1e1b2e", border: "1px solid rgba(255,255,255,0.1)" }} />
-              <Area type="monotone" dataKey="rfqs" stroke="#22d3ee" fill="url(#rfqGrad)" />
-              <Area type="monotone" dataKey="orders" stroke="#a78bfa" fill="transparent" />
+              <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} />
+              <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+              <Tooltip
+                contentStyle={{
+                  background: "#ffffff",
+                  border: "1px solid #e5e7eb",
+                  borderRadius: "8px",
+                  fontSize: "12px",
+                }}
+              />
+              <Area type="monotone" dataKey="rfqs" stroke="#2563eb" fill="url(#rfqGrad)" strokeWidth={2} />
+              <Area type="monotone" dataKey="orders" stroke="#16a34a" fill="transparent" strokeWidth={2} />
             </AreaChart>
           </ResponsiveContainer>
         </div>
@@ -103,7 +109,7 @@ export default function CommandCenterPage() {
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium">Active RFQs</p>
-            <Link href="/rfq" className="text-xs text-cyan-400 hover:underline">View all</Link>
+            <Link href="/rfq" className="text-xs text-blue-600 hover:underline">View all</Link>
           </div>
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
             {verticalRfqs.map((rfq) => (
@@ -114,9 +120,9 @@ export default function CommandCenterPage() {
         <ActivityFeed items={adminActivities.slice(0, 8)} />
       </div>
 
-      <div className="glass-panel rounded-xl p-5">
+      <div className="surface-card rounded-xl p-5">
         <p className="text-sm font-medium mb-3 flex items-center gap-2">
-          <Sparkles className="size-4 text-violet-400" /> AI Recommendations
+          <Sparkles className="size-4 text-violet-600" /> AI Recommendations
         </p>
         <div className="grid md:grid-cols-3 gap-3">
           {[
@@ -124,7 +130,7 @@ export default function CommandCenterPage() {
             "Financing pre-approval available for robotics fleet lease",
             "Translation queue cleared for FR marketplace listings",
           ].map((rec) => (
-            <div key={rec} className="glass-panel rounded-lg p-3 text-sm flex items-start gap-2">
+            <div key={rec} className="surface-card rounded-lg p-3 text-sm flex items-start gap-2">
               <StatusBadge variant="violet">AI</StatusBadge>
               {rec}
             </div>

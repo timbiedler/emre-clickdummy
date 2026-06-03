@@ -14,23 +14,17 @@ export function VerticalSwitcher({ className }: { className?: string }) {
   ];
 
   return (
-    <div
-      className={cn(
-        "inline-flex rounded-xl glass-panel p-1 gap-1",
-        className
-      )}
-    >
+    <div className={cn("inline-flex rounded-lg border border-slate-200 bg-white p-1 gap-1", className)}>
       {options.map(({ id, label, icon: Icon }) => (
         <button
           key={id}
+          type="button"
           onClick={() => setVertical(id)}
           className={cn(
-            "flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all",
+            "flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
             vertical === id
-              ? id === "medical"
-                ? "bg-cyan-500/20 text-cyan-300 shadow-[0_0_20px_rgba(34,211,238,0.2)]"
-                : "bg-violet-500/20 text-violet-300 shadow-[0_0_20px_rgba(167,139,250,0.2)]"
-              : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+              ? "bg-blue-50 text-blue-700"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
           )}
         >
           <Icon className="size-4" />

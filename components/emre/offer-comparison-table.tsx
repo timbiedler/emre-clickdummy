@@ -28,10 +28,10 @@ export function OfferComparisonTable({ offers }: { offers: Offer[] }) {
           <Sparkles className="size-3 mr-1" /> AI-assisted
         </StatusBadge>
       </div>
-      <div className="glass-panel rounded-xl overflow-x-auto">
+      <div className="surface-card rounded-xl overflow-x-auto">
         <Table>
           <TableHeader>
-            <TableRow className="border-white/10 hover:bg-transparent">
+            <TableRow className="border-slate-200 hover:bg-transparent">
               <TableHead>Supplier</TableHead>
               <TableHead>Purchase</TableHead>
               <TableHead>Lease/mo</TableHead>
@@ -46,7 +46,7 @@ export function OfferComparisonTable({ offers }: { offers: Offer[] }) {
             {offers.map((offer) => {
               const supplier = suppliers.find((s) => s.id === offer.supplierId);
               return (
-                <TableRow key={offer.id} className="border-white/10">
+                <TableRow key={offer.id} className="border-slate-200">
                   <TableCell>
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
@@ -62,10 +62,10 @@ export function OfferComparisonTable({ offers }: { offers: Offer[] }) {
                       </p>
                     </div>
                   </TableCell>
-                  <TableCell className="font-semibold neon-text-cyan">
+                  <TableCell className="font-semibold text-accent-blue">
                     {formatCurrency(offer.price)}
                   </TableCell>
-                  <TableCell className="font-semibold neon-text-green">
+                  <TableCell className="font-semibold text-accent-green">
                     {formatCurrency(offer.leasingRateMonthly)}
                   </TableCell>
                   <TableCell className="text-xs">
@@ -93,9 +93,9 @@ export function OfferComparisonTable({ offers }: { offers: Offer[] }) {
       </div>
       <div className="grid sm:grid-cols-3 gap-2 text-xs">
         {offers.slice(0, 3).map((o) => (
-          <div key={o.id} className="glass-panel rounded-lg p-2">
+          <div key={o.id} className="surface-card rounded-lg p-2">
             <span className="text-muted-foreground">Monthly total: </span>
-            <span className="font-semibold neon-text-green">
+            <span className="font-semibold text-accent-green">
               {formatCurrency(o.monthlyCost)}
             </span>
           </div>

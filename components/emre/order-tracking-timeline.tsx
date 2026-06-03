@@ -21,7 +21,7 @@ export function OrderTrackingTimeline({ order }: { order: Order }) {
           className={cn(
             "rounded-lg px-3 py-1.5 text-xs font-bold",
             order.carrier === "DHL" && "bg-yellow-500/20 text-yellow-400",
-            order.carrier === "DPD" && "bg-red-500/20 text-red-400",
+            order.carrier === "DPD" && "bg-red-500/20 text-red-600",
             order.carrier === "UPS" && "bg-amber-700/20 text-amber-500",
             order.carrier === "FedEx" && "bg-purple-500/20 text-purple-400"
           )}
@@ -43,8 +43,8 @@ export function OrderTrackingTimeline({ order }: { order: Order }) {
                   className={cn(
                     "rounded-full p-1.5",
                     done
-                      ? "bg-cyan-500/20 text-cyan-400"
-                      : "bg-white/5 text-muted-foreground"
+                      ? "bg-blue-50 text-blue-600"
+                      : "bg-slate-100 text-slate-400"
                   )}
                 >
                   <step.icon className="size-4" />
@@ -53,12 +53,12 @@ export function OrderTrackingTimeline({ order }: { order: Order }) {
                   <div
                     className={cn(
                       "w-0.5 flex-1 min-h-8 mt-1",
-                      done ? "bg-cyan-500/40" : "bg-white/10"
+                      done ? "bg-blue-300" : "bg-slate-200"
                     )}
                   />
                 )}
               </div>
-              <div className={cn("pt-0.5", active && "text-cyan-300")}>
+              <div className={cn("pt-0.5", active && "text-blue-700")}>
                 <p className="text-sm font-medium">{step.label}</p>
                 {active && (
                   <p className="text-xs text-muted-foreground mt-0.5">

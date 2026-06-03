@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -10,56 +9,55 @@ export function MetricCard({
   change,
   icon: Icon,
   onClick,
-  accent = "cyan",
+  accent = "blue",
 }: {
   label: string;
   value: string | number;
   change?: number;
   icon?: React.ComponentType<{ className?: string }>;
   onClick?: () => void;
-  accent?: "cyan" | "violet" | "green" | "blue";
+  accent?: "blue" | "green" | "violet" | "slate";
 }) {
   const accentColors = {
-    cyan: "from-cyan-500/20 to-blue-600/10 border-cyan-500/20",
-    violet: "from-violet-500/20 to-fuchsia-600/10 border-violet-500/20",
-    green: "from-emerald-500/20 to-teal-600/10 border-emerald-500/20",
-    blue: "from-blue-500/20 to-indigo-600/10 border-blue-500/20",
+    blue: "border-blue-100 bg-blue-50/40",
+    violet: "border-violet-100 bg-violet-50/40",
+    green: "border-emerald-100 bg-emerald-50/40",
+    slate: "border-slate-200 bg-white",
+  };
+
+  const iconColors = {
+    blue: "text-blue-600",
+    violet: "text-violet-600",
+    green: "text-emerald-600",
+    slate: "text-slate-500",
   };
 
   return (
-    <motion.div
-      whileHover={{ scale: onClick ? 1.02 : 1 }}
-      whileTap={{ scale: onClick ? 0.98 : 1 }}
+    <div
       onClick={onClick}
       className={cn(
-        "glass-panel rounded-xl p-4 bg-gradient-to-br",
+        "surface-card rounded-xl p-5",
         accentColors[accent],
-        onClick && "cursor-pointer hover:border-cyan-500/40 transition-colors"
+        onClick && "cursor-pointer hover:border-blue-200 transition-colors"
       )}
     >
       <div className="flex items-start justify-between">
-        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-          {label}
-        </p>
-        {Icon && <Icon className="size-4 text-cyan-400/70" />}
+        <p className="text-xs font-medium text-slate-500">{label}</p>
+        {Icon && <Icon className={cn("size-4", iconColors[accent])} />}
       </div>
-      <p className="mt-2 text-2xl font-semibold tracking-tight">{value}</p>
+      <p className="mt-2 text-2xl font-semibold text-slate-900 tracking-tight">{value}</p>
       {change !== undefined && (
         <div
           className={cn(
-            "mt-1 flex items-center gap-1 text-xs",
-            change >= 0 ? "text-emerald-400" : "text-red-400"
+            "mt-1.5 flex items-center gap-1 text-xs font-medium",
+            change >= 0 ? "text-emerald-600" : "text-red-600"
           )}
         >
-          {change >= 0 ? (
-            <TrendingUp className="size-3" />
-          ) : (
-            <TrendingDown className="size-3" />
-          )}
+          {change >= 0 ? <TrendingUp className="size-3" /> : <TrendingDown className="size-3" />}
           {change >= 0 ? "+" : ""}
           {change}%
         </div>
       )}
-    </motion.div>
+    </div>
   );
 }

@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Geist_Mono } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppProvider } from "@/context/app-context";
-import { EMRE_FULL, EMRE_SUBTITLE } from "@/data/constants";
+import { PRODUCT_NAME } from "@/data/constants";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -16,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: `${EMRE_FULL} | B2B Commerce Platform`,
-  description: EMRE_SUBTITLE,
+  title: `${PRODUCT_NAME} | B2B Commerce Platform`,
+  description: "European B2B commerce and distribution platform for procurement, finance, and partner networks.",
 };
 
 export default function RootLayout({
@@ -26,11 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full dark`}
-    >
-      <body className="min-h-full flex flex-col antialiased">
+    <html lang="en" className={`${inter.variable} ${geistMono.variable} h-full`}>
+      <body className="min-h-full flex flex-col bg-white text-slate-900 antialiased">
         <TooltipProvider>
           <AppProvider>{children}</AppProvider>
         </TooltipProvider>

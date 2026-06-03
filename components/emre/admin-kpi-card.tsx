@@ -19,7 +19,7 @@ export function AdminKpiCard({
           label={kpi.label}
           value={kpi.value}
           change={kpi.change}
-          accent={(["cyan", "violet", "green", "blue"] as const)[i % 4]}
+          accent={(["blue", "violet", "green", "slate"] as const)[i % 4]}
           onClick={() => onKpiClick?.(kpi.label)}
         />
       ))}
@@ -52,7 +52,7 @@ export function AdminMetricGrid({ metrics }: { metrics: AdminMetrics }) {
             label={item.label}
             value={item.value}
             change={item.change}
-            accent={(["cyan", "violet", "green", "blue"] as const)[i % 4]}
+            accent={(["blue", "violet", "green", "slate"] as const)[i % 4]}
           />
         </motion.div>
       ))}

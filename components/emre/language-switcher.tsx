@@ -18,18 +18,18 @@ export function LanguageSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="glass-panel border-white/10 gap-2">
-          <Globe className="size-4 text-cyan-400" />
+        <Button variant="outline" size="sm" className="surface-card border-slate-200 gap-2">
+          <Globe className="size-4 text-blue-600" />
           <span>{current?.flag}</span>
           <span className="hidden sm:inline">{current?.label}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="glass-panel-strong border-white/10">
+      <DropdownMenuContent align="end" className="surface-card-elevated border-slate-200">
         {LANGUAGES.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
             onClick={() => setLanguage(lang.code)}
-            className={language === lang.code ? "bg-cyan-500/10 text-cyan-300" : ""}
+            className={language === lang.code ? "bg-blue-50 text-blue-700" : ""}
           >
             <span className="mr-2">{lang.flag}</span>
             {lang.label}

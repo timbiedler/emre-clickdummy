@@ -24,7 +24,7 @@ export function RFQCard({ rfq, onClick }: { rfq: RFQ; onClick: () => void }) {
     <motion.div
       whileHover={{ scale: 1.01 }}
       onClick={onClick}
-      className="glass-panel rounded-xl p-4 cursor-pointer hover:border-cyan-500/30 transition-all space-y-3"
+      className="surface-card rounded-xl p-4 cursor-pointer hover:border-blue-300 transition-all space-y-3"
     >
       <div className="flex items-start justify-between gap-2">
         <div>
@@ -52,7 +52,7 @@ export function RFQCard({ rfq, onClick }: { rfq: RFQ; onClick: () => void }) {
         </span>
       </div>
       <div className="flex items-center justify-between">
-        <span className="text-sm font-semibold neon-text-cyan">
+        <span className="text-sm font-semibold text-accent-blue">
           Budget: {formatCurrency(rfq.budget)}
         </span>
         <TranslationBadge status={rfq.translationStatus} />

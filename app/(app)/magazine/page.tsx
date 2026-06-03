@@ -42,7 +42,7 @@ export default function MagazinePage() {
       </div>
 
       <Dialog open={!!selected && !videoOpen} onOpenChange={() => setSelected(null)}>
-        <DialogContent className="glass-panel-strong border-white/10 max-w-lg">
+        <DialogContent className="surface-card-elevated border-slate-200 max-w-lg">
           {selected && (
             <>
               <DialogHeader>
@@ -60,7 +60,7 @@ export default function MagazinePage() {
                   </Button>
                 </Link>
                 <Link href="/rfq">
-                  <Button className="gap-2 bg-cyan-600 hover:bg-cyan-500">
+                  <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
                     Start RFQ <ArrowRight className="size-3" />
                   </Button>
                 </Link>
@@ -71,7 +71,7 @@ export default function MagazinePage() {
       </Dialog>
 
       <Dialog open={videoOpen} onOpenChange={setVideoOpen}>
-        <DialogContent className="glass-panel-strong border-white/10">
+        <DialogContent className="surface-card-elevated border-slate-200">
           <DialogHeader>
             <DialogTitle>{selected && t(selected.title, language)}</DialogTitle>
           </DialogHeader>

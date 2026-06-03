@@ -79,22 +79,20 @@ export function ProductImagePlaceholder({
   return (
     <div
       className={cn(
-        "relative flex flex-col items-center justify-center bg-gradient-to-br overflow-hidden",
+        "relative flex flex-col items-center justify-center bg-gradient-to-br border-b border-slate-100 overflow-hidden",
         product.imageGradient,
         className
       )}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.12),transparent_50%)]" />
-      <div className="absolute top-2 left-2 rounded-md bg-black/30 backdrop-blur-sm px-2 py-0.5">
-        <span className={cn("font-medium text-white/90", s.label)}>
+      <div className="absolute top-2 left-2 rounded-md bg-white/90 border border-slate-200 px-2 py-0.5">
+        <span className={cn("font-medium text-slate-600", s.label)}>
           {product.imageLabel}
         </span>
       </div>
-      <Icon className={cn(s.icon, "text-white/35 mb-2")} />
-      <span className={cn("font-semibold text-white/50 tracking-wide", s.brand)}>
+      <Icon className={cn(s.icon, "text-slate-300 mb-2")} />
+      <span className={cn("font-medium text-slate-400 tracking-wide", s.brand)}>
         {product.brand}
       </span>
-      <div className="absolute bottom-0 inset-x-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent" />
     </div>
   );
 }

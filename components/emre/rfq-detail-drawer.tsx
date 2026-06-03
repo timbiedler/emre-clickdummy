@@ -37,7 +37,7 @@ export function RFQDetailDrawer({
 
   return (
     <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
-      <SheetContent className="glass-panel-strong border-white/10 w-full sm:max-w-2xl overflow-hidden p-0">
+      <SheetContent className="surface-card-elevated border-slate-200 w-full sm:max-w-2xl overflow-hidden p-0">
         <ScrollArea className="h-full p-6 space-y-5">
           <SheetHeader className="text-left">
             <p className="text-xs font-mono text-muted-foreground">{rfq.id.toUpperCase()}</p>
@@ -53,12 +53,12 @@ export function RFQDetailDrawer({
             </StatusBadge>
           </div>
 
-          <div className="glass-panel rounded-lg p-4 space-y-2 border border-violet-500/20">
-            <p className="text-xs font-medium text-violet-400 uppercase flex items-center gap-1">
+          <div className="surface-card rounded-lg p-4 space-y-2 border border-violet-200">
+            <p className="text-xs font-medium text-violet-600 uppercase flex items-center gap-1">
               <Sparkles className="size-3" /> AI RFQ Assistant
             </p>
             <p className="text-sm">
-              EMRE AI matched {rfq.matchedSuppliers} suppliers, generated multilingual offer
+              Procurement AI matched {rfq.matchedSuppliers} suppliers and generated multilingual offer
               templates, and flagged financing options for this request.
             </p>
             <div className="flex flex-wrap gap-2 pt-1">
@@ -84,7 +84,7 @@ export function RFQDetailDrawer({
           </div>
 
           {buyer && (
-            <div className="glass-panel rounded-lg p-4">
+            <div className="surface-card rounded-lg p-4">
               <p className="text-xs text-muted-foreground">Buyer</p>
               <p className="font-medium">{buyer.name}</p>
               <p className="text-xs text-muted-foreground">
@@ -99,21 +99,21 @@ export function RFQDetailDrawer({
             sourceText={rfq.message.en}
           />
 
-          <div className="glass-panel rounded-lg p-4 space-y-2">
-            <p className="text-xs font-medium text-cyan-400 uppercase">Buyer Message</p>
+          <div className="surface-card rounded-lg p-4 space-y-2">
+            <p className="text-xs font-medium text-blue-600 uppercase">Buyer Message</p>
             <p className="text-sm">{t(rfq.message, language)}</p>
           </div>
 
           {rfqOffers.length > 0 ? (
             <OfferComparisonTable offers={rfqOffers} />
           ) : (
-            <div className="glass-panel rounded-lg p-6 text-center text-muted-foreground text-sm">
+            <div className="surface-card rounded-lg p-6 text-center text-muted-foreground text-sm">
               Supplier matching in progress — {rfq.matchedSuppliers} suppliers notified
             </div>
           )}
 
           <div className="flex flex-wrap gap-2">
-            <Button className="bg-cyan-600 hover:bg-cyan-500">Accept Best Offer</Button>
+            <Button className="bg-blue-600 hover:bg-blue-700">Accept Best Offer</Button>
             <Button variant="outline">Send Message</Button>
             <Button variant="outline">Generate Multilingual Offer</Button>
             <Link href="/finance">
@@ -133,7 +133,7 @@ export function RFQDetailDrawer({
 
 function InfoBox({ label, value }: { label: string; value: string }) {
   return (
-    <div className="glass-panel rounded-lg p-3">
+    <div className="surface-card rounded-lg p-3">
       <p className="text-xs text-muted-foreground">{label}</p>
       <p className="font-medium">{value}</p>
     </div>

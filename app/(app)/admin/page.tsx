@@ -30,7 +30,7 @@ const countryData = [
   { country: "Other", value: 18 },
 ];
 
-const COLORS = ["#22d3ee", "#a78bfa", "#34d399", "#60a5fa", "#f472b6", "#64748b"];
+const COLORS = ["#2563eb", "#7c3aed", "#16a34a", "#0ea5e9", "#ea580c", "#64748b"];
 
 export default function AdminPage() {
   const { adminVertical, setAdminVertical } = useApp();
@@ -48,7 +48,7 @@ export default function AdminPage() {
       />
 
       <div className="flex flex-wrap items-center gap-4">
-        <div className="inline-flex rounded-xl glass-panel p-1 gap-1">
+        <div className="inline-flex rounded-xl surface-card p-1 gap-1">
           {(["combined", "medical", "robotics"] as const).map((v) => (
             <button
               key={v}
@@ -56,7 +56,7 @@ export default function AdminPage() {
               className={cn(
                 "rounded-lg px-4 py-2 text-sm font-medium capitalize transition-all",
                 adminVertical === v
-                  ? "bg-cyan-500/20 text-cyan-300"
+                  ? "bg-blue-50 text-blue-700"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
@@ -71,14 +71,14 @@ export default function AdminPage() {
       <AdminKpiCard metrics={metrics} onKpiClick={setFilterLabel} />
 
       {filterLabel && (
-        <div className="glass-panel rounded-lg p-3 text-sm flex items-center justify-between">
+        <div className="surface-card rounded-lg p-3 text-sm flex items-center justify-between">
           <span>Filtered view: <strong>{filterLabel}</strong></span>
-          <button onClick={() => setFilterLabel(null)} className="text-cyan-400 text-xs hover:underline">Clear</button>
+          <button onClick={() => setFilterLabel(null)} className="text-blue-600 text-xs hover:underline">Clear</button>
         </div>
       )}
 
       <div className="grid lg:grid-cols-2 gap-6">
-        <div className="glass-panel rounded-xl p-5">
+        <div className="surface-card rounded-xl p-5">
           <p className="text-sm font-medium mb-4">Country Performance</p>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={countryData}>
@@ -89,7 +89,7 @@ export default function AdminPage() {
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <div className="glass-panel rounded-xl p-5">
+        <div className="surface-card rounded-xl p-5">
           <p className="text-sm font-medium mb-4">Category Distribution</p>
           <ResponsiveContainer width="100%" height={220}>
             <PieChart>

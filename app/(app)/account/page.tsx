@@ -42,7 +42,7 @@ export default function AccountPage() {
       </div>
 
       <Tabs defaultValue="invoices">
-        <TabsList className="glass-panel border-white/10">
+        <TabsList className="surface-card border-slate-200">
           <TabsTrigger value="invoices">Invoices</TabsTrigger>
           <TabsTrigger value="rfqs">RFQs</TabsTrigger>
           <TabsTrigger value="orders">Orders</TabsTrigger>
@@ -56,7 +56,7 @@ export default function AccountPage() {
 
         <TabsContent value="rfqs" className="mt-4 space-y-2">
           {verticalRfqs.map((r) => (
-            <div key={r.id} className="glass-panel rounded-lg p-3 flex items-center justify-between text-sm">
+            <div key={r.id} className="surface-card rounded-lg p-3 flex items-center justify-between text-sm">
               <span className="font-mono">{r.id.toUpperCase()}</span>
               <StatusBadge variant="info">{r.status.replace("_", " ")}</StatusBadge>
             </div>
@@ -65,7 +65,7 @@ export default function AccountPage() {
 
         <TabsContent value="orders" className="mt-4 space-y-2">
           {verticalOrders.map((o) => (
-            <div key={o.id} className="glass-panel rounded-lg p-3 flex items-center justify-between text-sm">
+            <div key={o.id} className="surface-card rounded-lg p-3 flex items-center justify-between text-sm">
               <span className="font-mono">{o.id.toUpperCase()}</span>
               <span>{formatCurrency(o.amount)}</span>
               <StatusBadge variant="info">{o.status}</StatusBadge>
@@ -75,7 +75,7 @@ export default function AccountPage() {
 
         <TabsContent value="finance" className="mt-4 grid md:grid-cols-2 gap-3">
           {verticalFinance.map((f) => (
-            <div key={f.id} className="glass-panel rounded-lg p-4 text-sm space-y-1">
+            <div key={f.id} className="surface-card rounded-lg p-4 text-sm space-y-1">
               <p className="font-medium">{f.product}</p>
               <p className="text-muted-foreground">{formatCurrency(f.amount)} · {f.type}</p>
               <StatusBadge variant="warning">{f.status.replace("_", " ")}</StatusBadge>
@@ -84,7 +84,7 @@ export default function AccountPage() {
         </TabsContent>
 
         <TabsContent value="messages" className="mt-4">
-          <div className="glass-panel rounded-xl p-8 text-center text-muted-foreground">
+          <div className="surface-card rounded-xl p-8 text-center text-muted-foreground">
             <MessageSquare className="size-8 mx-auto mb-2 opacity-50" />
             <p className="text-sm">3 unread messages from suppliers</p>
           </div>
@@ -92,7 +92,7 @@ export default function AccountPage() {
       </Tabs>
 
       <Sheet open={!!selectedInvoice} onOpenChange={() => setSelectedInvoice(null)}>
-        <SheetContent className="glass-panel-strong border-white/10">
+        <SheetContent className="surface-card-elevated border-slate-200">
           {selectedInvoice && (
             <>
               <SheetHeader>
@@ -115,8 +115,8 @@ export default function AccountPage() {
 
 function Stat({ icon: Icon, label, value }: { icon: typeof Building2; label: string; value: string }) {
   return (
-    <div className="glass-panel rounded-xl p-4">
-      <Icon className="size-4 text-cyan-400 mb-2" />
+    <div className="surface-card rounded-xl p-4">
+      <Icon className="size-4 text-blue-600 mb-2" />
       <p className="text-xs text-muted-foreground">{label}</p>
       <p className="font-semibold text-sm truncate">{value}</p>
     </div>
@@ -125,7 +125,7 @@ function Stat({ icon: Icon, label, value }: { icon: typeof Building2; label: str
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex justify-between glass-panel rounded-lg p-3">
+    <div className="flex justify-between surface-card rounded-lg p-3">
       <span className="text-muted-foreground">{label}</span>
       <span className="font-medium">{value}</span>
     </div>

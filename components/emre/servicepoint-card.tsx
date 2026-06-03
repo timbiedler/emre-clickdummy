@@ -14,7 +14,7 @@ export function ServicepointCard({
   return (
     <div
       onClick={onClick}
-      className="glass-panel rounded-xl p-4 cursor-pointer hover:border-cyan-500/30 transition-all space-y-3"
+      className="surface-card rounded-xl p-4 cursor-pointer hover:border-blue-300 transition-all space-y-3"
     >
       <div className="flex items-start justify-between">
         <div>
@@ -38,7 +38,7 @@ export function ServicepointCard({
           <Clock className="size-3" /> {point.responseTime} response
         </span>
         <span className="flex items-center gap-1">
-          <Star className="size-3 text-amber-400" /> {point.rating.toFixed(1)}
+          <Star className="size-3 text-amber-600" /> {point.rating.toFixed(1)}
         </span>
       </div>
     </div>

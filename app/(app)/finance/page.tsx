@@ -44,7 +44,7 @@ const financeModes = [
 ];
 
 const partnerOffers = [
-  { partner: "EMRE Finance EU", rate: "4.2% APR", type: "Leasing", status: "pre_approved" },
+  { partner: "LeaseLine Europe", rate: "4.2% APR", type: "Leasing", status: "pre_approved" },
   { partner: "TradeCap Partners", rate: "Finetrading line €500k", type: "Finetrading", status: "under_review" },
   { partner: "FleetLease DACH", rate: "From €890/mo", type: "Rent-to-own", status: "offer_ready" },
 ];
@@ -74,13 +74,13 @@ export default function FinancePage() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard label="Leasing Requests" value={apps.length + 12} change={18.4} accent="green" />
-        <MetricCard label="Pre-approved" value={preApproved} change={11.2} accent="cyan" />
+        <MetricCard label="Pre-approved" value={preApproved} change={11.2} accent="blue" />
         <MetricCard label="Documents Missing" value={missingDocs} accent="violet" />
         <MetricCard label="Avg. Monthly Lease" value={formatCurrency(avgMonthly)} change={5.8} accent="blue" />
       </div>
 
       <Tabs defaultValue="calculator">
-        <TabsList className="glass-panel border-white/10 flex-wrap h-auto">
+        <TabsList className="surface-card border-slate-200 flex-wrap h-auto">
           <TabsTrigger value="calculator">Calculators</TabsTrigger>
           <TabsTrigger value="applications">Applications</TabsTrigger>
           <TabsTrigger value="pipeline">Pipeline</TabsTrigger>
@@ -92,12 +92,12 @@ export default function FinancePage() {
             <FinanceCalculator defaultPrice={vertical === "medical" ? 45000 : 89000} />
             <div className="space-y-4">
               <FinanceReadinessScore score={72} />
-              <div className="glass-panel rounded-xl p-5 space-y-3">
+              <div className="surface-card rounded-xl p-5 space-y-3">
                 <h3 className="font-semibold">Finance Product Modes</h3>
                 {financeModes.map((fm) => (
                   <div
                     key={fm.mode}
-                    className="glass-panel rounded-lg p-3 flex items-center justify-between"
+                    className="surface-card rounded-lg p-3 flex items-center justify-between"
                   >
                     <div>
                       <p className="text-sm font-medium">{fm.mode}</p>
@@ -114,7 +114,7 @@ export default function FinancePage() {
         <TabsContent value="applications" className="mt-4">
           <div className="grid md:grid-cols-2 gap-4">
             {apps.map((app) => (
-              <div key={app.id} className="glass-panel rounded-xl p-4 space-y-3">
+              <div key={app.id} className="surface-card rounded-xl p-4 space-y-3">
                 <div className="flex items-start justify-between">
                   <div>
                     <p className="font-medium">{app.company}</p>
@@ -126,7 +126,7 @@ export default function FinancePage() {
                 </div>
                 <div className="grid grid-cols-3 gap-2 text-center text-sm">
                   <div>
-                    <p className="font-semibold neon-text-cyan">{formatCurrency(app.amount)}</p>
+                    <p className="font-semibold text-accent-blue">{formatCurrency(app.amount)}</p>
                     <p className="text-xs text-muted-foreground">Amount</p>
                   </div>
                   <div>
@@ -134,7 +134,7 @@ export default function FinancePage() {
                     <p className="text-xs text-muted-foreground">Term</p>
                   </div>
                   <div>
-                    <p className="font-semibold neon-text-green">{formatCurrency(app.monthlyRate)}</p>
+                    <p className="font-semibold text-accent-green">{formatCurrency(app.monthlyRate)}</p>
                     <p className="text-xs text-muted-foreground">/ month</p>
                   </div>
                 </div>
@@ -168,29 +168,29 @@ export default function FinancePage() {
           ].map((s) => (
             <div
               key={s.stage}
-              className="glass-panel rounded-xl p-4 flex items-center justify-between"
+              className="surface-card rounded-xl p-4 flex items-center justify-between"
             >
               <div className="flex items-center gap-3">
-                <s.icon className="size-5 text-cyan-400" />
+                <s.icon className="size-5 text-blue-600" />
                 <span className="font-medium">{s.stage}</span>
               </div>
               <StatusBadge variant={s.variant}>{s.count} applications</StatusBadge>
             </div>
           ))}
-          <div className="glass-panel rounded-xl p-4 flex items-center gap-3">
-            <Sparkles className="size-5 text-violet-400" />
+          <div className="surface-card rounded-xl p-4 flex items-center gap-3">
+            <Sparkles className="size-5 text-violet-600" />
             <div>
               <p className="text-sm font-medium">Finance conversion rate</p>
-              <p className="text-2xl font-bold neon-text-green">78%</p>
+              <p className="text-2xl font-bold text-accent-green">78%</p>
             </div>
           </div>
         </TabsContent>
 
         <TabsContent value="partners" className="mt-4 grid md:grid-cols-3 gap-4">
           {partnerOffers.map((po) => (
-            <div key={po.partner} className="glass-panel rounded-xl p-4 space-y-2">
+            <div key={po.partner} className="surface-card rounded-xl p-4 space-y-2">
               <p className="font-medium">{po.partner}</p>
-              <p className="text-sm neon-text-cyan">{po.rate}</p>
+              <p className="text-sm text-accent-blue">{po.rate}</p>
               <StatusBadge variant="violet">{po.type}</StatusBadge>
               <StatusBadge variant={statusVariant[po.status as keyof typeof statusVariant]}>
                 {statusLabel[po.status as keyof typeof statusLabel]}

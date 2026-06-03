@@ -29,10 +29,10 @@ export function InvoiceTable({
   onSelect: (inv: Invoice) => void;
 }) {
   return (
-    <div className="glass-panel rounded-xl overflow-hidden">
+    <div className="surface-card rounded-xl overflow-hidden">
       <Table>
         <TableHeader>
-          <TableRow className="border-white/10 hover:bg-transparent">
+          <TableRow className="border-slate-200 hover:bg-transparent">
             <TableHead>Invoice</TableHead>
             <TableHead>Order</TableHead>
             <TableHead>Amount</TableHead>
@@ -46,7 +46,7 @@ export function InvoiceTable({
           {invoices.map((inv) => (
             <TableRow
               key={inv.id}
-              className="border-white/10 cursor-pointer hover:bg-white/5"
+              className="border-slate-200 cursor-pointer hover:bg-white/5"
               onClick={() => onSelect(inv)}
             >
               <TableCell className="font-mono text-sm">{inv.invoiceNumber}</TableCell>

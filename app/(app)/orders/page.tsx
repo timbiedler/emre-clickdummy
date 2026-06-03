@@ -38,10 +38,10 @@ export default function OrdersPage() {
         description="Order management, carrier tracking, delivery status, and reorder workflows."
       />
 
-      <div className="glass-panel rounded-xl overflow-hidden">
+      <div className="surface-card rounded-xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/10 text-muted-foreground text-left">
+            <tr className="border-b border-slate-200 text-muted-foreground text-left">
               <th className="p-4 font-medium">Order</th>
               <th className="p-4 font-medium">Status</th>
               <th className="p-4 font-medium">Payment</th>
@@ -56,7 +56,7 @@ export default function OrdersPage() {
               <tr
                 key={order.id}
                 onClick={() => setSelected(order)}
-                className="border-b border-white/5 hover:bg-white/5 cursor-pointer transition-colors"
+                className="border-b border-slate-100 hover:bg-white/5 cursor-pointer transition-colors"
               >
                 <td className="p-4 font-mono">{order.id.toUpperCase()}</td>
                 <td className="p-4">
@@ -80,7 +80,7 @@ export default function OrdersPage() {
       </div>
 
       <Sheet open={!!selected} onOpenChange={() => setSelected(null)}>
-        <SheetContent className="glass-panel-strong border-white/10">
+        <SheetContent className="surface-card-elevated border-slate-200">
           {selected && (
             <>
               <SheetHeader>
@@ -89,11 +89,11 @@ export default function OrdersPage() {
               <div className="mt-6 space-y-6">
                 <OrderTrackingTimeline order={selected} />
                 <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="glass-panel rounded-lg p-3">
+                  <div className="surface-card rounded-lg p-3">
                     <p className="text-xs text-muted-foreground">Items</p>
                     <p className="font-medium">{selected.items}</p>
                   </div>
-                  <div className="glass-panel rounded-lg p-3">
+                  <div className="surface-card rounded-lg p-3">
                     <p className="text-xs text-muted-foreground">Amount</p>
                     <p className="font-medium">{formatCurrency(selected.amount)}</p>
                   </div>

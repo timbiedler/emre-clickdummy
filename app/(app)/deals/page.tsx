@@ -26,13 +26,13 @@ export default function DealsPage() {
           return (
             <div
               key={deal.id}
-              className="glass-panel rounded-xl p-5 space-y-4 hover:border-cyan-500/30 transition-all group"
+              className="surface-card rounded-xl p-5 space-y-4 hover:border-blue-300 transition-all group"
             >
               <div className="flex items-start justify-between">
                 <StatusBadge variant="success">{deal.discount}% off</StatusBadge>
                 <StatusBadge variant="info">{deal.type}</StatusBadge>
               </div>
-              <h3 className="font-semibold group-hover:text-cyan-300 transition-colors">
+              <h3 className="font-semibold group-hover:text-blue-700 transition-colors">
                 {t(deal.title, language)}
               </h3>
               <div className="flex items-center gap-2 text-xs text-muted-foreground">

@@ -18,15 +18,15 @@ export function ProductAiAdvisorSection({ product }: { product: Product }) {
     .filter(Boolean) as Product[];
 
   return (
-    <div className="glass-panel rounded-xl p-4 space-y-4 border border-violet-500/20">
+    <div className="surface-card rounded-xl p-4 space-y-4 border border-violet-200">
       <div className="flex items-center gap-2">
-        <Sparkles className="size-4 text-violet-400" />
+        <Sparkles className="size-4 text-violet-600" />
         <h3 className="text-sm font-semibold">AI Sales Advisor</h3>
-        <StatusBadge variant="violet">EMRE AI</StatusBadge>
+        <StatusBadge variant="violet">AI Advisor</StatusBadge>
       </div>
 
-      <div className="glass-panel rounded-lg p-3 space-y-1">
-        <p className="text-xs font-medium text-violet-400 uppercase">AI Product Summary</p>
+      <div className="surface-card rounded-lg p-3 space-y-1">
+        <p className="text-xs font-medium text-violet-600 uppercase">AI Product Summary</p>
         <p className="text-sm">{t(product.aiSummary, language)}</p>
       </div>
 
@@ -57,7 +57,7 @@ export function ProductAiAdvisorSection({ product }: { product: Product }) {
           </p>
           <div className="space-y-1.5">
             {alternatives.map((alt) => (
-              <div key={alt.id} className="glass-panel rounded-lg px-3 py-2 text-xs">
+              <div key={alt.id} className="surface-card rounded-lg px-3 py-2 text-xs">
                 {t(alt.name, language)} · {alt.brand}
               </div>
             ))}
@@ -96,8 +96,8 @@ function AdvisorBlock({
   items: string[];
 }) {
   return (
-    <div className="glass-panel rounded-lg p-3 space-y-2">
-      <p className="text-xs font-medium flex items-center gap-1 text-cyan-400">
+    <div className="surface-card rounded-lg p-3 space-y-2">
+      <p className="text-xs font-medium flex items-center gap-1 text-blue-600">
         <Icon className="size-3" /> {title}
       </p>
       <div className="flex flex-wrap gap-1">
@@ -113,7 +113,7 @@ function AdvisorBlock({
 
 function InfoTile({ label, value }: { label: string; value: string }) {
   return (
-    <div className="glass-panel rounded-lg p-3">
+    <div className="surface-card rounded-lg p-3">
       <p className="text-[10px] text-muted-foreground uppercase">{label}</p>
       <p className="text-xs mt-1 leading-relaxed">{value}</p>
     </div>

@@ -36,7 +36,7 @@ export function TranslationBadge({
         {info.label} · {langLabel}
       </StatusBadge>
       {showPanel && sourceText && (
-        <div className="glass-panel rounded-lg p-3 text-xs space-y-1.5">
+        <div className="surface-card rounded-lg p-3 text-xs space-y-1.5">
           <div className="flex justify-between text-muted-foreground">
             <span>Source: English</span>
             <span>Target: {langLabel}</span>

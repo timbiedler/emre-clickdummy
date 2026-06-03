@@ -7,14 +7,14 @@ import { cn } from "@/lib/utils";
 const medicalFlow = [
   "Manufacturer",
   "Supplier Network",
-  "EMRE",
-  "RFQ / Offer Engine",
+  "Distribution Engine",
+  "RFQ / Offers",
   "Hospitals / Care / Labs",
 ];
 
 const roboticsFlow = [
   "Manufacturer",
-  "EMRE",
+  "Distribution Engine",
   "Dealer Network",
   "Showroom",
   "End Customer",
@@ -27,25 +27,25 @@ export function FlowDiagram({ className }: { className?: string }) {
   const steps = vertical === "medical" ? medicalFlow : roboticsFlow;
 
   return (
-    <div className={cn("glass-panel rounded-xl p-5", className)}>
-      <p className="text-sm font-medium mb-4">
-        {vertical === "medical" ? "Medical Supply Flow" : "Robotics Distribution Flow"}
+    <div className={cn("surface-card rounded-xl p-5", className)}>
+      <p className="text-sm font-medium text-slate-900 mb-4">
+        {vertical === "medical" ? "Medical supply flow" : "Robotics distribution flow"}
       </p>
       <div className="flex flex-wrap items-center gap-2">
         {steps.map((step, i) => (
           <div key={step} className="flex items-center gap-2">
             <div
               className={cn(
-                "rounded-lg px-3 py-2 text-xs font-medium",
-                step === "EMRE"
-                  ? "bg-cyan-500/20 text-cyan-300 neon-border"
-                  : "bg-white/5 text-foreground/80"
+                "rounded-lg px-3 py-2 text-xs font-medium border",
+                step === "Distribution Engine"
+                  ? "bg-blue-50 text-blue-700 border-blue-200"
+                  : "bg-slate-50 text-slate-700 border-slate-200"
               )}
             >
               {step}
             </div>
             {i < steps.length - 1 && (
-              <ArrowRight className="size-4 text-muted-foreground shrink-0" />
+              <ArrowRight className="size-4 text-slate-400 shrink-0" />
             )}
           </div>
         ))}

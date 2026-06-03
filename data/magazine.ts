@@ -1,4 +1,4 @@
-import { GRADIENTS } from "./constants";
+import { CARD_GRADIENTS } from "./constants";
 import { localize, pick } from "./generators";
 import type { MagazineItem } from "./types";
 
@@ -50,8 +50,8 @@ function makeMagazine(
     ),
     readTime: `${4 + (i % 8)} min`,
     publishedAt: `2026-0${1 + (i % 4)}-${String(3 + (i % 25)).padStart(2, "0")}`,
-    author: pick(["EMRE Editorial", "Industry Analyst", "Procurement Lead"], i),
-    imageGradient: pick(GRADIENTS, i),
+    author: pick(["Distribution Insights", "Industry Analyst", "Procurement Lead"], i),
+    imageGradient: pick(CARD_GRADIENTS, i),
   }));
 }
 

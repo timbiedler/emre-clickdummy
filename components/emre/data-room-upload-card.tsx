@@ -26,12 +26,12 @@ export function DataRoomUploadCard({
   return (
     <div
       onClick={onClick}
-      className="glass-panel rounded-xl p-4 cursor-pointer hover:border-cyan-500/30 transition-all space-y-3"
+      className="surface-card rounded-xl p-4 cursor-pointer hover:border-blue-300 transition-all space-y-3"
     >
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           <div className="rounded-lg bg-white/5 p-2">
-            <Icon className="size-5 text-cyan-400" />
+            <Icon className="size-5 text-blue-600" />
           </div>
           <div>
             <p className="font-medium text-sm">{doc.name}</p>
@@ -54,10 +54,10 @@ export function DataRoomUploadCard({
 
 export function FinanceReadinessScore({ score }: { score: number }) {
   return (
-    <div className="glass-panel rounded-xl p-5 space-y-3">
+    <div className="surface-card rounded-xl p-5 space-y-3">
       <div className="flex justify-between items-center">
         <p className="text-sm font-medium">Finance Readiness Score</p>
-        <span className="text-2xl font-bold neon-text-green">{score}%</span>
+        <span className="text-2xl font-bold text-accent-green">{score}%</span>
       </div>
       <Progress value={score} className="h-2" />
       <p className="text-xs text-muted-foreground">

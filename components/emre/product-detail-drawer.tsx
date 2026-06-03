@@ -46,12 +46,12 @@ export function ProductDetailDrawer({
 
   return (
     <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
-      <SheetContent className="glass-panel-strong border-white/10 w-full sm:max-w-2xl overflow-hidden p-0">
+      <SheetContent className="surface-card-elevated border-slate-200 w-full sm:max-w-2xl overflow-hidden p-0">
         <ScrollArea className="h-full">
           <div className="relative">
             <ProductImagePlaceholder product={product} className="h-52" size="lg" />
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
-              <Button size="sm" variant="secondary" className="gap-2 glass-panel">
+              <Button size="sm" variant="secondary" className="gap-2 surface-card">
                 <Play className="size-4" /> Video Preview
               </Button>
             </div>
@@ -89,7 +89,7 @@ export function ProductDetailDrawer({
               </p>
               <div className="grid grid-cols-2 gap-2">
                 {Object.entries(product.specs).map(([k, v]) => (
-                  <div key={k} className="glass-panel rounded-lg p-2.5 text-sm">
+                  <div key={k} className="surface-card rounded-lg p-2.5 text-sm">
                     <span className="text-muted-foreground">{k}: </span>
                     <span>{v}</span>
                   </div>
@@ -105,10 +105,10 @@ export function ProductDetailDrawer({
                 {product.documents.map((doc) => (
                   <div
                     key={doc.name}
-                    className="flex items-center justify-between glass-panel rounded-lg px-3 py-2 text-sm"
+                    className="flex items-center justify-between surface-card rounded-lg px-3 py-2 text-sm"
                   >
                     <span className="flex items-center gap-2">
-                      <FileText className="size-4 text-cyan-400" />
+                      <FileText className="size-4 text-blue-600" />
                       {doc.name}
                     </span>
                     <StatusBadge
@@ -128,7 +128,7 @@ export function ProductDetailDrawer({
             </div>
 
             {supplier && (
-              <div className="glass-panel rounded-lg p-4 flex items-center justify-between">
+              <div className="surface-card rounded-lg p-4 flex items-center justify-between">
                 <div>
                   <p className="text-xs text-muted-foreground">Supplier</p>
                   <p className="font-medium">{product.supplierName}</p>
@@ -150,7 +150,7 @@ export function ProductDetailDrawer({
 
             <div className="grid grid-cols-2 gap-2">
               <Link href="/rfq">
-                <Button className="w-full gap-2 bg-cyan-600 hover:bg-cyan-500">
+                <Button className="w-full gap-2 bg-blue-600 hover:bg-blue-700">
                   <MessageSquare className="size-4" />
                   Request Offer
                 </Button>
