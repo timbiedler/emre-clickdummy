@@ -14,6 +14,7 @@ import { IndustryProfileCard } from "@/components/emre/industry-profile-card";
 import { ProductCard } from "@/components/emre/product-card";
 import { StatusBadge } from "@/components/emre/status-badge";
 import { useApp } from "@/context/app-context";
+import { useRfq } from "@/context/rfq-context";
 import { getAllProducts, rfqs, orders, deals } from "@/data";
 import { getRfqTemplatesForIndustry } from "@/data/industry-content";
 import { crossIndustryRecommendations } from "@/data/industry-content";
@@ -25,6 +26,7 @@ import { Button } from "@/components/ui/button";
 
 export default function CustomerHomePage() {
   const { vertical, industry, showRelevantFirst, openConsultation } = useApp();
+  const { openCreateRfq } = useRfq();
   const openRfqs = rfqs.filter((r) => r.status !== "closed").length;
   const inTransit = orders.filter((o) => o.status === "shipped" || o.status === "partial").length;
   const relevantDeals = deals.filter((d) => d.vertical === vertical).slice(0, 3);
@@ -106,10 +108,23 @@ export default function CustomerHomePage() {
         <p className="text-sm font-semibold text-slate-900 mb-3">RFQ templates for your industry</p>
         <div className="grid md:grid-cols-3 gap-3">
           {templates.map((t) => (
-            <Link key={t.id} href="/rfq" className="rounded-lg border border-slate-200 p-3 hover:bg-slate-50">
+            <button
+              key={t.id}
+              type="button"
+              onClick={() =>
+                openCreateRfq({
+                  source: "generic",
+                  vertical,
+                  category: t.categories[0],
+                  useCase: t.description,
+                  industry,
+                })
+              }
+              className="rounded-lg border border-slate-200 p-3 hover:bg-slate-50 text-left w-full"
+            >
               <p className="text-sm font-medium text-slate-900">{t.title}</p>
               <p className="text-xs text-slate-500 mt-1 line-clamp-2">{t.description}</p>
-            </Link>
+            </button>
           ))}
         </div>
       </div>

@@ -4,6 +4,7 @@ import { Clock, Tag } from "lucide-react";
 import { PageHeader } from "@/components/emre/app-shell";
 import { StatusBadge } from "@/components/emre/status-badge";
 import { useApp } from "@/context/app-context";
+import { useRfq } from "@/context/rfq-context";
 import { deals } from "@/data/deals";
 import { t } from "@/lib/i18n";
 import { daysUntil } from "@/lib/format";
@@ -11,6 +12,7 @@ import { Button } from "@/components/ui/button";
 
 export default function DealsPage() {
   const { vertical, language } = useApp();
+  const { openCreateRfq } = useRfq();
   const verticalDeals = deals.filter((d) => d.vertical === vertical);
 
   return (
@@ -42,7 +44,18 @@ export default function DealsPage() {
               {deal.limitedStock && (
                 <StatusBadge variant="warning">Only {deal.limitedStock} units left</StatusBadge>
               )}
-              <Button className="w-full gap-2 bg-gradient-to-r from-cyan-600/80 to-violet-600/80">
+              <Button
+                className="w-full gap-2 bg-gradient-to-r from-cyan-600/80 to-violet-600/80"
+                onClick={() =>
+                  openCreateRfq({
+                    source: "deal",
+                    mode: "offer",
+                    vertical: deal.vertical,
+                    bundleName: t(deal.title, language),
+                    budget: 50000 + deal.discount * 1000,
+                  })
+                }
+              >
                 <Tag className="size-4" /> Request Deal
               </Button>
             </div>

@@ -11,6 +11,7 @@ import { formatCurrency } from "@/lib/format";
 import { getProductFinance, financeStatusLabel, financeStatusVariant } from "@/lib/product-finance";
 import { getIndustryRelevanceScore, getRelevanceBadge } from "@/lib/industry-relevance";
 import { RelevanceBadge } from "./relevance-badge";
+import { useRfq } from "@/context/rfq-context";
 import type { Product } from "@/data/types";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -37,6 +38,7 @@ export function ProductCard({
 }) {
   const { language, compareList, toggleCompare, openConsultation, industry } = useApp();
   const { t } = useUi();
+  const { openCreateRfq } = useRfq();
   const inCompare = compareList.includes(product.id);
   const finance = getProductFinance(product);
   const score = getIndustryRelevanceScore(product, industry);
@@ -113,11 +115,22 @@ export function ProductCard({
 
         {showActions && (
           <div className="grid grid-cols-2 gap-2 pt-3 mt-auto border-t border-slate-100">
-            <Link href="/rfq" onClick={stop}>
-              <Button size="sm" variant="outline" className="w-full h-8 text-xs">
-                {t("common.requestOffer")}
-              </Button>
-            </Link>
+            <Button
+              size="sm"
+              variant="outline"
+              className="w-full h-8 text-xs"
+              onClick={(e) => {
+                stop(e);
+                openCreateRfq({
+                  source: "product",
+                  mode: "offer",
+                  productId: product.id,
+                  vertical: product.vertical,
+                });
+              }}
+            >
+              {t("common.requestOffer")}
+            </Button>
             <Link href="/finance" onClick={stop}>
               <Button size="sm" variant="outline" className="w-full h-8 text-xs">
                 {t("common.leasingOptions")}

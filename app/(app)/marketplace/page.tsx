@@ -34,7 +34,10 @@ import {
 } from "@/lib/industry-relevance";
 import { useUi } from "@/lib/ui-i18n";
 import { useSourcing } from "@/context/sourcing-context";
+import { useCommerce } from "@/context/commerce-context";
 import { getProductFinance } from "@/lib/product-finance";
+import { ResultsToolbar } from "@/components/emre/commerce/results-toolbar";
+import { useCheckoutT } from "@/lib/checkout-labels";
 
 export default function MarketplacePage() {
   return (
@@ -56,7 +59,11 @@ function MarketplaceContent() {
     includeAllProducts,
   } = useApp();
   const { t } = useUi();
+  const ct = useCheckoutT();
   const { openCreateGapDrawer, recordFailedSearch } = useSourcing();
+  const { productDetailProductId, closeProductDetail } = useCommerce();
+  const [pageByFilter, setPageByFilter] = useState<Record<string, number>>({});
+  const [pageSize, setPageSize] = useState(12);
 
   const catalog = includeAllProducts ? getAllProducts() : getProducts(vertical);
   const maxPrice = Math.max(...catalog.map((p) => p.price), 1);
@@ -71,7 +78,11 @@ function MarketplaceContent() {
 
   const supplierFromUrl = searchParams.get("supplierId");
   const searchFromUrl = searchParams.get("search");
-  const activeProduct = selected ?? productFromUrl;
+  const productFromCommerce = useMemo(
+    () => (productDetailProductId ? catalog.find((p) => p.id === productDetailProductId) ?? null : null),
+    [productDetailProductId, catalog]
+  );
+  const activeProduct = selected ?? productFromUrl ?? productFromCommerce;
   const activeSupplierId = supplierId ?? supplierFromUrl;
   const filtersWithUrl = useMemo(
     () => (searchFromUrl ? { ...filters, search: searchFromUrl } : filters),
@@ -135,6 +146,27 @@ function MarketplaceContent() {
     if (filtersWithUrl.search && result.length === 0) recordFailedSearch(filtersWithUrl.search);
     return result;
   }, [catalog, filtersWithUrl, language, industry, showRelevantFirst, recordFailedSearch]);
+
+  const filterSignature = useMemo(
+    () =>
+      JSON.stringify({
+        filters: filtersWithUrl,
+        vertical,
+        industry,
+        showRelevantFirst,
+        includeAllProducts,
+        pageSize,
+      }),
+    [filtersWithUrl, vertical, industry, showRelevantFirst, includeAllProducts, pageSize]
+  );
+  const page = pageByFilter[filterSignature] ?? 1;
+  const setPage = (p: number) =>
+    setPageByFilter((prev) => ({ ...prev, [filterSignature]: p }));
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const paginated = filtered.slice((page - 1) * pageSize, page * pageSize);
+  const from = filtered.length === 0 ? 0 : (page - 1) * pageSize + 1;
+  const to = Math.min(page * pageSize, filtered.length);
 
   const aiRecommended = useMemo(
     () =>
@@ -219,8 +251,23 @@ function MarketplaceContent() {
               </Button>
             </div>
           )}
+          <ResultsToolbar
+            from={from}
+            to={to}
+            total={filtered.length}
+            page={page}
+            totalPages={totalPages}
+            pageSize={pageSize}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+            showingLabel={ct("checkout.showingProducts")}
+            pageSizeLabel={ct("checkout.pageSize")}
+          />
+          {filtered.length === 0 && !filtersWithUrl.search && (
+            <div className="surface-card p-8 text-center text-sm text-slate-500">{ct("checkout.noResults")}</div>
+          )}
           <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
-            {filtered.map((product) => (
+            {paginated.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
@@ -253,7 +300,10 @@ function MarketplaceContent() {
       <ProductDetailDrawer
         product={activeProduct}
         open={!!activeProduct}
-        onClose={() => setSelected(null)}
+        onClose={() => {
+          setSelected(null);
+          closeProductDetail();
+        }}
         onViewSupplier={setSupplierId}
       />
 

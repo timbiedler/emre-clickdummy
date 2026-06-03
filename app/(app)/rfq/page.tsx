@@ -1,13 +1,13 @@
 "use client";
 
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Plus } from "lucide-react";
 import { PageHeader } from "@/components/emre/app-shell";
 import { RFQCard } from "@/components/emre/rfq-card";
 import { RFQDetailDrawer } from "@/components/emre/rfq-detail-drawer";
 import { useApp } from "@/context/app-context";
-import { rfqs } from "@/data";
+import { useRfq } from "@/context/rfq-context";
 import type { RFQ } from "@/data/types";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -25,14 +25,25 @@ function RFQPageContent() {
   const searchParams = useSearchParams();
   const { vertical } = useApp();
   const { t } = useUi();
+  const { allRfqs, openCreateRfq } = useRfq();
   const [selected, setSelected] = useState<RFQ | null>(null);
-  const verticalRfqs = rfqs.filter((r) => r.vertical === vertical);
+  const verticalRfqs = allRfqs.filter((r) => r.vertical === vertical);
 
   const rfqFromUrl = useMemo(() => {
     const rfqId = searchParams.get("rfqId");
-    return rfqId ? rfqs.find((r) => r.id === rfqId) ?? null : null;
-  }, [searchParams]);
+    return rfqId ? allRfqs.find((r) => r.id === rfqId) ?? null : null;
+  }, [searchParams, allRfqs]);
   const activeRfq = selected ?? rfqFromUrl;
+
+  const openedProductRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    const productId = searchParams.get("productId");
+    if (productId && openedProductRef.current !== productId) {
+      openedProductRef.current = productId;
+      openCreateRfq({ source: "product", productId, mode: "offer", vertical });
+    }
+  }, [searchParams, openCreateRfq, vertical]);
 
   const tabs = [
     { id: "all", labelKey: "rfq.allRfqs", filter: () => true },
@@ -52,7 +63,10 @@ function RFQPageContent() {
         titleKey="rfq.title"
         descriptionKey="rfq.subtitle"
         action={
-          <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
+          <Button
+            className="gap-2 bg-blue-600 hover:bg-blue-700"
+            onClick={() => openCreateRfq({ source: "generic", vertical })}
+          >
             <Plus className="size-4" /> {t("rfq.createRfq")}
           </Button>
         }

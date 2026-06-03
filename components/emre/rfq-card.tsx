@@ -28,7 +28,7 @@ export function RFQCard({ rfq, onClick }: { rfq: RFQ; onClick: () => void }) {
     >
       <div className="flex items-start justify-between gap-2">
         <div>
-          <p className="text-xs text-muted-foreground font-mono">{rfq.id.toUpperCase()}</p>
+          <p className="text-xs text-muted-foreground font-mono">{rfq.rfqNumber ?? rfq.id.toUpperCase()}</p>
           <h3 className="font-medium mt-1">{t(rfq.title, language)}</h3>
         </div>
         <div className="flex flex-col items-end gap-1">

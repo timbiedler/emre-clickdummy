@@ -16,7 +16,7 @@ interface LeadDiscoveryPanelProps {
 
 export function LeadDiscoveryPanel({ onToast, onSelectCampaignLead }: LeadDiscoveryPanelProps) {
   const { t } = useUi();
-  const { goToRfq, goToFinance } = useGrowthActions();
+  const { goToFinance, openRfqFromLead } = useGrowthActions();
   const [search, setSearch] = useState("");
   const [vertical, setVertical] = useState<GrowthVertical | "all">("all");
   const [status, setStatus] = useState<LeadStatus | "all">("all");
@@ -90,9 +90,9 @@ export function LeadDiscoveryPanel({ onToast, onSelectCampaignLead }: LeadDiscov
           onSelectCampaignLead?.(l);
           notify(t("growth.leads.addedToCampaign"));
         }}
-        onRfqDraft={() => {
+        onRfqDraft={(l) => {
           notify(t("growth.leads.rfqDraft"));
-          goToRfq();
+          openRfqFromLead(l);
         }}
         onLeasingOffer={() => {
           notify(t("growth.leads.leasingOffer"));

@@ -17,6 +17,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Link from "next/link";
+import { useRfq } from "@/context/rfq-context";
 
 export default function MagazinePage() {
   return (
@@ -29,6 +30,7 @@ export default function MagazinePage() {
 function MagazineContent() {
   const searchParams = useSearchParams();
   const { vertical, language } = useApp();
+  const { openCreateRfq } = useRfq();
   const [selected, setSelected] = useState<MagazineItem | null>(null);
   const [videoOpen, setVideoOpen] = useState(false);
   const items = magazineItems.filter((m) => m.vertical === vertical);
@@ -79,11 +81,18 @@ function MagazineContent() {
                     Browse Marketplace <ArrowRight className="size-3" />
                   </Button>
                 </Link>
-                <Link href="/rfq">
-                  <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
-                    Start RFQ <ArrowRight className="size-3" />
-                  </Button>
-                </Link>
+                <Button
+                  className="gap-2 bg-blue-600 hover:bg-blue-700"
+                  onClick={() =>
+                    openCreateRfq({
+                      source: "generic",
+                      vertical,
+                      useCase: activeArticle ? t(activeArticle.title, language) : undefined,
+                    })
+                  }
+                >
+                  Start RFQ <ArrowRight className="size-3" />
+                </Button>
               </div>
             </>
           )}

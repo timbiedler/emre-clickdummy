@@ -6,9 +6,12 @@ import type { GrowthBundle } from "@/data/growth-types";
 import { StatusBadge } from "@/components/emre/status-badge";
 import { useUi } from "@/lib/ui-i18n";
 import { formatCurrency } from "@/lib/format";
+import { useRfq } from "@/context/rfq-context";
+import { Button } from "@/components/ui/button";
 
 export function BundleBuilderPanel() {
   const { t, countryName } = useUi();
+  const { openCreateRfq } = useRfq();
   const [selected, setSelected] = useState<GrowthBundle | null>(growthBundles[0] ?? null);
   const [verticalFilter, setVerticalFilter] = useState<"all" | "medical" | "robotics">("all");
 
@@ -88,6 +91,22 @@ export function BundleBuilderPanel() {
             {t("growth.bundles.territories")}:{" "}
             {selected.recommendedTerritories.map((c) => countryName(c)).join(", ")}
           </p>
+          <Button
+            className="bg-blue-600 hover:bg-blue-700"
+            onClick={() =>
+              openCreateRfq({
+                source: "bundle",
+                bundleName: selected.name,
+                vertical: selected.vertical,
+                budget: selected.listPrice,
+                deliveryCountry: selected.recommendedTerritories[0],
+                leasingInterest: selected.includesLeasing,
+                financeInterest: selected.includesLeasing,
+              })
+            }
+          >
+            {t("rfq.createRfq")}
+          </Button>
         </div>
       )}
     </div>

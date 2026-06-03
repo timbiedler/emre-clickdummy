@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/emre/status-badge";
 import type { ReturnedProduct } from "@/data/sourcing-types";
 import { useUi } from "@/lib/ui-i18n";
+import { useRfq } from "@/context/rfq-context";
 import { Rocket } from "lucide-react";
 
 export function ReturnedProductCard({
@@ -14,6 +15,7 @@ export function ReturnedProductCard({
   onPublish?: () => void;
 }) {
   const { t } = useUi();
+  const { openCreateRfq } = useRfq();
 
   return (
     <div className="surface-card rounded-xl p-4 space-y-3">
@@ -51,6 +53,22 @@ export function ReturnedProductCard({
         </Button>
         <Button size="sm" variant="outline" className="h-8">
           {t("sourcing.createCampaign")}
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          className="h-8"
+          onClick={() =>
+            openCreateRfq({
+              source: "sourcing",
+              productName: product.productName,
+              category: product.vertical,
+              sourcingNotes: `Sourcing desk return · ${product.supplierName}`,
+              vertical: product.vertical,
+            })
+          }
+        >
+          {t("rfq.createRfq")}
         </Button>
       </div>
     </div>

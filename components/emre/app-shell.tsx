@@ -28,6 +28,7 @@ import {
   ClipboardList,
   UserCog,
   TrendingUp,
+  ShoppingCart,
 } from "lucide-react";
 import { PRODUCT_NAME_LINE1, PRODUCT_NAME_LINE2 } from "@/data/constants";
 import { getNavForRole } from "@/data/roles";
@@ -39,6 +40,8 @@ import { ConsultationDrawer } from "./consultation-drawer";
 import { CreateGapRequestDrawer } from "./sourcing/create-gap-request-drawer";
 import { useApp } from "@/context/app-context";
 import { useGlobalSearch } from "@/context/global-search-context";
+import { useCommerce } from "@/context/commerce-context";
+import { useCheckoutT } from "@/lib/checkout-labels";
 import { useUi } from "@/lib/ui-i18n";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -77,6 +80,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const { role, currentUserName, resetWorkspace } = useApp();
   const { t } = useUi();
   const { openSearch, submitSearch, query, setQuery } = useGlobalSearch();
+  const { cartCount, setCartOpen } = useCommerce();
+  const ct = useCheckoutT();
   const navItems = getNavForRole(role);
 
   return (
@@ -177,6 +182,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <IndustrySelector compact />
               <VerticalSwitcher />
               <LanguageSwitcher />
+              <button
+                type="button"
+                onClick={() => setCartOpen(true)}
+                className="relative rounded-lg border border-slate-200 bg-white p-2 hover:bg-slate-50"
+                aria-label={ct("checkout.cart")}
+              >
+                <ShoppingCart className="size-4 text-slate-600" />
+                {cartCount > 0 && (
+                  <Badge className="absolute -top-1 -right-1 size-4 p-0 flex items-center justify-center text-[10px] bg-blue-600 text-white border-0">
+                    {cartCount}
+                  </Badge>
+                )}
+              </button>
               <button
                 type="button"
                 className="relative rounded-lg border border-slate-200 bg-white p-2 hover:bg-slate-50"

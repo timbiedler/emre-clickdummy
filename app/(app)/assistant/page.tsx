@@ -40,6 +40,7 @@ import { TranslationExamplesPanel } from "@/components/emre/translation-examples
 import { getAiPromptsForIndustry } from "@/data/industry-content";
 import { useUi } from "@/lib/ui-i18n";
 import { useSourcing } from "@/context/sourcing-context";
+import { useRfq } from "@/context/rfq-context";
 
 const modes = [
   { id: "recommendation", label: "Product Recommendation", icon: Package },
@@ -55,6 +56,7 @@ export default function AssistantPage() {
   const { vertical, openConsultation, role, industry, workspaceCountry, companyType } = useApp();
   const { t } = useUi();
   const { openCreateGapDrawer } = useSourcing();
+  const { openCreateRfq } = useRfq();
   const industryPrompts = getAiPromptsForIndustry(industry);
   const [mode, setMode] = useState<(typeof modes)[number]["id"]>("recommendation");
   const [prompt, setPrompt] = useState(industryPrompts[0] ?? "");
@@ -284,16 +286,43 @@ export default function AssistantPage() {
               </div>
 
               <div className="flex flex-wrap gap-2">
-                <Link href="/rfq">
-                  <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
-                    Create RFQ <ArrowRight className="size-3" />
-                  </Button>
-                </Link>
-                <Link href="/rfq">
-                  <Button variant="outline" className="gap-2">
-                    Request Offer <ArrowRight className="size-3" />
-                  </Button>
-                </Link>
+                <Button
+                  className="gap-2 bg-blue-600 hover:bg-blue-700"
+                  onClick={() =>
+                    openCreateRfq({
+                      source: "assistant",
+                      mode: "rfq",
+                      vertical,
+                      prompt: result.interpreted,
+                      category: result.category,
+                      industry: result.interpretedIndustry,
+                      deliveryCountry: country,
+                      budget: result.budget,
+                      quantity: result.products[0] ? 10 : 1,
+                      productId: result.products[0]?.id,
+                    })
+                  }
+                >
+                  Create RFQ <ArrowRight className="size-3" />
+                </Button>
+                <Button
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() =>
+                    openCreateRfq({
+                      source: "assistant",
+                      mode: "offer",
+                      vertical,
+                      prompt: result.interpreted,
+                      category: result.category,
+                      deliveryCountry: country,
+                      budget: result.budget,
+                      productId: result.products[0]?.id,
+                    })
+                  }
+                >
+                  Request Offer <ArrowRight className="size-3" />
+                </Button>
                 <Link href="/finance">
                   <Button variant="outline" className="gap-2">
                     Start Leasing Check <ArrowRight className="size-3" />

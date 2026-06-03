@@ -67,7 +67,17 @@ export function RoutingTablePanel() {
                     >
                       {t("growth.routing.task")}
                     </Button>
-                    <Button size="sm" variant="outline" onClick={() => goToRfq()}>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() =>
+                        goToRfq({
+                          source: "lead",
+                          companyName: row.company,
+                          deliveryCountry: row.country,
+                        })
+                      }
+                    >
                       RFQ
                     </Button>
                     <Button size="sm" variant="outline" onClick={() => goToOffers()}>

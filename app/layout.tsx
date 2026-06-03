@@ -3,6 +3,8 @@ import { Inter, Geist_Mono } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppProvider } from "@/context/app-context";
 import { SourcingProvider } from "@/context/sourcing-context";
+import { CommerceProvider } from "@/context/commerce-context";
+import { RfqProvider } from "@/context/rfq-context";
 import { PRODUCT_NAME } from "@/data/constants";
 import "./globals.css";
 
@@ -32,7 +34,11 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-white text-slate-900 antialiased">
         <TooltipProvider>
           <AppProvider>
-            <SourcingProvider>{children}</SourcingProvider>
+            <CommerceProvider>
+              <RfqProvider>
+                <SourcingProvider>{children}</SourcingProvider>
+              </RfqProvider>
+            </CommerceProvider>
           </AppProvider>
         </TooltipProvider>
       </body>

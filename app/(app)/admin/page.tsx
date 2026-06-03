@@ -9,6 +9,7 @@ import { VerticalSwitcher } from "@/components/emre/vertical-switcher";
 import { useApp } from "@/context/app-context";
 import { adminMetrics, adminAlerts, adminActivities } from "@/data/admin-metrics";
 import { SourcingKpiSection } from "@/components/emre/sourcing/sourcing-kpi-section";
+import { CheckoutOrderQueue } from "@/components/emre/commerce/checkout-order-queue";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -72,6 +73,7 @@ export default function AdminPage() {
 
       <AdminMetricGrid metrics={metrics} />
       <SourcingKpiSection />
+      <CheckoutOrderQueue title="Checkout order queue" />
       <div className="flex justify-end">
         <Link href="/admin/sourcing-desk">
           <Button variant="outline" size="sm">

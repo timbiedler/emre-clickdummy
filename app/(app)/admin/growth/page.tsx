@@ -34,7 +34,7 @@ export default function GrowthTerritoryPage() {
 function GrowthTerritoryContent() {
   const searchParams = useSearchParams();
   const { t } = useUi();
-  const { goToRfq, goToFinance } = useGrowthActions();
+  const { goToFinance, openRfqFromLead } = useGrowthActions();
   const [toast, setToast] = useState<string | null>(null);
   const [campaignLead, setCampaignLead] = useState<string | undefined>();
   const [tabOverride, setTabOverride] = useState<string | null>(null);
@@ -152,9 +152,9 @@ function GrowthTerritoryContent() {
           setTabOverride("campaigns");
           setToast(t("growth.leads.addedToCampaign"));
         }}
-        onRfqDraft={() => {
+        onRfqDraft={(l) => {
           setToast(t("growth.leads.rfqDraft"));
-          goToRfq();
+          openRfqFromLead(l);
         }}
         onLeasingOffer={() => {
           setToast(t("growth.leads.leasingOffer"));

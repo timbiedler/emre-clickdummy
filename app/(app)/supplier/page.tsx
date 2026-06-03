@@ -1,9 +1,10 @@
 "use client";
 
-import { CheckCircle2, Circle, Upload, Globe, BarChart3 } from "lucide-react";
+import { CheckCircle2, Circle, Upload, Globe, BarChart3, Package } from "lucide-react";
 import { PageHeader } from "@/components/emre/app-shell";
 import { StatusBadge } from "@/components/emre/status-badge";
 import { TranslationBadge } from "@/components/emre/translation-badge";
+import { useCommerce } from "@/context/commerce-context";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -21,6 +22,7 @@ const checklist = [
 
 export default function SupplierPortalPage() {
   const completedSteps = 6;
+  const { supplierOrderQueue } = useCommerce();
 
   return (
     <div className="space-y-6">
@@ -62,9 +64,31 @@ export default function SupplierPortalPage() {
           <Tabs defaultValue="products">
             <TabsList className="surface-card border-slate-200">
               <TabsTrigger value="products">Products</TabsTrigger>
+              <TabsTrigger value="orders">New Orders</TabsTrigger>
               <TabsTrigger value="rfq">RFQ Inbox</TabsTrigger>
               <TabsTrigger value="channels">Sales Channels</TabsTrigger>
             </TabsList>
+            <TabsContent value="orders" className="mt-4 surface-card rounded-xl p-5 space-y-3">
+              <p className="text-sm font-medium flex items-center gap-2">
+                <Package className="size-4" /> Order requests from checkout
+              </p>
+              {supplierOrderQueue.length === 0 ? (
+                <p className="text-xs text-slate-500">No new checkout orders yet.</p>
+              ) : (
+                supplierOrderQueue.slice(0, 6).map((o) => (
+                  <div key={o.id} className="rounded-lg border border-slate-200 p-3 text-sm flex justify-between gap-2">
+                    <div>
+                      <p className="font-medium">{o.productName}</p>
+                      <p className="text-xs text-slate-500">Qty {o.quantity} · ETA {o.eta}</p>
+                    </div>
+                    <div className="text-right text-xs">
+                      <StatusBadge variant="info">{o.paymentStatus}</StatusBadge>
+                      <p className="text-slate-500 mt-1">{o.financeStatus}</p>
+                    </div>
+                  </div>
+                ))
+              )}
+            </TabsContent>
             <TabsContent value="products" className="mt-4 surface-card rounded-xl p-5 space-y-3">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium">Product Upload</p>

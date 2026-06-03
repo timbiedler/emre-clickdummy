@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Sparkles, CreditCard, MessageSquare } from "lucide-react";
+import { Sparkles, CreditCard, MessageSquare, Clock } from "lucide-react";
 import Link from "next/link";
 import { StatusBadge } from "./status-badge";
 import { TranslationBadge } from "./translation-badge";
@@ -21,6 +21,7 @@ import { formatCurrency, formatDate } from "@/lib/format";
 import type { RFQ } from "@/data/types";
 import { offers } from "@/data/offers";
 import { buyers } from "@/data/buyers";
+import { suppliers } from "@/data/suppliers";
 
 export function RFQDetailDrawer({
   rfq,
@@ -38,13 +39,17 @@ export function RFQDetailDrawer({
 
   const buyer = buyers.find((b) => b.id === rfq.buyerId);
   const rfqOffers = offers.filter((o) => o.rfqId === rfq.id);
+  const selectedSuppliers =
+    rfq.selectedSupplierIds?.map((id) => suppliers.find((s) => s.id === id)).filter(Boolean) ?? [];
 
   return (
     <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
       <SheetContent className="surface-card-elevated border-slate-200 w-full sm:max-w-2xl overflow-hidden p-0">
         <ScrollArea className="h-full p-6 space-y-5">
           <SheetHeader className="text-left">
-            <p className="text-xs font-mono text-muted-foreground">{rfq.id.toUpperCase()}</p>
+            <p className="text-xs font-mono text-muted-foreground">
+              {(rfq.rfqNumber ?? rfq.id).toUpperCase()}
+            </p>
             <SheetTitle>{localizedText(rfq.title, language)}</SheetTitle>
           </SheetHeader>
 
@@ -52,6 +57,9 @@ export function RFQDetailDrawer({
             <StatusBadge variant="info">{rfq.status.replace("_", " ")}</StatusBadge>
             <StatusBadge variant="default">{rfq.deliveryCountry}</StatusBadge>
             <StatusBadge variant="violet">{rfq.offersCount} offers</StatusBadge>
+            {rfq.createdFrom && (
+              <StatusBadge variant="default">{rfq.createdFrom.replace("_", " ")}</StatusBadge>
+            )}
             <StatusBadge variant="violet">
               <Sparkles className="size-3 mr-1" /> AI Supported
             </StatusBadge>
@@ -80,11 +88,23 @@ export function RFQDetailDrawer({
             </div>
           </div>
 
+          {(rfq.category || rfq.useCase || rfq.industry) && (
+            <div className="surface-card rounded-lg p-4 space-y-2">
+              <p className="text-xs font-medium text-blue-600 uppercase">{t("rfq.detail.requirements")}</p>
+              {rfq.category && <p className="text-sm"><span className="text-muted-foreground">Category:</span> {rfq.category}</p>}
+              {rfq.industry && <p className="text-sm"><span className="text-muted-foreground">Industry:</span> {String(rfq.industry)}</p>}
+              {rfq.useCase && <p className="text-sm">{rfq.useCase}</p>}
+              {rfq.companyName && <p className="text-sm"><span className="text-muted-foreground">{t("rfq.wizard.company")}:</span> {rfq.companyName}</p>}
+              {rfq.sourcingNotes && <p className="text-sm text-amber-800">{rfq.sourcingNotes}</p>}
+            </div>
+          )}
+
           <div className="grid grid-cols-2 gap-3">
             <InfoBox label="Quantity" value={rfq.quantity.toLocaleString()} />
-            <InfoBox label="Budget" value={formatCurrency(rfq.budget)} />
+            <InfoBox label="Budget" value={rfq.budgetRange ?? formatCurrency(rfq.budget)} />
             <InfoBox label="Created" value={formatDate(rfq.createdAt)} />
             <InfoBox label="Deadline" value={formatDate(rfq.deadline)} />
+            {rfq.deliveryDate && <InfoBox label="Delivery target" value={formatDate(rfq.deliveryDate)} />}
           </div>
 
           {buyer && (
@@ -97,22 +117,76 @@ export function RFQDetailDrawer({
             </div>
           )}
 
+          {selectedSuppliers.length > 0 && (
+            <div className="surface-card rounded-lg p-4 space-y-2">
+              <p className="text-xs font-medium text-blue-600 uppercase">{t("rfq.detail.selectedSuppliers")}</p>
+              <div className="space-y-2">
+                {selectedSuppliers.map((s) => s && (
+                  <div key={s.id} className="flex justify-between text-sm">
+                    <span>{s.name}</span>
+                    <span className="text-muted-foreground">{s.country}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {(rfq.financeInterest || rfq.leasingInterest) && (
+            <div className="surface-card rounded-lg p-4 space-y-1">
+              <p className="text-xs font-medium text-emerald-700 uppercase flex items-center gap-1">
+                <CreditCard className="size-3" /> {t("rfq.detail.financeLeasing")}
+              </p>
+              <p className="text-sm">
+                {[rfq.financeInterest && "Financing requested", rfq.leasingInterest && "Leasing requested"]
+                  .filter(Boolean)
+                  .join(" · ")}
+              </p>
+            </div>
+          )}
+
           <TranslationBadge
             status={rfq.translationStatus}
             showPanel
-            sourceText={rfq.message.en}
+            sourceText={rfq.buyerMessage ?? rfq.message.en}
           />
 
           <div className="surface-card rounded-lg p-4 space-y-2">
             <p className="text-xs font-medium text-blue-600 uppercase">Buyer Message</p>
-            <p className="text-sm">{localizedText(rfq.message, language)}</p>
+            <p className="text-sm">{rfq.buyerMessage ?? localizedText(rfq.message, language)}</p>
           </div>
 
+          {rfq.translatedMessage && (
+            <div className="surface-card rounded-lg p-4 space-y-2">
+              <p className="text-xs font-medium text-violet-600 uppercase">{t("rfq.detail.translatedMessage")}</p>
+              <p className="text-sm">{rfq.translatedMessage}</p>
+            </div>
+          )}
+
+          {rfq.statusTimeline && rfq.statusTimeline.length > 0 && (
+            <div className="surface-card rounded-lg p-4 space-y-2">
+              <p className="text-xs font-medium text-blue-600 uppercase flex items-center gap-1">
+                <Clock className="size-3" /> {t("rfq.detail.statusTimeline")}
+              </p>
+              <ul className="space-y-2 text-sm">
+                {rfq.statusTimeline.map((entry, i) => (
+                  <li key={i} className="flex gap-2">
+                    <span className="text-muted-foreground shrink-0">{formatDate(entry.timestamp)}</span>
+                    <span>{entry.status}{entry.note ? ` — ${entry.note}` : ""}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {rfqOffers.length > 0 ? (
-            <OfferComparisonTable offers={rfqOffers} />
+            <div className="space-y-2">
+              <p className="text-xs font-medium text-blue-600 uppercase">{t("rfq.detail.offerComparison")}</p>
+              <OfferComparisonTable offers={rfqOffers} />
+            </div>
           ) : (
-            <div className="surface-card rounded-lg p-6 text-center text-muted-foreground text-sm">
-              Supplier matching in progress — {rfq.matchedSuppliers} suppliers notified
+            <div className="surface-card rounded-lg p-6 text-center text-muted-foreground text-sm space-y-1">
+              <p>{t("rfq.detail.offerComparisonPlaceholder")}</p>
+              <p className="text-xs">{rfq.matchedSuppliers} suppliers notified</p>
             </div>
           )}
 
@@ -138,18 +212,25 @@ export function RFQDetailDrawer({
             </div>
           )}
 
-          <div className="flex flex-wrap gap-2">
-            <Button className="bg-blue-600 hover:bg-blue-700">Accept Best Offer</Button>
-            <Button variant="outline">Send Message</Button>
-            <Button variant="outline">Generate Multilingual Offer</Button>
-            <Link href="/finance">
-              <Button variant="outline" className="gap-1">
-                <CreditCard className="size-3" /> Compare Leasing
+          <div className="surface-card rounded-lg p-4 space-y-2">
+            <p className="text-xs font-medium text-blue-600 uppercase">{t("rfq.detail.nextActions")}</p>
+            <div className="flex flex-wrap gap-2">
+              <Button className="bg-blue-600 hover:bg-blue-700">Accept Best Offer</Button>
+              <Button variant="outline">Send Message</Button>
+              <Button variant="outline">{t("rfq.detail.resendRfq")}</Button>
+              {rfq.status === "draft" && (
+                <Button variant="outline">{t("rfq.detail.editDraft")}</Button>
+              )}
+              <Button variant="outline">Generate Multilingual Offer</Button>
+              <Link href="/finance">
+                <Button variant="outline" className="gap-1">
+                  <CreditCard className="size-3" /> Compare Leasing
+                </Button>
+              </Link>
+              <Button variant="outline" onClick={() => openConsultation()}>
+                Sales Consultation
               </Button>
-            </Link>
-            <Button variant="outline" onClick={() => openConsultation()}>
-              Sales Consultation
-            </Button>
+            </div>
           </div>
         </ScrollArea>
       </SheetContent>

@@ -248,8 +248,33 @@ export interface Buyer {
   creditStatus: "approved" | "review" | "pending";
 }
 
+export type RfqCreatedFrom =
+  | "product"
+  | "assistant"
+  | "lead"
+  | "sourcing"
+  | "group_buy"
+  | "bundle"
+  | "deal"
+  | "checkout"
+  | "generic";
+
+export interface RfqStatusTimelineEntry {
+  status: string;
+  timestamp: string;
+  note?: string;
+}
+
+export interface RfqSelectedSupplier {
+  id: string;
+  name: string;
+  score: number;
+  country: Country;
+}
+
 export interface RFQ {
   id: string;
+  rfqNumber?: string;
   vertical: Vertical;
   title: LocalizedText;
   buyerId: string;
@@ -263,6 +288,31 @@ export interface RFQ {
   offersCount: number;
   translationStatus: TranslationStatus;
   message: LocalizedText;
+  productId?: string;
+  productName?: string;
+  category?: string;
+  industry?: Industry | string;
+  useCase?: string;
+  financeInterest?: boolean;
+  leasingInterest?: boolean;
+  selectedSupplierIds?: string[];
+  selectedSuppliers?: RfqSelectedSupplier[];
+  translatedMessage?: string;
+  sourceLanguage?: Language;
+  targetLanguage?: Language;
+  buyerMessage?: string;
+  responseDeadline?: string;
+  createdFrom?: RfqCreatedFrom;
+  budgetRange?: string;
+  deliveryDate?: string;
+  bundleName?: string;
+  companyName?: string;
+  sourcingNotes?: string;
+  statusTimeline?: RfqStatusTimelineEntry[];
+  leadId?: string;
+  requestAlternatives?: boolean;
+  relatedProductIds?: string[];
+  complianceNotes?: string;
 }
 
 export interface Offer {
@@ -300,6 +350,21 @@ export interface Order {
   createdAt: string;
   items: number;
   country: Country;
+  /** Checkout-sourced fields (mock) */
+  productName?: string;
+  productId?: string;
+  quantity?: number;
+  paymentMethod?: string;
+  financeMethod?: string;
+  leasingMonthly?: number;
+  servicePackage?: string;
+  warrantyOption?: string;
+  insuranceOption?: string;
+  buyerCompany?: string;
+  poNumber?: string;
+  documentStatus?: string;
+  financeStatus?: string;
+  fromCheckout?: boolean;
 }
 
 export interface Invoice {

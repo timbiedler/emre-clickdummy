@@ -7,7 +7,8 @@ import { PageHeader } from "@/components/emre/app-shell";
 import { OrderTrackingTimeline } from "@/components/emre/order-tracking-timeline";
 import { StatusBadge } from "@/components/emre/status-badge";
 import { useApp } from "@/context/app-context";
-import { orders } from "@/data/orders";
+import { useCommerce } from "@/context/commerce-context";
+import { orders as staticOrders } from "@/data/orders";
 import { formatCurrency, formatDate } from "@/lib/format";
 import type { Order } from "@/data/types";
 import { Button } from "@/components/ui/button";
@@ -38,13 +39,18 @@ export default function OrdersPage() {
 function OrdersPageContent() {
   const searchParams = useSearchParams();
   const { vertical } = useApp();
+  const { placedOrders } = useCommerce();
   const [selected, setSelected] = useState<Order | null>(null);
-  const verticalOrders = orders.filter((o) => o.vertical === vertical);
+  const allOrders = useMemo(
+    () => [...placedOrders.map((m) => m.order), ...staticOrders],
+    [placedOrders]
+  );
+  const verticalOrders = allOrders.filter((o) => o.vertical === vertical);
 
   const orderFromUrl = useMemo(() => {
     const orderId = searchParams.get("orderId");
-    return orderId ? orders.find((o) => o.id === orderId) ?? null : null;
-  }, [searchParams]);
+    return orderId ? allOrders.find((o) => o.id === orderId) ?? null : null;
+  }, [searchParams, allOrders]);
   const activeOrder = selected ?? orderFromUrl;
 
   return (
