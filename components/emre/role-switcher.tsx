@@ -27,7 +27,7 @@ const roles: UserRole[] = [
 ];
 
 export function RoleSwitcher({ compact }: { compact?: boolean }) {
-  const { role, setRole } = useApp();
+  const { role, switchRole } = useApp();
   const { t } = useUi();
   const router = useRouter();
 
@@ -47,8 +47,8 @@ export function RoleSwitcher({ compact }: { compact?: boolean }) {
           <DropdownMenuItem
             key={r}
             onClick={() => {
-              setRole(r);
-              router.push(getHomeForRole(r));
+              switchRole(r);
+              router.replace(getHomeForRole(r));
             }}
             className={role === r ? "bg-blue-50 text-blue-700" : ""}
           >

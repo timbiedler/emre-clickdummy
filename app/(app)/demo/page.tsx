@@ -7,6 +7,7 @@ import { PageHeader } from "@/components/emre/app-shell";
 import { useApp } from "@/context/app-context";
 import { useDemo } from "@/context/demo-context";
 import { DEMO_FLOWS } from "@/lib/demo-flows";
+import { getHomeForRole } from "@/data/roles";
 import { useUi } from "@/lib/ui-i18n";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -15,7 +16,7 @@ import { cn } from "@/lib/utils";
 export default function DemoPage() {
   const router = useRouter();
   const { t } = useUi();
-  const { applyDemoSetup, enterWorkspace, workspaceCountry, showToast } = useApp();
+  const { applyDemoSetup, enterWorkspace, workspaceCountry, workspaceReady, showToast } = useApp();
   const { getDemoStep, setDemoStep } = useDemo();
 
   const startFlow = (flowId: string) => {
@@ -35,7 +36,26 @@ export default function DemoPage() {
     });
     setDemoStep(flowId, 1);
     showToast(t("demo.flowStarted"));
-    router.push(flow.steps[0]?.href ?? "/");
+    const firstHref = flow.steps[0]?.href;
+    const target =
+      firstHref === "/enter" || !firstHref ? getHomeForRole(flow.role) : firstHref;
+    router.push(target);
+  };
+
+  const ensureFlowWorkspace = (flow: (typeof DEMO_FLOWS)[number]) => {
+    if (workspaceReady) return;
+    enterWorkspace({
+      role: flow.role,
+      industry: flow.industry ?? "Hospital / Clinic",
+      country: workspaceCountry,
+      companyType: flow.role === "admin" ? "Platform operator" : "Enterprise buyer",
+    });
+    applyDemoSetup({
+      role: flow.role,
+      industry: flow.industry,
+      vertical: flow.vertical,
+      country: workspaceCountry,
+    });
   };
 
   return (
@@ -82,8 +102,11 @@ export default function DemoPage() {
                   return (
                     <li key={s.labelKey}>
                       <Link
-                        href={s.href}
-                        onClick={() => setDemoStep(flow.id, Math.max(step, i + 1))}
+                        href={s.href === "/enter" ? getHomeForRole(flow.role) : s.href}
+                        onClick={() => {
+                          if (s.href !== "/enter") ensureFlowWorkspace(flow);
+                          setDemoStep(flow.id, Math.max(step, i + 1));
+                        }}
                         className={cn(
                           "block rounded-lg border px-3 py-2.5 text-xs transition-colors",
                           done && "border-emerald-200 bg-emerald-50/60",

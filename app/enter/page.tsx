@@ -81,7 +81,6 @@ export default function EnterPage() {
 
   const handleContinue = () => {
     enterWorkspace({ role: selectedRole, industry, country, companyType });
-    router.push(getHomeForRole(selectedRole));
   };
 
   return (
@@ -194,6 +193,23 @@ export default function EnterPage() {
           >
             {t("enter.enterWorkspace")} <ArrowRight className="size-4" />
           </Button>
+
+          <p className="text-xs text-slate-400">
+            Demo hosted at{" "}
+            <a
+              href="https://emre-clickdummy.vercel.app/enter"
+              className="underline hover:text-slate-600"
+            >
+              emre-clickdummy.vercel.app
+            </a>
+            {" · "}
+            <a
+              href="https://distribution-engine-vlcp.vercel.app/enter"
+              className="underline hover:text-slate-600"
+            >
+              distribution-engine-vlcp.vercel.app
+            </a>
+          </p>
         </div>
       </main>
     </div>

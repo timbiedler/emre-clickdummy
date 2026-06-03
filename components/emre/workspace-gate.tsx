@@ -10,7 +10,10 @@ export function WorkspaceGate({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!workspaceReady) {
-      router.replace("/enter");
+      const timer = window.setTimeout(() => {
+        router.replace("/enter");
+      }, 0);
+      return () => window.clearTimeout(timer);
     }
   }, [workspaceReady, router]);
 

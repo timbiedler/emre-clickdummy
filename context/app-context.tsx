@@ -41,6 +41,7 @@ interface AppContextValue {
     country: Country;
     companyType: string;
   }) => void;
+  switchRole: (role: UserRole) => void;
   resetWorkspace: () => void;
   showRelevantFirst: boolean;
   setShowRelevantFirst: (v: boolean) => void;
@@ -155,6 +156,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
     []
   );
 
+  const switchRole = useCallback((nextRole: UserRole) => {
+    setRole(nextRole);
+    setWorkspaceReady(true);
+    if (nextRole === "admin") setVertical("medical");
+  }, []);
+
   const resetWorkspace = useCallback(() => {
     setWorkspaceReady(false);
   }, []);
@@ -187,6 +194,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setCompanyType,
         workspaceReady,
         enterWorkspace,
+        switchRole,
         resetWorkspace,
         showRelevantFirst,
         setShowRelevantFirst,
