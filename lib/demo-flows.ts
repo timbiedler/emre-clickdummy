@@ -26,7 +26,7 @@ export const DEMO_FLOWS: DemoFlow[] = [
     vertical: "medical",
     steps: [
       { labelKey: "demo.flows.hospital.s1", descKey: "demo.flows.hospital.s1d", href: "/enter" },
-      { labelKey: "demo.flows.hospital.s2", descKey: "demo.flows.hospital.s2d", href: "/" },
+      { labelKey: "demo.flows.hospital.s2", descKey: "demo.flows.hospital.s2d", href: "/customer" },
       { labelKey: "demo.flows.hospital.s3", descKey: "demo.flows.hospital.s3d", href: "/assistant" },
       { labelKey: "demo.flows.hospital.s4", descKey: "demo.flows.hospital.s4d", href: "/marketplace" },
       { labelKey: "demo.flows.hospital.s5", descKey: "demo.flows.hospital.s5d", href: "/rfq" },
@@ -45,7 +45,7 @@ export const DEMO_FLOWS: DemoFlow[] = [
     vertical: "robotics",
     steps: [
       { labelKey: "demo.flows.robotics.s1", descKey: "demo.flows.robotics.s1d", href: "/enter" },
-      { labelKey: "demo.flows.robotics.s2", descKey: "demo.flows.robotics.s2d", href: "/" },
+      { labelKey: "demo.flows.robotics.s2", descKey: "demo.flows.robotics.s2d", href: "/customer" },
       { labelKey: "demo.flows.robotics.s3", descKey: "demo.flows.robotics.s3d", href: "/marketplace" },
       { labelKey: "demo.flows.robotics.s4", descKey: "demo.flows.robotics.s4d", href: "/marketplace" },
       { labelKey: "demo.flows.robotics.s5", descKey: "demo.flows.robotics.s5d", href: "/finance" },
