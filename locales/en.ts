@@ -309,6 +309,7 @@ const en = {
     cityView: "City view",
     entities: "network entities",
     routes: "active routes",
+    demoMapView: "Demo map view · set NEXT_PUBLIC_GOOGLE_MAPS_API_KEY for Google Maps",
     allRoles: "All roles",
     allIndustries: "All industries",
     allTypes: "All types",

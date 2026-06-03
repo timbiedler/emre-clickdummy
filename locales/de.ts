@@ -309,6 +309,7 @@ const de = {
     cityView: "Stadtansicht",
     entities: "Netzwerkentitäten",
     routes: "aktive Routen",
+    demoMapView: "Demo-Kartenansicht · NEXT_PUBLIC_GOOGLE_MAPS_API_KEY für Google Maps setzen",
     allRoles: "Alle Rollen",
     allIndustries: "Alle Branchen",
     allTypes: "Alle Typen",
