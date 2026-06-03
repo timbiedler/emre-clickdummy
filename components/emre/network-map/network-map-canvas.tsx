@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useState } from "react";
 import type { NetworkEntity, NetworkRoute } from "@/data/types";
 import { getGoogleMapsConfig, isGoogleMapsConfigured } from "@/lib/google-maps-adapter";
 import { useUi } from "@/lib/ui-i18n";
@@ -45,8 +46,9 @@ export function NetworkMapCanvas({
   const { t } = useUi();
   const config = getGoogleMapsConfig();
   const useGoogleMaps = isGoogleMapsConfigured(config);
+  const [mapFailed, setMapFailed] = useState(false);
 
-  if (useGoogleMaps) {
+  if (useGoogleMaps && !mapFailed) {
     return (
       <NetworkGoogleMap
         entities={entities}
@@ -58,6 +60,7 @@ export function NetworkMapCanvas({
         showTerritories={showTerritories}
         showRoutes={showRoutes}
         zoom={zoom}
+        onMapError={() => setMapFailed(true)}
       />
     );
   }

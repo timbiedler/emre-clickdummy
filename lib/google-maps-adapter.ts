@@ -7,9 +7,10 @@ export interface GoogleMapsConfig {
 }
 
 export function getGoogleMapsConfig(): GoogleMapsConfig {
+  const mapId = process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID?.trim();
   return {
-    apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-    mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID,
+    apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY?.trim(),
+    mapId: mapId || undefined,
   };
 }
 

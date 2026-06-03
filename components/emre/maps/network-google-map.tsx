@@ -83,31 +83,35 @@ function MapLayers({
   useEffect(() => {
     if (!map || typeof google === "undefined") return;
 
-    markersRef.current.forEach((marker) => marker.setMap(null));
-    markersRef.current = [];
-    clustererRef.current?.clearMarkers();
-    clustererRef.current = null;
+    try {
+      markersRef.current.forEach((marker) => marker.setMap(null));
+      markersRef.current = [];
+      clustererRef.current?.clearMarkers();
+      clustererRef.current = null;
 
-    const markers = entities.map((entity) => {
-      const marker = new google.maps.Marker({
-        position: { lat: entity.lat, lng: entity.lng },
-        title: entity.name,
-        icon: buildMarkerIcon(
-          google.maps,
-          getMarkerColor(entity.role),
-          selectedId === entity.id,
-          entity.active
-        ),
-        map: showClusters ? null : map,
+      const markers = entities.map((entity) => {
+        const marker = new google.maps.Marker({
+          position: { lat: entity.lat, lng: entity.lng },
+          title: entity.name,
+          icon: buildMarkerIcon(
+            google.maps,
+            getMarkerColor(entity.role),
+            selectedId === entity.id,
+            entity.active
+          ),
+          map: showClusters ? null : map,
+        });
+        marker.addListener("click", () => onSelect(entity));
+        return marker;
       });
-      marker.addListener("click", () => onSelect(entity));
-      return marker;
-    });
 
-    markersRef.current = markers;
+      markersRef.current = markers;
 
-    if (showClusters) {
-      clustererRef.current = new MarkerClusterer({ map, markers });
+      if (showClusters && markers.length > 0) {
+        clustererRef.current = new MarkerClusterer({ map, markers });
+      }
+    } catch {
+      // Marker/clusterer failures should not break the base map tiles.
     }
 
     return () => {
@@ -149,32 +153,78 @@ function MapLayers({
   }, [map, routes, showRoutes, entityMap]);
 
   useEffect(() => {
-    if (!map || !visualizationLibrary || typeof google === "undefined") return;
-
-    if (heatmapRef.current) {
+    if (!map || !showHeatmap || !visualizationLibrary || typeof google === "undefined") {
       clearHeatmap();
+      return;
     }
 
-    if (!showHeatmap || entities.length === 0) return;
+    if (entities.length === 0) {
+      clearHeatmap();
+      return;
+    }
 
-    const HeatmapLayer = google.maps.visualization.HeatmapLayer as unknown as new (options: {
-      data: { location: google.maps.LatLng; weight: number }[];
-      map: google.maps.Map;
-      radius?: number;
-      opacity?: number;
-    }) => google.maps.visualization.HeatmapLayer;
+    try {
+      if (heatmapRef.current) {
+        clearHeatmap();
+      }
 
-    heatmapRef.current = new HeatmapLayer({
-      data: buildHeatmapData(entities),
-      map,
-      radius: 28,
-      opacity: 0.45,
-    });
+      const HeatmapLayer = google.maps.visualization.HeatmapLayer as unknown as new (options: {
+        data: { location: google.maps.LatLng; weight: number }[];
+        map: google.maps.Map;
+        radius?: number;
+        opacity?: number;
+      }) => google.maps.visualization.HeatmapLayer;
+
+      heatmapRef.current = new HeatmapLayer({
+        data: buildHeatmapData(entities),
+        map,
+        radius: 28,
+        opacity: 0.45,
+      });
+    } catch {
+      clearHeatmap();
+    }
 
     return () => {
       clearHeatmap();
     };
   }, [map, visualizationLibrary, entities, showHeatmap]);
+
+  return null;
+}
+
+function MapErrorWatcher({ onError }: { onError: () => void }) {
+  const map = useMap();
+
+  useEffect(() => {
+    const win = window as Window & { gm_authFailure?: () => void };
+    const previousAuthFailure = win.gm_authFailure;
+    win.gm_authFailure = () => {
+      onError();
+      previousAuthFailure?.();
+    };
+
+    return () => {
+      win.gm_authFailure = previousAuthFailure;
+    };
+  }, [onError]);
+
+  useEffect(() => {
+    if (!map) return;
+
+    const container = map.getDiv();
+    const checkForOverlay = () => {
+      if (container.querySelector(".gm-err-container")) {
+        onError();
+      }
+    };
+
+    checkForOverlay();
+    const observer = new MutationObserver(checkForOverlay);
+    observer.observe(container, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
+  }, [map, onError]);
 
   return null;
 }
@@ -190,9 +240,11 @@ export function NetworkGoogleMap(props: {
   showRoutes: boolean;
   zoom?: number;
   className?: string;
+  onMapError?: () => void;
 }) {
   const config = getGoogleMapsConfig();
   const zoom = props.zoom ?? 1;
+  const mapProps = config.mapId ? { mapId: config.mapId } : {};
 
   return (
     <APIProvider apiKey={config.apiKey!} libraries={["visualization"]}>
@@ -222,10 +274,10 @@ export function NetworkGoogleMap(props: {
           fullscreenControl={false}
           streetViewControl={false}
           mapTypeControl={false}
-          mapId={config.mapId}
+          {...mapProps}
           className="w-full h-full"
-          reuseMaps
         >
+          {props.onMapError ? <MapErrorWatcher onError={props.onMapError} /> : null}
           <MapLayers
             entities={props.entities}
             routes={props.routes}
